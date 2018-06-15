@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/safari12/smine#readme",
   "dependencies": {
+    "jsonschema": "^1.2.4",
     "yargs": "^11.0.0"
   }
 }
