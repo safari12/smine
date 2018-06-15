@@ -1,0 +1,22 @@
+{
+  "name": "smine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/safari12/smine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/safari12/smine/issues"
+  },
+  "homepage": "https://github.com/safari12/smine#readme",
+  "dependencies": {
+    "yargs": "^11.0.0"
+  }
+}
