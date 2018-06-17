@@ -2,7 +2,7 @@ const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const fs = require('fs')
 
-const mockConfig = require('./config-mock')
+const mockConfig = require('./config.mock')
 const configparser = require('../lib/config/parser')
 
 const chai = require('chai')

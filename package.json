@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.js"
+    "test": "nyc mocha"
   },
   "bin": {
     "smine": "./bin/smine.js"
@@ -19,6 +19,27 @@
     "url": "https://github.com/safari12/smine/issues"
   },
   "homepage": "https://github.com/safari12/smine#readme",
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "include": [
+      "lib/**/*.js"
+    ],
+    "exclude": [
+      "test/**/*.spec.js",
+      "lib/logger.js"
+    ],
+    "ignore-class-method": "methodToIgnore",
+    "reporter": [
+      "html",
+      "text"
+    ],
+    "extension": [
+      ".jsx"
+    ],
+    "cache": true,
+    "all": true
+  },
   "dependencies": {
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.10",
@@ -30,6 +51,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
     "sinon": "^6.0.0",
     "sinon-chai": "^3.2.0"
   }
