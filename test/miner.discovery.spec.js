@@ -71,5 +71,68 @@ describe('MinerDiscovery', () => {
 
       stub.restore()
     })
+
+    it('should return no online and offline miners', async () => {
+      const stub = sinon.stub(request, 'get')
+      stub.returns(
+        new Promise((resolve, reject) => {
+          reject(null)
+        })
+      )
+
+      const minerDiscovery = new MinerDiscovery(5, 'test', 'test')
+      const stats = await minerDiscovery.getStats()
+
+      stats.online.should.have.lengthOf(0)
+      stats.offline.should.have.lengthOf(0)
+
+      stub.restore()
+    })
+
+    it('should transition from online to offline to online miners', async () => {
+      const expectedNumberOfMiners = 5
+
+      const stub = sinon.stub(request, 'get')
+      stub.returns(
+        new Promise((resolve) => {
+          resolve({
+            message: 'test'
+          })
+        })
+      )
+
+      const minerDiscovery = new MinerDiscovery(expectedNumberOfMiners, 'test', 'test')
+
+      let stats = await minerDiscovery.getStats()
+
+      stats.online.should.have.lengthOf(expectedNumberOfMiners)
+      stats.offline.should.have.lengthOf(0)
+
+      stub.returns(
+        new Promise((resolve, reject) => {
+          reject(null)
+        })
+      )
+
+      stats = await minerDiscovery.getStats()
+
+      stats.online.should.have.lengthOf(0)
+      stats.offline.should.have.lengthOf(expectedNumberOfMiners)
+
+      stub.returns(
+        new Promise((resolve) => {
+          resolve({
+            message: 'test'
+          })
+        })
+      )
+
+      stats = await minerDiscovery.getStats()
+
+      stats.online.should.have.lengthOf(expectedNumberOfMiners)
+      stats.offline.should.have.lengthOf(0)
+
+      stub.restore()
+    })
   })
 })
