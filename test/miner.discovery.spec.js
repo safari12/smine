@@ -134,5 +134,39 @@ describe('MinerDiscovery', () => {
 
       stub.restore()
     })
+
+    it('should return four online and one offline machine', async () => {
+      const numberOfMiners = 5
+      const hostname = {
+        prefix: 's-m-'
+      }
+      const api = {
+        port: 6969,
+        endpoint: '/api.json'
+      }
+      const data = {
+        message: 'test'
+      }
+
+      const stub = sinon.stub(request, 'get')
+      stub.resolves(data)
+
+      const minerDiscovery = new MinerDiscovery(
+        numberOfMiners,
+        hostname,
+        api
+      )
+
+      let stats = await minerDiscovery.getStats()
+
+      stub.withArgs('http://s-m-03:6969/api.json').rejects(null)
+
+      stats = await minerDiscovery.getStats()
+
+      stats.online.should.have.lengthOf(4)
+      stats.offline.should.have.lengthOf(1)
+
+      stub.restore()
+    })
   })
 })
