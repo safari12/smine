@@ -3,7 +3,7 @@ const sinonChai = require('sinon-chai')
 const chai = require('chai')
 chai.use(sinonChai)
 
-const Miner = require('../lib/miner/model')
+const Miner = require('../lib/miner')
 
 describe('Miner', () => {
   describe('constructor', () => {

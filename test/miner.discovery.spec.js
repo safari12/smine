@@ -2,7 +2,7 @@ const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const request = require('request-promise')
 
-const Miner = require('../lib/miner/model')
+const Miner = require('../lib/miner')
 const MinerDiscovery = require('../lib/miner/discovery')
 
 const chai = require('chai')
@@ -11,7 +11,7 @@ chai.use(sinonChai)
 describe('MinerDiscovery', () => {
   describe('constructor', () => {
     const data = {
-      numberOfMiners: 100,
+      number_of_miners: 100,
       hostname: {
         prefix: 's-m-'
       },
@@ -21,13 +21,9 @@ describe('MinerDiscovery', () => {
       }
     }
 
-    const minerDiscovery = new MinerDiscovery(
-      data.numberOfMiners,
-      data.hostname,
-      data.api
-    )
+    const minerDiscovery = new MinerDiscovery(data)
 
-    minerDiscovery.numberOfMiners.should.equal(data.numberOfMiners)
+    minerDiscovery.numberOfMiners.should.equal(data.number_of_miners)
     minerDiscovery.hostname.should.deep.equal(data.hostname)
     minerDiscovery.api.should.deep.equal(data.api)
   })
@@ -46,11 +42,11 @@ describe('MinerDiscovery', () => {
         })
       )
 
-      const minerDiscovery = new MinerDiscovery(
-        expectedNumberOfMiners,
-        expectedHostname,
-        expectedApi
-      )
+      const minerDiscovery = new MinerDiscovery({
+        number_of_miners: expectedNumberOfMiners,
+        hostname: expectedHostname,
+        api: expectedApi
+      })
 
       const stats = await minerDiscovery.getStats()
 
@@ -80,7 +76,11 @@ describe('MinerDiscovery', () => {
         })
       )
 
-      const minerDiscovery = new MinerDiscovery(5, 'test', 'test')
+      const minerDiscovery = new MinerDiscovery({
+        number_of_miners: 5,
+        hostname: 'test',
+        api: 'test'
+      })
       const stats = await minerDiscovery.getStats()
 
       stats.online.should.have.lengthOf(0)
@@ -101,7 +101,11 @@ describe('MinerDiscovery', () => {
         })
       )
 
-      const minerDiscovery = new MinerDiscovery(expectedNumberOfMiners, 'test', 'test')
+      const minerDiscovery = new MinerDiscovery({
+        number_of_miners: expectedNumberOfMiners,
+        hostname: 'test',
+        api: 'test'
+      })
 
       let stats = await minerDiscovery.getStats()
 
@@ -151,11 +155,11 @@ describe('MinerDiscovery', () => {
       const stub = sinon.stub(request, 'get')
       stub.resolves(data)
 
-      const minerDiscovery = new MinerDiscovery(
-        numberOfMiners,
-        hostname,
-        api
-      )
+      const minerDiscovery = new MinerDiscovery({
+        number_of_miners: numberOfMiners,
+        hostname: hostname,
+        api: api
+      })
 
       let stats = await minerDiscovery.getStats()
 
