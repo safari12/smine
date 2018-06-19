@@ -1,6 +1,6 @@
 module.exports = {
   discovery: {
-    number_of_miners: 100,
+    number_of_rigs: 5,
     hostname: {
       prefix: 's-m-'
     },

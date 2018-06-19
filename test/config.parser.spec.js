@@ -30,7 +30,7 @@ describe('ConfigParser', () => {
     })
 
     it('should throw error if json file is invalid', () => {
-      const invalidConfig = mockConfig
+      const invalidConfig = Object.assign({}, mockConfig)
       invalidConfig.discovery = {}
 
       const stub = sinon.stub(fs, 'readFileSync')
