@@ -47,75 +47,109 @@ describe('Datacenter', () => {
       requestStub.restore()
     })
 
-    it('should return online rigs and no offline rigs', async () => {
-      const miner = 'xmr-stak'
+    describe('should return only online rigs', () => {
+      it('when rigs just became online for the first time', async () => {
+        const miner = 'xmr-stak'
 
-      requestStub.resolves(bodyMock)
+        requestStub.resolves(bodyMock)
 
-      const stats = await datacenter.getStats()
+        const stats = await datacenter.getStats()
 
-      stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-      stats.offlineRigs.should.have.lengthOf(0)
+        stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
+        stats.offlineRigs.should.have.lengthOf(0)
 
-      for (let i = 0; i < configDiscovery.number_of_rigs; i++) {
-        const rigId = Rig.getId(i + 1)
-        const rig = stats.onlineRigs[i]
-        const uri = `http://${hostname.prefix + rigId}:${api.port}${api.endpoint}`
-        
-        rig.name.should.equal(hostname.prefix + rigId)
-        rig.miner.should.equal(miner)
-        rig.hashrate.should.equal(bodyMock.hashrate.highest)
-        rig.data.should.equal(bodyMock)
+        for (let i = 0; i < configDiscovery.number_of_rigs; i++) {
+          const rigId = Rig.getId(i + 1)
+          const rig = stats.onlineRigs[i]
+          const uri = `http://${hostname.prefix + rigId}:${api.port}${api.endpoint}`
+          
+          rig.name.should.equal(hostname.prefix + rigId)
+          rig.miner.should.equal(miner)
+          rig.hashrate.should.equal(bodyMock.hashrate.highest)
+          rig.data.should.equal(bodyMock)
 
-        requestStub.should.have.been.calledWith(uri)
-      }
+          requestStub.should.have.been.calledWith(uri)
+        }
+      })
+      it('when rigs transitioned from offline to online', async () => {
+        requestStub.resolves(bodyMock)
+
+        await datacenter.getStats()
+
+        requestStub.rejects(null)
+
+        await datacenter.getStats()
+
+        requestStub.resolves(bodyMock)
+
+        const stats = await datacenter.getStats()
+
+        stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
+        stats.offlineRigs.should.have.lengthOf(0)
+      })
+      it('when a new rig becomes online', async () => {
+        requestStub.resolves(bodyMock)
+        requestStub.withArgs(
+          `http://${hostname.prefix}03:${api.port}${api.endpoint}`
+        ).rejects(null)
+
+        await datacenter.getStats()
+
+        requestStub.reset()
+        requestStub.resolves(bodyMock)
+
+        const stats = await datacenter.getStats()
+
+        stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
+        stats.offlineRigs.should.have.lengthOf(0)
+      })
     })
-    it('should return no online and offline rigs', async () => {
-      requestStub.rejects(null)
 
-      const stats = await datacenter.getStats()
+    describe('should return no online and offline rigs', () => {
+      it('when no rigs are online for the first time', async () => {
+        requestStub.rejects(null)
 
-      stats.onlineRigs.should.have.lengthOf(0)
-      stats.offlineRigs.should.have.lengthOf(0)
+        const stats = await datacenter.getStats()
+
+        stats.onlineRigs.should.have.lengthOf(0)
+        stats.offlineRigs.should.have.lengthOf(0)
+      })
     })
-    it('should return online when rigs became offline then online', async () => {
-      requestStub.resolves(bodyMock)
 
-      let stats = await datacenter.getStats()
+    describe('should return some online and offline rigs', () => {
+      it('when a rig becomes offline and the rest are still online', async () => {
+        requestStub.resolves(bodyMock)
 
-      stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-      stats.offlineRigs.should.have.lengthOf(0)
+        await datacenter.getStats()
 
-      requestStub.rejects(null)
+        requestStub.withArgs(
+          `http://${hostname.prefix}03:${api.port}${api.endpoint}`
+        ).rejects(null)
 
-      stats = await datacenter.getStats()
+        const stats = await datacenter.getStats()
 
-      stats.onlineRigs.should.have.lengthOf(0)
-      stats.offlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-
-      requestStub.resolves(bodyMock)
-
-      stats = await datacenter.getStats()
-
-      stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-      stats.offlineRigs.should.have.lengthOf(0)
+        stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs - 1)
+        stats.offlineRigs.should.have.lengthOf(1)
+      })
     })
-    it('should return some online and offline rigs', async () => {
-      requestStub.resolves(bodyMock)
 
-      let stats = await datacenter.getStats()
+    describe('should return only offline rigs', () => {
+      it('when all rigs transition from online to offline', async () => {
+        requestStub.resolves(bodyMock)
+      
+        await datacenter.getStats()
 
-      stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-      stats.offlineRigs.should.have.lengthOf(0)
+        requestStub.rejects(null)
 
-      requestStub.withArgs(
-        `http://${hostname.prefix}03:${api.port}${api.endpoint}`
-      ).rejects(null)
+        let stats
 
-      stats = await datacenter.getStats()
+        for (let i = 0; i < 10; i++) {
+          stats = await datacenter.getStats()
+        }
 
-      stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs - 1)
-      stats.offlineRigs.should.have.lengthOf(1)
+        stats.onlineRigs.should.have.lengthOf(0)
+        stats.offlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
+      })
     })
   })
 })
