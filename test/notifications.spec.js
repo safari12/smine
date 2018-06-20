@@ -75,4 +75,71 @@ describe('Notifications', () => {
       mailerStub.sendMail.should.have.been.calledTwice
     })
   })
+
+  describe('notifyOfflineStats', () => {
+    let stats
+
+    beforeEach(() => {
+      stats = {
+        offlineRigs: [{
+          name: 's-m-12',
+          hashrate: 3000
+        }, {
+          name: 's-m-13',
+          hashrate: 2000
+        }, {
+          name: 's-m-14',
+          hashrate: 5000
+        }]
+      }
+    })
+
+    it('should notify when rigs just became offline', () => {
+      notifications.notifyOfflineStats(stats)
+      mailerStub.sendMail.should.have.been.calledOnce
+    })
+
+    it('should notify when some rigs are fixed meaning online', () => {
+      notifications.notifyOfflineStats(stats)
+      notifications.notifyOfflineStats({
+        offlineRigs: [{
+          name: 's-m-12',
+          hashrate: 3000
+        }, {
+          name: 's-m-14',
+          hashrate: 5000
+        }]
+      })
+
+      mailerStub.sendMail.should.have.been.calledTwice
+    })
+
+    it('should notify when more rigs become offline', () => {
+      notifications.notifyOfflineStats(stats)
+      notifications.notifyOfflineStats({
+        offlineRigs: [{
+          name: 's-m-12',
+          hashrate: 3000
+        }, {
+          name: 's-m-13',
+          hashrate: 2000
+        }, {
+          name: 's-m-14',
+          hashrate: 5000
+        }, {
+          name: 's-m-15',
+          hashrate: 6000
+        }]
+      })
+
+      mailerStub.sendMail.should.have.calledTwice
+    })
+
+    it('should not notify when the same rigs are offline', () => {
+      notifications.notifyOfflineStats(stats)
+      notifications.notifyOfflineStats(stats)
+
+      mailerStub.sendMail.should.have.been.calledOnce
+    })
+  })
 })
