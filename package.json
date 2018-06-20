@@ -28,7 +28,8 @@
     "exclude": [
       "test/**/*.spec.js",
       "lib/logger.js",
-      "lib/mailer.js"
+      "lib/mailer.js",
+      "lib/smine.js"
     ],
     "ignore-class-method": "methodToIgnore",
     "reporter": [
