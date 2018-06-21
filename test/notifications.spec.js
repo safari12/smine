@@ -70,6 +70,7 @@ describe('Notifications', () => {
 
     describe('should not send mail', () => {
       it('when stats have already been notified', () => {
+        stats.offlineRigs = []
         notifications.notifyStatsIfNeeded(stats)
 
         for (let i = 0; i < 10; i++) {
