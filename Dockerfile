@@ -9,4 +9,4 @@ WORKDIR /app
 RUN npm install
 
 ENTRYPOINT [ "./bin/smine.js" ]
-CMD []
+CMD [ "--config", "./config/config.json" ]

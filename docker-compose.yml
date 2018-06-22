@@ -2,5 +2,7 @@ version: '3'
 services:
     smine:
         build: .
-        command: --config ./config.json
+        volumes:
+            - /apps/smine:/app/config
         restart: unless-stopped
+        network_mode: "host"
