@@ -45,6 +45,9 @@ describe('Notifications', () => {
         offlineRigs: [{
           name: 's-m-15',
           hashrate: 3000
+        }, {
+          name: 's-m-16',
+          hashrate: 4000
         }]
       }
     })
@@ -52,19 +55,96 @@ describe('Notifications', () => {
     describe('should send mail', () => {
       it('when new rigs become online', () => {
         stats.offlineRigs = []
-
         notifications.notifyStatsIfNeeded(stats).should.be.true
+
         mailerStub.sendMail.should.have.been.calledOnce
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          /SMine - Stats Update/,
+          /became online/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /became offline/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /fixed and back online/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /still offline/
+        )
       })
       it('when rigs become offline', () => {
+        stats.onlineRigs = []
         notifications.notifyStatsIfNeeded(stats).should.be.true
+
         mailerStub.sendMail.should.have.been.calledOnce
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          /SMine - Stats Update/,
+          /became offline/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /became online/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /fixed and back online/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /still offline/
+        )
       })
       it('when a rig is fixed', () => {
         notifications.notifyStatsIfNeeded(stats)
         stats.offlineRigs = []
         notifications.notifyStatsIfNeeded(stats).should.be.true
+
         mailerStub.sendMail.should.have.been.calledTwice
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          /SMine - Stats Update/,
+          /fixed and back online/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /became online/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /became offline/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /still offline/
+        )
+      })
+      it('when a rig is fixed and some are still offline', () => {
+        notifications.notifyStatsIfNeeded(stats)
+        stats.offlineRigs = [{
+          name: 's-m-16',
+          hashrate: 4000
+        }]
+        notifications.notifyStatsIfNeeded(stats).should.be.true
+
+        mailerStub.sendMail.should.have.been.calledTwice
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          /SMine - Stats Update/,
+          /fixed and back online/
+        )
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          /SMine - Stats Update/,
+          /still offline/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /became online/
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          /blah/,
+          /became offline/
+        )
       })
     })
 
