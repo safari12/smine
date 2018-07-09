@@ -1,24 +1,20 @@
 # smine
 
 ## Description
---------------
 Smine is a bot that automates maintence of mining rigs by sending email notifications.
 
 ## Why Use This
----------
 Not every mining pool supports email notifications, and even if they do, who knows if its reliable and informative.
 
 ## Warning
-----------
 Only supports xmr-stak rigs so far. It gets miner data by hitting its API. In the future, the bot will support more miner protocols / softwares
 
 ## How It Works
----------------
 Bot takes a config file and monitors rigs every minute.
 If the bot detects a rig that becomes offline or online it will send a notification to the user. The notification will contain the rigs that became online or offline, and give you the total current hashrate of all rigs and the total hashrate lossed from offline rigs.
 
 ## Setup
---------
+
 ### Email Notifications
 You must register an email account with a known SMTP provider like gmail and enable less secure apps access. After that put the email credentials to the config json file just like the following
 
@@ -58,7 +54,6 @@ For the bot to discover the rigs automatocally, the rigs must have a hostname wi
 ```
 
 ## Config Syntax
-----------------
 Bot takes a config json file with the following
 
 ```json
@@ -89,7 +84,6 @@ Bot takes a config json file with the following
 ```
 
 ## Installation
----------------
 
 ### Global
 ```bash
@@ -116,7 +110,7 @@ git clone https://github.com/safari12/smine.git
 ```
 
 ## Docker
----------
+
 ```bash
 // clone repo
 git clone https://github.com/safari12/smine.git
@@ -129,7 +123,7 @@ docker run -it --network host -d -v /apps/smine/:/app/config smine
 ```
 
 ## Docker Compose
------------------
+
 Note: by default, Dockerfile looks for config json file the volume path which is in the docker compose file
 
 ```bash
