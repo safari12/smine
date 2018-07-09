@@ -21,8 +21,8 @@ You must register an email account with a known SMTP provider like gmail and ena
 ```json
 {
   "email": {
-    "host": "smtp.gmail.com",
-    "port": 587,
+    "host": "put smtp provider host here",
+    "port": "put smtp provider port here",
     "recipients": [
       "put recipients here"
     ],
@@ -42,12 +42,12 @@ For the bot to discover the rigs automatocally, the rigs must have a hostname wi
   "discovery": {
     "number_of_rigs": 5,
     "hostname": {
-      "prefix": "s-m-"
+      "prefix": "put common hostname prefix here"
     },
     "api": {
-      "port": 6969,
-      "endpoint": "/api.json",
-      "timeout": 5000
+      "port": "put miner's software api port number here",
+      "endpoint": "put miner's software endpoint here",
+      "timeout": "put timeout for requesting (optional)"
     }
   },
 }
@@ -61,17 +61,17 @@ Bot takes a config json file with the following
   "discovery": {
     "number_of_rigs": 5,
     "hostname": {
-      "prefix": "s-m-"
+      "prefix": "put common hostname prefix here"
     },
     "api": {
-      "port": 6969,
-      "endpoint": "/api.json",
-      "timeout": 5000
+      "port": "put miner's software api port number here",
+      "endpoint": "put miner's software endpoint here",
+      "timeout": "put timeout for requesting (optional)"
     }
   },
   "email": {
-    "host": "smtp.gmail.com",
-    "port": 587,
+    "host": "put smtp provider host here",
+    "port": "put smtp provider port here",
     "recipients": [
       "put recipients here"
     ],
