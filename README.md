@@ -35,7 +35,7 @@ You must register an email account with a known SMTP provider like gmail and ena
 ```
 
 ### Rig Discovery
-For the bot to discover the rigs automatocally, the rigs must have a hostname with a common prefix and a DNS server to resolve the domain request. For example, if the user specify hostname with prefix of "s-m-" in the discovery section, the bot will request data from s-m-N, where N starts at 01 to the value of "number_of_rigs" in config file. So if "number_of_rigs" is 10 for example, the bot request data from "s-m-01" to "s-m-10" rigs. The API section is the API configuration for the miner protocol. The following is an example of discovery usage in config json file:
+For the bot to discover the rigs automatocally, the rigs must have a hostname with a common prefix and a DNS server to resolve the domain request. For example, if the user specify hostname with prefix of "s-m-" in the discovery section, the bot will request data from s-m-N, where N starts at 01 to the value of "number_of_rigs" in config file. So if "number_of_rigs" is 10 for example, the bot will request data from "s-m-01" to "s-m-10" rigs. The API section is the API configuration for the miner protocol. The following is an example of discovery usage in config json file:
 
 ```json
 {
