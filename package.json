@@ -1,11 +1,12 @@
 {
   "name": "smine",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha"
   },
+  "preferGlobal": true,
   "bin": {
     "smine": "./bin/smine.js"
   },
