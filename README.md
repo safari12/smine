@@ -16,7 +16,7 @@ If the bot detects a rig that becomes offline or online it will send a notificat
 ## Setup
 
 ### Email Notifications
-You must register an email account with a known SMTP provider like gmail and enable less secure apps access. After that put the email credentials to the config json file just like the following
+You must register an email account with a known SMTP provider like gmail, enable less secure apps access, and put the email credentials to the config json file just like the following
 
 ```json
 {
