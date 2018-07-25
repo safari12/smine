@@ -1,5 +1,6 @@
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
+const _ = require('lodash')
 
 const Mailer = require('../lib/mailer')
 const Notifications = require('../lib/notifications')
@@ -55,6 +56,7 @@ describe('Notifications', () => {
     describe('should send mail', () => {
       it('when new rigs become online', () => {
         stats.offlineRigs = []
+
         notifications.notifyStatsIfNeeded(stats).should.be.true
 
         mailerStub.sendMail.should.have.been.calledOnce
@@ -153,20 +155,20 @@ describe('Notifications', () => {
         it('online rigs', () => {
           stats.offlineRigs = []
           notifications.notifyStatsIfNeeded(stats)
-  
-          for (let i = 0; i < 10; i++) {
+
+          _.times(10, () => {
             notifications.notifyStatsIfNeeded(stats).should.be.false
-          }
+          })
   
           mailerStub.sendMail.should.have.been.calledOnce
         })
         it('offline rigs', () => {
           stats.onlineRigs = []
           notifications.notifyStatsIfNeeded(stats)
-  
-          for (let i = 0; i < 10; i++) {
+
+          _.times(10, () => {
             notifications.notifyStatsIfNeeded(stats).should.be.false
-          }
+          })
   
           mailerStub.sendMail.should.have.been.calledOnce
         })
@@ -188,10 +190,10 @@ describe('Notifications', () => {
           }]
   
           notifications.notifyStatsIfNeeded(stats)
-  
-          for (let i = 0; i < 10; i++) {
+
+          _.times(10, () => {
             notifications.notifyStatsIfNeeded(stats).should.be.false
-          }
+          })
   
           mailerStub.sendMail.should.have.been.calledOnce
         })
