@@ -1,5 +1,6 @@
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
+const _ = require('lodash')
 
 const Mailer = require('../lib/mailer')
 const Notifications = require('../lib/notifications')
@@ -55,6 +56,7 @@ describe('Notifications', () => {
     describe('should send mail', () => {
       it('when new rigs become online', () => {
         stats.offlineRigs = []
+
         notifications.notifyStatsIfNeeded(stats).should.be.true
 
         mailerStub.sendMail.should.have.been.calledOnce
@@ -149,15 +151,52 @@ describe('Notifications', () => {
     })
 
     describe('should not send mail', () => {
-      it('when stats have already been notified', () => {
-        stats.offlineRigs = []
-        notifications.notifyStatsIfNeeded(stats)
+      describe('when stats have already been notified for', () => {
+        it('online rigs', () => {
+          stats.offlineRigs = []
+          notifications.notifyStatsIfNeeded(stats)
 
-        for (let i = 0; i < 10; i++) {
-          notifications.notifyStatsIfNeeded(stats).should.be.false
-        }
+          _.times(10, () => {
+            notifications.notifyStatsIfNeeded(stats).should.be.false
+          })
+  
+          mailerStub.sendMail.should.have.been.calledOnce
+        })
+        it('offline rigs', () => {
+          stats.onlineRigs = []
+          notifications.notifyStatsIfNeeded(stats)
 
-        mailerStub.sendMail.should.have.been.calledOnce
+          _.times(10, () => {
+            notifications.notifyStatsIfNeeded(stats).should.be.false
+          })
+  
+          mailerStub.sendMail.should.have.been.calledOnce
+        })
+        it('fixed rigs', () => {
+          stats.onlineRigs = [{
+            name: 's-m-12',
+            hashrate: 4000
+          }, {
+            name: 's-m-14',
+            hashrate: 4000
+          }, {
+            name: 's-m-15',
+            hashrate: 3000
+          }]
+  
+          stats.offlineRigs = [{
+            name: 's-m-16',
+            hashrate: 4000
+          }]
+  
+          notifications.notifyStatsIfNeeded(stats)
+
+          _.times(10, () => {
+            notifications.notifyStatsIfNeeded(stats).should.be.false
+          })
+  
+          mailerStub.sendMail.should.have.been.calledOnce
+        })
       })
     })
   })
