@@ -139,15 +139,46 @@ describe('Datacenter', () => {
     })
   })
 
-  // describe('getRigsThatAreFixed', () => {
-  //   describe('should return', () => {
-  //     it('rigs that become online again', () => {
-  //       datacenter.stats.rigs.currently.offline = statsSample.rigs.currently.offline
-  //       datacenter.getRigsThatAreFixed([])
-  //         .should.have.lengthOf(statsSample.rigs.currently.offline.length)
-  //     })
-  //   })
-  // })
+  describe('getRigsThatAreFixed', () => {
+    describe('should return', () => {
+      it('rigs that become online again', () => {
+        datacenter.getRigsThatAreFixed(
+          statsSample.rigs.currently.offline,
+          []
+        ).should.deep.equal(statsSample.rigs.currently.offline)
+      })
+    })
+    describe('should not return', () => {
+      it('rigs that are not fixed and still offline', () => {
+        datacenter.getRigsThatAreFixed(
+          statsSample.rigs.currently.offline,
+          statsSample.rigs.currently.offline
+        ).should.have.lengthOf(0)
+      })
+    })
+  })
+
+  describe('fetchRigs', () => {
+    let requestStub
+    let bodyMock
+    let hostname
+    let api
+
+    beforeEach(() => {
+      requestStub = sinon.stub(request, 'get')
+      bodyMock = {
+        hashrate: {
+          highest: 1000
+        }
+      }
+      hostname = configDiscovery.hostname
+      api = configDiscovery.api
+    })
+
+    afterEach(() => {
+      requestStub.restore()
+    })
+  })
 
   // describe('getStats', () => {
   //   let requestStub
