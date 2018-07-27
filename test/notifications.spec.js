@@ -58,31 +58,29 @@ describe('Notifications', () => {
       }
     })
 
-    describe('should send mail', () => {
-      describe('when rigs', () => {
-        it('become online for the first time', () => {
-          stats.offlineRigs = []
-  
-          notifications.notifyStatsIfNeeded(stats).should.be.true
-  
-          mailerStub.sendMail.should.have.been.calledOnce
-          mailerStub.sendMail.should.have.been.calledWithMatch(
-            email.subjectPattern,
-            email.onlineRigPattern
-          )
-          mailerStub.sendMail.should.not.have.been.calledWithMatch(
-            sinon.match.any,
-            email.offlineRigPattern
-          )
-          mailerStub.sendMail.should.not.have.been.calledWithMatch(
-            sinon.match.any,
-            email.fixedRigPattern
-          )
-          mailerStub.sendMail.should.not.have.been.calledWithMatch(
-            sinon.match.any,
-            email.stillOfflineRigPattern
-          )
-        })
+    describe('should send mail when', () => {
+      it('rigs become online for the first time', () => {
+        stats.offlineRigs = []
+
+        notifications.notifyStatsIfNeeded(stats).should.be.true
+
+        mailerStub.sendMail.should.have.been.calledOnce
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          email.subjectPattern,
+          email.onlineRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.offlineRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.fixedRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.stillOfflineRigPattern
+        )
       })
       it('when rigs become offline', () => {
         stats.onlineRigs = []
