@@ -224,6 +224,7 @@ describe('Datacenter', () => {
       getNewOnlineRigsStub = sinon.stub(datacenter, 'getRigsThatBecameOnline')
       getNewOfflineRigsStub = sinon.stub(datacenter, 'getRigsThatBecameOffline')
 
+      fetchRigsStub.returns([])
       getFixedRigsStub.returns([])
       getFetchedOnlineRigsStub.returns([])
       getFetchedOfflineRigsStub.returns([])
@@ -239,7 +240,6 @@ describe('Datacenter', () => {
       getNewOnlineRigsStub.restore()
       getNewOfflineRigsStub.restore()
     })
-
     describe('when rigs become online for the first time', () => {
       beforeEach(() => {
         getFetchedOnlineRigsStub.returns(newOnlineRigsSample)
@@ -283,9 +283,186 @@ describe('Datacenter', () => {
         let stats
 
         beforeEach(async () => {
-          stats = _.last(
-            _.times(10, )
+          getNewOnlineRigsStub.returns(onlineRigsSample)
+          await datacenter.getStats()
+          getNewOnlineRigsStub.returns([])
+
+          stats = await _.last(
+            _.times(10, async () => {
+              return await datacenter.getStats()
+            })
           )
+        })
+
+        it('with rigs currently online', () => {
+          stats.rigs.currently.online.should.deep.equal(onlineRigsSample)
+        })
+        it('with no new online rigs', () => {
+          stats.rigs.new.online.should.have.lengthOf(0)
+        })
+        it('with rigs seen', () => {
+          stats.rigs.seen.should.deep.equal(onlineRigsSample)
+        })
+        it('with no rigs currently offline', () => {
+          stats.rigs.currently.offline.should.have.lengthOf(0)
+        })
+        it('with no new offline rigs', () => {
+          stats.rigs.new.offline.should.have.lengthOf(0)
+        })
+        it('with no fixed rigs', () => {
+          stats.rigs.fixed.should.have.lengthOf(0)
+        })
+      })
+    })
+
+    describe('when some rigs are online and new ones pop up', () => {
+      beforeEach(async () => {
+        getFetchedOnlineRigsStub.returns(onlineRigsSample)
+        getNewOnlineRigsStub.returns(onlineRigsSample)
+        await datacenter.getStats()
+      })
+
+      describe('it should return stats', () => {
+        let stats
+
+        beforeEach(async () => {
+          getNewOnlineRigsStub.returns(newOnlineRigsSample)
+          stats = await datacenter.getStats()
+        })
+
+        it('with rigs currently online', () => {
+          stats.rigs.currently.online.should.deep.equal(onlineRigsSample)
+        })
+        it('with new online rigs', () => {
+          stats.rigs.new.online.should.deep.equal(newOnlineRigsSample)
+        })
+        it('with rigs seen', () => {
+          stats.rigs.seen.should.deep.equal(
+            _.concat(onlineRigsSample, newOnlineRigsSample)
+          )
+        })
+        it('with no rigs currently offline', () => {
+          stats.rigs.currently.offline.should.have.lengthOf(0)
+        })
+        it('with no new offline rigs', () => {
+          stats.rigs.new.offline.should.have.lengthOf(0)
+        })
+        it('with no fixed rigs', () => {
+          stats.rigs.fixed.should.have.lengthOf(0)
+        })
+      })
+    })
+
+    describe('when rigs become offline', () => {
+      describe('it should return stats', () => {
+        let stats
+
+        beforeEach(async () => {
+          getFetchedOnlineRigsStub.returns(onlineRigsSample)
+          getNewOnlineRigsStub.returns(onlineRigsSample)
+          await datacenter.getStats()
+          getFetchedOnlineRigsStub.returns([])
+          getNewOnlineRigsStub.returns([])
+          getNewOfflineRigsStub.returns(offlineRigsSample)
+          getFetchedOfflineRigsStub.returns(offlineRigsSample)
+          stats = await datacenter.getStats()
+        })
+
+        it('with no rigs currently online', () => {
+          stats.rigs.currently.online.should.have.lengthOf(0)
+        })
+        it('with no new online rigs', () => {
+          stats.rigs.new.online.should.have.lengthOf(0)
+        })
+        it('with rigs seen', () => {
+          stats.rigs.seen.should.deep.equal(onlineRigsSample)
+        })
+        it('with rigs currently offline', () => {
+          stats.rigs.currently.offline.should.deep.equal(offlineRigsSample)
+        })
+        it('with new offline rigs', () => {
+          stats.rigs.new.offline.should.deep.equal(offlineRigsSample)
+        })
+        it('with no fixed rigs', () => {
+          stats.rigs.fixed.should.have.lengthOf(0)
+        })
+      })
+    })
+
+    describe('when the same rigs stay offline', () => {
+      describe('it should return stats', () => {
+        let stats
+
+        beforeEach(async () => {
+          getFetchedOnlineRigsStub.returns(onlineRigsSample)
+          getNewOnlineRigsStub.returns(onlineRigsSample)
+
+          await datacenter.getStats()
+
+          getFetchedOnlineRigsStub.returns([])
+          getNewOnlineRigsStub.returns([])
+          getFetchedOfflineRigsStub.returns(offlineRigsSample)
+
+          stats = await _.last(
+            _.times(10, async () => {
+              return await datacenter.getStats()
+            })
+          )
+        })
+
+        it('with no rigs currently online', () => {
+          stats.rigs.currently.online.should.have.lengthOf(0)
+        })
+        it('with no new online rigs', () => {
+          stats.rigs.new.online.should.have.lengthOf(0)
+        })
+        it('with rigs seen', () => {
+          stats.rigs.seen.should.deep.equal(onlineRigsSample)
+        })
+        it('with rigs currently offline', () => {
+          stats.rigs.currently.offline.should.deep.equal(offlineRigsSample)
+        })
+        it('with no new offline rigs', () => {
+          stats.rigs.new.offline.should.have.lengthOf(0)
+        })
+        it('with no fixed rigs', () => {
+          stats.rigs.fixed.should.have.lengthOf(0)
+        })
+      })
+    })
+
+    describe('when some rigs are offline and new ones pop up', () => {
+      describe('it should return stats', () => {
+        let stats
+
+        beforeEach(async () => {
+          getFetchedOfflineRigsStub.returns(offlineRigsSample)
+          getNewOfflineRigsStub.returns(offlineRigsSample)
+
+          await datacenter.getStats()
+
+          getNewOfflineRigsStub.returns(newOfflineRigsSample)
+
+          stats = await datacenter.getStats()
+        })
+
+        it('with no rigs currently online', () => {
+          stats.rigs.currently.online.should.have.lengthOf(0)
+        })
+        it('with no new online rigs', () => {
+          stats.rigs.new.online.should.have.lengthOf(0)
+        })
+        it('with no rigs seen', () => {
+          stats.rigs.seen.should.have.lengthOf(0)
+        })
+        it('with rigs currently offline', () => {
+          stats.rigs.currently.offline.should.deep.equal(offlineRigsSample)
+        })
+        it('with new offline rigs', () => {
+          stats.rigs.new.offline.should.deep.equal(newOfflineRigsSample)
+        })
+        it('with no fixed rigs', () => {
+          stats.rigs.fixed.should.have.lengthOf(0)
         })
       })
     })
