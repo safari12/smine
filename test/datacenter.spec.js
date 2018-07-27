@@ -64,7 +64,7 @@ describe('Datacenter', () => {
   })
 
   describe('constructor', () => {
-    it('should return correct values', () => {
+    it('should set correct values', () => {
       datacenter.numberOfRigs.should.equal(configDiscovery.number_of_rigs)
       datacenter.hostname.should.deep.equal(configDiscovery.hostname)
       datacenter.api.should.deep.equal(configDiscovery.api)
@@ -178,237 +178,116 @@ describe('Datacenter', () => {
     afterEach(() => {
       requestStub.restore()
     })
+
+    describe('should call', () => {
+      describe('request stub', () => {
+        it('with correct arguements', async () => {
+          const miner = 'xmr-stak'
+
+          requestStub.resolves(bodyMock)
+
+          const stats = await datacenter.getStats()
+
+          stats.rigs.currently.online.should.have.lengthOf(configDiscovery.number_of_rigs)
+          stats.rigs.currently.offline.should.have.lengthOf(0)
+
+          for (let i = 0; i < configDiscovery.number_of_rigs; i++) {
+            const rigId = Rig.getId(i + 1)
+            const rig = stats.rigs.currently.online[i]
+            const uri = `http://${hostname.prefix + rigId}:${api.port}${api.endpoint}`
+            
+            rig.name.should.equal(hostname.prefix + rigId)
+            rig.miner.should.equal(miner)
+            rig.hashrate.should.equal(bodyMock.hashrate.highest)
+            rig.data.should.equal(bodyMock)
+
+            requestStub.should.have.been.calledWith(uri)
+          }
+        })
+      })
+    })
   })
 
-  // describe('getStats', () => {
-  //   let requestStub
-  //   let bodyMock
-  //   let hostname
-  //   let api
+  describe('getStats', () => {
+    let fetchRigsStub
+    let getFixedRigsStub
+    let getFetchedOnlineRigsStub
+    let getFetchedOfflineRigsStub
+    let getNewOnlineRigsStub
+    let getNewOfflineRigsStub
 
-  //   beforeEach(() => {
-  //     requestStub = sinon.stub(request, 'get')
-  //     bodyMock = {
-  //       hashrate: {
-  //         highest: 1000
-  //       }
-  //     }
-  //     hostname = configDiscovery.hostname
-  //     api = configDiscovery.api
-  //   })
+    beforeEach(() => {
+      fetchRigsStub = sinon.stub(datacenter, 'fetchRigs')
+      getFixedRigsStub = sinon.stub(datacenter, 'getRigsThatAreFixed')
+      getFetchedOnlineRigsStub = sinon.stub(datacenter, 'getFetchedOnlineRigs')
+      getFetchedOfflineRigsStub = sinon.stub(datacenter, 'getFetchedOfflineRigs')
+      getNewOnlineRigsStub = sinon.stub(datacenter, 'getRigsThatBecameOnline')
+      getNewOfflineRigsStub = sinon.stub(datacenter, 'getRigsThatBecameOffline')
 
-  //   afterEach(() => {
-  //     requestStub.restore()
-  //   })
+      getFixedRigsStub.returns([])
+      getFetchedOnlineRigsStub.returns([])
+      getFetchedOfflineRigsStub.returns([])
+      getNewOnlineRigsStub.returns([])
+      getNewOfflineRigsStub.returns([])
+    })
 
-  //   describe('should return', () => {
-  //     describe('rigs that are currently online with correct data', () => {
-  //       it('when rigs become online for the first time', async () => {
-  //         const miner = 'xmr-stak'
+    afterEach(() => {
+      fetchRigsStub.restore()
+      getFixedRigsStub.restore()
+      getFetchedOnlineRigsStub.restore()
+      getFetchedOfflineRigsStub.restore()
+      getNewOnlineRigsStub.restore()
+      getNewOfflineRigsStub.restore()
+    })
 
-  //         requestStub.resolves(bodyMock)
+    describe('when rigs become online for the first time', () => {
+      beforeEach(() => {
+        getFetchedOnlineRigsStub.returns(newOnlineRigsSample)
+        getNewOnlineRigsStub.returns(newOnlineRigsSample)
+      })
 
-  //         const stats = await datacenter.getStats()
+      describe('it should return stats', () => {
+        let stats
 
-  //         stats.rigs.currently.online.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //         stats.rigs.currently.offline.should.have.lengthOf(0)
+        beforeEach(async () => {
+          stats = await datacenter.getStats()
+        })
 
-  //         for (let i = 0; i < configDiscovery.number_of_rigs; i++) {
-  //           const rigId = Rig.getId(i + 1)
-  //           const rig = stats.rigs.currently.online[i]
-  //           const uri = `http://${hostname.prefix + rigId}:${api.port}${api.endpoint}`
-            
-  //           rig.name.should.equal(hostname.prefix + rigId)
-  //           rig.miner.should.equal(miner)
-  //           rig.hashrate.should.equal(bodyMock.hashrate.highest)
-  //           rig.data.should.equal(bodyMock)
+        it('with rigs currently online', () => {
+          stats.rigs.currently.online.should.deep.equal(newOnlineRigsSample)
+        })
+        it('with new online rigs', () => {
+          stats.rigs.new.online.should.deep.equal(newOnlineRigsSample)
+        })
+        it('with rigs seen', () => {
+          stats.rigs.seen.should.deep.equal(newOnlineRigsSample)
+        })
+        it('with no rigs currently offline', () => {
+          stats.rigs.currently.offline.should.have.lengthOf(0)
+        })
+        it('with no new offline rigs', () => {
+          stats.rigs.new.offline.should.have.lengthOf(0)
+        })
+        it('with no fixed rigs', () => {
+          stats.rigs.fixed.should.have.lengthOf(0)
+        })
+      })
+    })
 
-  //           requestStub.should.have.been.calledWith(uri)
-  //         }
-  //       })
-  //     })
-  //     describe('rigs that are currently online', () => {
-  //       describe('and new online rigs', () => {
-  //         it('when rigs become online for the first time', async () => {
-  //           requestStub.resolves(bodyMock)
-  
-  //           const stats = await datacenter.getStats()
-  
-  //           stats.rigs.currently.online.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //           stats.rigs.currently.offline.should.have.lengthOf(0)
-  //           stats.rigs.new.online.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //           stats.rigs.new.offline.should.have.lengthOf(0)
-  //           stats.rigs.seen.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //           stats.rigs.fixed.should.have.lengthOf(0)
-  //         })
-  //         it('when new rigs become online', async () => {
-  //           requestStub.resolves(bodyMock)
-  
-  //           const numberOfNewRigs = 3
-  //           const numberOfRigs = configDiscovery.number_of_rigs + numberOfNewRigs
-  
-  //           await datacenter.getStats(configDiscovery.number_of_rigs)
-  //           datacenter.numberOfRigs = numberOfRigs
-  //           const stats = await datacenter.getStats(numberOfRigs)
-  
-  //           stats.rigs.currently.online.should.have.lengthOf(numberOfRigs)
-  //           stats.rigs.currently.offline.should.have.lengthOf(0)
-  //           stats.rigs.new.online.should.have.lengthOf(numberOfNewRigs)
-  //           stats.rigs.new.offline.should.have.lengthOf(0)
-  //           stats.rigs.seen.should.have.lengthOf(numberOfRigs)
-  //           stats.rigs.fixed.should.have.lengthOf(0)
-  //         })
-  //       })
-  //       describe('and fixed rigs', () => {
-  //         it('when known offline rigs become online again', async () => {
-  //           requestStub.resolves(bodyMock)
+    describe('when the same rigs stay online', () => {
+      beforeEach(() => {
+        getFetchedOnlineRigsStub.returns(onlineRigsSample)
+      })
 
-  //           await datacenter.getStats()
-  //           datacenter.numberOfRigs
-  //         })
-  //       })
-  //     })
-  //     describe('rigs that are currently offline and new offline rigs', () => {
-  //       it('when rigs become offline', async () => {
-  //         requestStub.resolves(bodyMock)
+      describe('it should return stats', () => {
+        let stats
 
-  //         const numberOfNewOfflineRigs = 3
-  //         const numberOfRigs = configDiscovery.number_of_rigs - numberOfNewOfflineRigs
-  //         await datacenter.getStats()
-  //         datacenter.numberOfRigs = numberOfRigs
-  //         const stats = await datacenter.getStats()
-
-  //         stats.rigs.currently.online.should.have.lengthOf(numberOfRigs)
-  //         stats.rigs.currently.offline.should.have.lengthOf(numberOfNewOfflineRigs)
-  //         stats.rigs.new.online.should.have.lengthOf(0)
-  //         stats.rigs.new.offline.should.have.lengthOf(numberOfNewOfflineRigs)
-  //         stats.rigs.seen.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //         stats.rigs.fixed.should.have.lengthOf(0)
-  //       })
-  //     })
-  //   })
-
-  //   describe('should not return', () => {
-  //     describe('new online rigs', () => {
-  //       it('when rigs had already became online', async () => {
-  //         requestStub.resolves(bodyMock)
-
-  //         await datacenter.getStats()
-  //         const stats = await datacenter.getStats()
-
-  //         stats.rigs.currently.online.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //         stats.rigs.currently.offline.should.have.lengthOf(0)
-  //         stats.rigs.new.online.should.have.lengthOf(0)
-  //         stats.rigs.new.offline.should.have.lengthOf(0)
-  //         stats.rigs.seen.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //         stats.rigs.fixed.should.have.lengthOf(0)
-  //       })
-  //     })
-  //   })
-
-  //   // describe('should return only online rigs', () => {
-  //   //   it('when rigs just became online for the first time', async () => {
-  //   //     const miner = 'xmr-stak'
-
-  //   //     requestStub.resolves(bodyMock)
-
-  //   //     const stats = await datacenter.getStats()
-
-  //   //     stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //   //     stats.offlineRigs.should.have.lengthOf(0)
-
-  //   //     for (let i = 0; i < configDiscovery.number_of_rigs; i++) {
-  //   //       const rigId = Rig.getId(i + 1)
-  //   //       const rig = stats.onlineRigs[i]
-  //   //       const uri = `http://${hostname.prefix + rigId}:${api.port}${api.endpoint}`
-          
-  //   //       rig.name.should.equal(hostname.prefix + rigId)
-  //   //       rig.miner.should.equal(miner)
-  //   //       rig.hashrate.should.equal(bodyMock.hashrate.highest)
-  //   //       rig.data.should.equal(bodyMock)
-
-  //   //       requestStub.should.have.been.calledWith(uri)
-  //   //     }
-  //   //   })
-  //   //   it('when rigs transitioned from offline to online', async () => {
-  //   //     requestStub.resolves(bodyMock)
-
-  //   //     await datacenter.getStats()
-
-  //   //     requestStub.rejects(null)
-
-  //   //     await datacenter.getStats()
-
-  //   //     requestStub.resolves(bodyMock)
-
-  //   //     const stats = await datacenter.getStats()
-
-  //   //     stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //   //     stats.offlineRigs.should.have.lengthOf(0)
-  //   //   })
-  //   //   it('when a new rig becomes online', async () => {
-  //   //     requestStub.resolves(bodyMock)
-  //   //     requestStub.withArgs(
-  //   //       `http://${hostname.prefix}03:${api.port}${api.endpoint}`
-  //   //     ).rejects(null)
-
-  //   //     await datacenter.getStats()
-
-  //   //     requestStub.reset()
-  //   //     requestStub.resolves(bodyMock)
-
-  //   //     const stats = await datacenter.getStats()
-
-  //   //     stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //   //     stats.offlineRigs.should.have.lengthOf(0)
-  //   //   })
-  //   // })
-
-  //   // describe('should return no online and offline rigs', () => {
-  //   //   it('when no rigs are online for the first time', async () => {
-  //   //     requestStub.rejects(null)
-
-  //   //     const stats = await datacenter.getStats()
-
-  //   //     stats.onlineRigs.should.have.lengthOf(0)
-  //   //     stats.offlineRigs.should.have.lengthOf(0)
-  //   //   })
-  //   // })
-
-  //   // describe('should return some online and offline rigs', () => {
-  //   //   it('when a rig becomes offline and the rest are still online', async () => {
-  //   //     requestStub.resolves(bodyMock)
-
-  //   //     await datacenter.getStats()
-
-  //   //     requestStub.withArgs(
-  //   //       `http://${hostname.prefix}03:${api.port}${api.endpoint}`
-  //   //     ).rejects(null)
-
-  //   //     const stats = await datacenter.getStats()
-
-  //   //     stats.onlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs - 1)
-  //   //     stats.offlineRigs.should.have.lengthOf(1)
-  //   //   })
-  //   // })
-
-  //   // describe('should return only offline rigs', () => {
-  //   //   it('when all rigs transition from online to offline', async () => {
-  //   //     requestStub.resolves(bodyMock)
-      
-  //   //     await datacenter.getStats()
-
-  //   //     requestStub.rejects(null)
-
-  //   //     let stats
-
-  //   //     for (let i = 0; i < 10; i++) {
-  //   //       stats = await datacenter.getStats()
-  //   //     }
-
-  //   //     stats.onlineRigs.should.have.lengthOf(0)
-  //   //     stats.offlineRigs.should.have.lengthOf(configDiscovery.number_of_rigs)
-  //   //   })
-  //   // })
-  // })
+        beforeEach(async () => {
+          stats = _.last(
+            _.times(10, )
+          )
+        })
+      })
+    })
+  })
 })
