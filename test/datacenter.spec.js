@@ -168,7 +168,7 @@ describe('Datacenter', () => {
       requestStub = sinon.stub(request, 'get')
       bodyMock = {
         hashrate: {
-          highest: 1000
+          total: [1023, 1024, 1050]
         }
       }
       hostname = configDiscovery.hostname
@@ -198,7 +198,7 @@ describe('Datacenter', () => {
             
             rig.name.should.equal(hostname.prefix + rigId)
             rig.miner.should.equal(miner)
-            rig.hashrate.should.equal(bodyMock.hashrate.highest)
+            rig.hashrate.should.equal(_.last(bodyMock.hashrate.total))
             rig.data.should.equal(bodyMock)
 
             requestStub.should.have.been.calledWith(uri)
