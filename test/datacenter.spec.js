@@ -240,6 +240,7 @@ describe('Datacenter', () => {
       getNewOnlineRigsStub.restore()
       getNewOfflineRigsStub.restore()
     })
+
     describe('when rigs become online for the first time', () => {
       beforeEach(() => {
         getFetchedOnlineRigsStub.returns(newOnlineRigsSample)
@@ -463,6 +464,38 @@ describe('Datacenter', () => {
         })
         it('with no fixed rigs', () => {
           stats.rigs.fixed.should.have.lengthOf(0)
+        })
+      })
+    })
+
+    describe('when rigs get fixed', () => {
+      describe('it should return stats', () => {
+        let stats
+
+        beforeEach(async () => {
+          getFetchedOnlineRigsStub.returns(onlineRigsSample)
+          getFixedRigsStub.returns(onlineRigsSample)
+
+          stats = await datacenter.getStats()
+        })
+
+        it('with rigs currently online', () => {
+          stats.rigs.currently.online.should.deep.equal(onlineRigsSample)
+        })
+        it('with no new online rigs', () => {
+          stats.rigs.new.online.should.have.lengthOf(0)
+        })
+        it('with no rigs seen', () => {
+          stats.rigs.seen.should.have.lengthOf(0)
+        })
+        it('with no rigs currently offline', () => {
+          stats.rigs.currently.offline.should.have.lengthOf(0)
+        })
+        it('with no new offline rigs', () => {
+          stats.rigs.new.offline.should.have.lengthOf(0)
+        })
+        it('with fixed rigs', () => {
+          stats.rigs.fixed.should.deep.equal(onlineRigsSample)
         })
       })
     })
