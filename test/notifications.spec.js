@@ -24,13 +24,10 @@ describe('Notifications', () => {
   describe('constructor', () => {
     it('should set values correctly', () => {
       notifications.mailer.should.exist
-      notifications.alreadySeenBefore.should.have.lengthOf(0)
-      notifications.alreadyOfflineBefore.should.have.lengthOf(0)
     })
   })
 
   describe('notifyStatsIfNeeded', () => {
-    let stats
     const email = {
       subjectPattern: /SMine - Stats Update/,
       fixedRigPattern: /fixed and back online/,
@@ -39,186 +36,123 @@ describe('Notifications', () => {
       stillOfflineRigPattern: /still offline/
     }
 
+    let statsMock
+
     beforeEach(() => {
-      stats = {
-        onlineRigs: [{
-          name: 's-m-12',
-          hashrate: 4000
-        }, {
-          name: 's-m-14',
-          hashrate: 4000
-        }],
-        offlineRigs: [{
-          name: 's-m-15',
-          hashrate: 3000
-        }, {
-          name: 's-m-16',
-          hashrate: 4000
-        }]
-      }
+      statsMock = _.cloneDeep(require('./stats.mock'))
     })
 
-    describe('should send mail', () => {
-      describe('when rigs', () => {
-        it('become online for the first time', () => {
-          stats.offlineRigs = []
-  
-          notifications.notifyStatsIfNeeded(stats).should.be.true
-  
-          mailerStub.sendMail.should.have.been.calledOnce
-          mailerStub.sendMail.should.have.been.calledWithMatch(
-            email.subjectPattern,
-            email.onlineRigPattern
-          )
-          mailerStub.sendMail.should.not.have.been.calledWithMatch(
-            sinon.match.any,
-            email.offlineRigPattern
-          )
-          mailerStub.sendMail.should.not.have.been.calledWithMatch(
-            sinon.match.any,
-            email.fixedRigPattern
-          )
-          mailerStub.sendMail.should.not.have.been.calledWithMatch(
-            sinon.match.any,
-            email.stillOfflineRigPattern
-          )
-        })
-      })
-      it('when rigs become offline', () => {
-        stats.onlineRigs = []
-        notifications.notifyStatsIfNeeded(stats).should.be.true
+    describe('when new rigs become online', () => {
+      it('should send mail with the new online rigs', () => {
+        statsMock.rigs.currently.offline = []
+        statsMock.rigs.new.online = statsMock.rigs.currently.online
+
+        notifications.notifyStatsIfNeeded(statsMock).should.be.true
 
         mailerStub.sendMail.should.have.been.calledOnce
         mailerStub.sendMail.should.have.been.calledWithMatch(
-          /SMine - Stats Update/,
-          /became offline/
-        )
-        mailerStub.sendMail.should.not.have.been.calledWithMatch(
-          /SMine - Stats Update/,
-          /became online/
-        )
-        mailerStub.sendMail.should.not.have.been.calledWithMatch(
-          /blah/,
-          /fixed and back online/
-        )
-        mailerStub.sendMail.should.not.have.been.calledWithMatch(
-          /blah/,
-          /still offline/
-        )
-      })
-      it('when a rig is fixed', () => {
-        stats.offlineRigs = []
-
-        notifications.notifyStatsIfNeeded(stats).should.be.true
-
-        stats.offlineRigs = _.remove(stats.onlineRigs, ['name', 's-m-14'])
-
-        notifications.notifyStatsIfNeeded(stats).should.be.true
-
-        stats.onlineRigs = _.concat(stats.onlineRigs, stats.offlineRigs)
-        stats.offlineRigs = []
-
-        notifications.notifyStatsIfNeeded(stats).should.be.true
-
-        const stubCalled = mailerStub.sendMail.thirdCall
-
-        mailerStub.sendMail.should.have.been.calledThrice
-
-        stubCalled.should.have.been.calledWithMatch(
-          email.subjectPattern,
-          email.fixedRigPattern
-        )
-
-        stubCalled.should.not.have.been.calledWithMatch(
           email.subjectPattern,
           email.onlineRigPattern
         )
-
-        stubCalled.should.not.have.been.calledWithMatch(
-          email.subjectPattern,
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
           email.offlineRigPattern
         )
-
-        stubCalled.should.not.have.been.calledWithMatch(
-          email.subjectPattern,
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.fixedRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
           email.stillOfflineRigPattern
-        )
-      })
-      it('when a rig is fixed and some are still offline', () => {
-        notifications.notifyStatsIfNeeded(stats)
-        stats.offlineRigs = [{
-          name: 's-m-16',
-          hashrate: 4000
-        }]
-        notifications.notifyStatsIfNeeded(stats).should.be.true
-
-        mailerStub.sendMail.should.have.been.calledTwice
-        mailerStub.sendMail.should.have.been.calledWithMatch(
-          /SMine - Stats Update/,
-          /fixed and back online/
-        )
-        mailerStub.sendMail.should.have.been.calledWithMatch(
-          /SMine - Stats Update/,
-          /still offline/
-        )
-        mailerStub.sendMail.should.not.have.been.calledWithMatch(
-          /blah/,
-          /became online/
-        )
-        mailerStub.sendMail.should.not.have.been.calledWithMatch(
-          /blah/,
-          /became offline/
         )
       })
     })
 
-    describe('should not send mail', () => {
-      describe('when stats have already been notified for', () => {
-        it('online rigs', () => {
-          stats.offlineRigs = []
-          notifications.notifyStatsIfNeeded(stats)
+    describe('when rigs become offline', () => {
+      it('should send mail with offline rigs', () => {
+        statsMock.rigs.new.offline = statsMock.rigs.currently.offline
 
-          _.times(10, () => {
-            notifications.notifyStatsIfNeeded(stats).should.be.false
-          })
-  
-          mailerStub.sendMail.should.have.been.calledOnce
-        })
-        it('offline rigs', () => {
-          stats.onlineRigs = []
-          notifications.notifyStatsIfNeeded(stats)
+        notifications.notifyStatsIfNeeded(statsMock).should.be.true
 
-          _.times(10, () => {
-            notifications.notifyStatsIfNeeded(stats).should.be.false
-          })
-  
-          mailerStub.sendMail.should.have.been.calledOnce
-        })
-        it('fixed rigs', () => {
-          stats.onlineRigs = [{
-            name: 's-m-12',
-            hashrate: 4000
-          }, {
-            name: 's-m-14',
-            hashrate: 4000
-          }, {
-            name: 's-m-15',
-            hashrate: 3000
-          }]
-  
-          stats.offlineRigs = [{
-            name: 's-m-16',
-            hashrate: 4000
-          }]
-  
-          notifications.notifyStatsIfNeeded(stats)
+        mailerStub.sendMail.should.have.been.calledOnce
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          email.subjectPattern,
+          email.offlineRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.onlineRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.fixedRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.stillOfflineRigPattern
+        )
+      })
+    })
 
-          _.times(10, () => {
-            notifications.notifyStatsIfNeeded(stats).should.be.false
-          })
-  
-          mailerStub.sendMail.should.have.been.calledOnce
-        })
+    describe('when rigs get fixed and go back online', () => {
+      it('should send mail with fixed rigs', () => {
+        statsMock.rigs.fixed = statsMock.rigs.currently.offline
+        statsMock.rigs.currently.offline = []
+
+        notifications.notifyStatsIfNeeded(statsMock)
+
+        mailerStub.sendMail.should.have.been.calledOnce
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          email.subjectPattern,
+          email.fixedRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.onlineRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.offlineRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.stillOfflineRigPattern
+        )
+      })
+    })
+
+    describe('when rigs get fixed and some are still offline', () => {
+      it('should send mail with fixed rigs and offline ones', () => {
+        statsMock.rigs.fixed = statsMock.rigs.currently.offline
+        statsMock.rigs.currently.offline = statsMock.rigs.currently.online
+
+        notifications.notifyStatsIfNeeded(statsMock)
+
+        mailerStub.sendMail.should.have.been.calledOnce
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          email.subjectPattern,
+          email.fixedRigPattern
+        )
+        mailerStub.sendMail.should.have.been.calledWithMatch(
+          email.subjectPattern,
+          email.stillOfflineRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.onlineRigPattern
+        )
+        mailerStub.sendMail.should.not.have.been.calledWithMatch(
+          sinon.match.any,
+          email.offlineRigPattern
+        )
+      })
+    })
+
+    describe('when no rigs become online, offline, or fixed', () => {
+      it('should not send mail', () => {
+        notifications.notifyStatsIfNeeded(statsMock)
+        mailerStub.sendMail.should.not.have.been.called
       })
     })
   })
