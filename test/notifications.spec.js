@@ -148,5 +148,12 @@ describe('Notifications', () => {
         )
       })
     })
+
+    describe('when no rigs become online, offline, or fixed', () => {
+      it('should not send mail', () => {
+        notifications.notifyStatsIfNeeded(statsMock)
+        mailerStub.sendMail.should.not.have.been.called
+      })
+    })
   })
 })

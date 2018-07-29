@@ -1,6 +1,6 @@
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
-const request = require('request-promise')
+const request = require('requestretry')
 const _ = require('lodash')
 
 const Rig = require('../lib/rig')

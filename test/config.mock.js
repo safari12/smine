@@ -7,7 +7,9 @@ module.exports = {
     api: {
       port: 6969,
       endpoint: '/api.json',
-      timeout: 5000
+      timeout: 5000,
+      max_attempts: 3,
+      retry_delay: 3000
     }
   },
   email: {
