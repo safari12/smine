@@ -198,7 +198,7 @@ describe('Datacenter', () => {
             
             rig.name.should.equal(hostname.prefix + rigId)
             rig.miner.should.equal(miner)
-            rig.hashrate.should.equal(_.last(bodyMock.hashrate.total))
+            rig.hashrate.should.equal(_.first(bodyMock.hashrate.total))
             rig.data.should.equal(bodyMock)
 
             requestStub.should.have.been.calledWith(uri)
