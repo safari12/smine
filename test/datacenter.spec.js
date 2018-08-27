@@ -186,14 +186,11 @@ describe('Datacenter', () => {
 
           requestStub.resolves(bodyMock)
 
-          const stats = await datacenter.getStats()
-
-          stats.rigs.currently.online.should.have.lengthOf(configDiscovery.number_of_rigs)
-          stats.rigs.currently.offline.should.have.lengthOf(0)
+          const rigs = await Promise.all(datacenter.fetchRigs())
 
           for (let i = 0; i < configDiscovery.number_of_rigs; i++) {
             const rigId = Rig.getId(i + 1)
-            const rig = stats.rigs.currently.online[i]
+            const rig = rigs[i]
             const uri = `http://${hostname.prefix + rigId}:${api.port}${api.endpoint}`
             
             rig.name.should.equal(hostname.prefix + rigId)

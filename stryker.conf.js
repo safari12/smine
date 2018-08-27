@@ -10,6 +10,10 @@ module.exports = function(config) {
     mutate: [
       'lib/**/*.js', 
       '!lib/config/schema.js',
-      '!lib/config/parser.js']
+      '!lib/config/parser.js',
+      '!lib/smine.js',
+      '!lib/mailer.js',
+      '!lib/logger.js'
+    ]
   })
 }
