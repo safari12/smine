@@ -26,7 +26,8 @@ class DB {
     const password = config.db.password
 
     let options = {
-      useNewUrlParser: true
+      useNewUrlParser: true,
+      useCreateIndex: true
     }
 
     if (username && password) {

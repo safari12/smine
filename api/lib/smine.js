@@ -8,10 +8,13 @@
 // const Mailer = require('./mailer')
 
 const db = require('./db')
+const admin = require('./admin')
 
 module.exports = async () => {
 
-  await db.connect()
+  if (await db.connect()) {
+    await admin.create()
+  }
 
   // let config
 
