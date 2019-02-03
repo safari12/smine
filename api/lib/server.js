@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const config = require('./config')
 const logger = require('./logger')
 
+const userRouter = require('./user/router')
+
 class Server {
   static listen() {
     const server = express()
@@ -11,12 +13,7 @@ class Server {
 
     server.use(bodyParser.json())
     server.use(bodyParser.urlencoded({ extended: true }))
-
-    server.get('/hello-world', (req, res) => {
-      res.json({
-        message: 'hello world'
-      })
-    })
+    server.use('/users', userRouter)
 
     server.listen(PORT, () => {
       logger.info(`server is listening on port ${PORT}`)
