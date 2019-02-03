@@ -9,5 +9,8 @@ module.exports = {
   admin: {
     email: process.env.SM_DB_ADMIN_EMAIL || 'admin@admin.com',
     pass: process.env.SM_DB_ADMIN_PASS || 'password'
+  },
+  api: {
+    port: process.env.SM_API_PORT || 3000
   }
 }

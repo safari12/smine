@@ -9,12 +9,11 @@
 
 const db = require('./db')
 const admin = require('./admin')
-const logger = require('./logger')
+const server = require('./server')
 
 module.exports = async () => {
-
-  if (await db.connect() && await admin.create()) {
-    logger.info('ready to spin up api server')
+  if ((await db.connect()) && (await admin.create())) {
+    server.listen()
   }
 
   // let config
