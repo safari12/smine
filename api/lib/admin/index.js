@@ -18,9 +18,18 @@ class Admin {
         admin: true
       })
 
-      await admin.save()
+      try {
+        await admin.save()
+        return true
+      } catch (error) {
+        logger.error('error creating admin')
+        logger.error(error)
+
+        return false
+      }
     } else {
       logger.info('admin already created')
+      return true
     }
   }
 }
