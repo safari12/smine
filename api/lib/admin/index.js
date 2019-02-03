@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt')
+
 const User = require('../user')
 const config = require('../config')
 const logger = require('../logger')
@@ -12,9 +14,14 @@ class Admin {
     if (!admin) {
       logger.info('admin does not exist, creating one')
 
+      const hash = await bcrypt.hash(
+        config.admin.pass,
+        config.bcrypt.salt.rounds
+      )
+
       admin = new User({
         email: config.admin.email,
-        pass: config.admin.pass,
+        pass: hash,
         admin: true
       })
 

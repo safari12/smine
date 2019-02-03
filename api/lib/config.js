@@ -11,6 +11,12 @@ module.exports = {
     pass: process.env.SM_DB_ADMIN_PASS || 'password'
   },
   api: {
-    port: process.env.SM_API_PORT || 3000
+    port: process.env.SM_API_PORT || 3000,
+    secret: process.env.SM_API_SECRET || 'thisisasecret'
+  },
+  bcrypt: {
+    salt: {
+      rounds: 10
+    }
   }
 }

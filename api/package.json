@@ -45,6 +45,7 @@
     "all": true
   },
   "dependencies": {
+    "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "jsonschema": "^1.2.4",
