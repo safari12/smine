@@ -14,7 +14,13 @@ module.exports = mongoose.model('users', new Schema({
   },
   pass: {
     type: String,
-    required: true
+    required: true,
+    validate: {
+      validator: (v) => {
+        return v.length >= 8
+      },
+      message: () => 'Password too short'
+    }
   },
   admin: Boolean
 }))

@@ -26,13 +26,10 @@ router.post('/login', async (req, res) => {
     })
   }
 
-  const token = await jwt.sign(
-    {
-      id: user._id,
-      admin: user.admin
-    },
-    config.api.secret
-  )
+  const token = await jwt.sign({
+    id: user._id,
+    admin: user.admin
+  }, config.api.secret)
 
   res.json({
     success: true,

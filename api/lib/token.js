@@ -4,7 +4,7 @@ const config = require('./config')
 
 class Token {
   static async check(req, res, next) {
-    const token = this.getToken(req)
+    const token = Token.getToken(req)
 
     if (!token) {
       return res.status(401).json({
@@ -25,7 +25,7 @@ class Token {
   }
 
   static async checkAdmin(req, res, next) {
-    const token = this.getToken(req)
+    const token = Token.getToken(req)
     const user = await jwt.decode(token)
 
     if (!user.admin) {
