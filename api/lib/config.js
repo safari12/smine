@@ -18,5 +18,8 @@ module.exports = {
     salt: {
       rounds: 10
     }
+  },
+  miner: {
+    supported: ['xmr-stak']
   }
 }
