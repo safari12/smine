@@ -13,8 +13,14 @@ module.exports = mongoose.model(
       unique: true,
       index: true
     },
-    pingable: Boolean,
-    miner: MinerSchema
+    pingable: {
+      type: Boolean,
+      default: false
+    },
+    miner: {
+      type: MinerSchema,
+      required: true
+    }
   })
 )
 

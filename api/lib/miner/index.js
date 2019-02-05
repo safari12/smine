@@ -8,7 +8,10 @@ module.exports = new Schema({
   name: {
     type: String,
     required: true,
-    enum: config.miner.supported
+    enum: {
+      values: config.miner.supported,
+      message: 'miner not supported'
+    }
   },
   hashrate: {
     type: Number
