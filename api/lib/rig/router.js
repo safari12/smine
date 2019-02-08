@@ -1,33 +1,13 @@
 const express = require('express')
 
-const Rig = require('.')
+const handler = require('./handler')
 const token = require('../token')
 
 const router = express.Router()
 
 router
   .route('/')
-  .get(token.check, async (req, res) => {
-    res.json(await Rig.find({}))
-  })
-  .post([token.check, token.checkAdmin], async (req, res) => {
-    try {
-      const rig = new Rig({
-        name: req.body.name
-      })
-
-      await rig.save()
-
-      res.json({
-        success: true,
-        message: 'Successfully added rig'
-      })
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: error.message
-      })
-    }
-  })
+  .get(token.check, handler.getAll)
+  .post([token.check, token.checkAdmin], handler.add)
 
 module.exports = router
