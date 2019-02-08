@@ -8,6 +8,8 @@ const userRouter = require('./user/router')
 const adminRouter = require('./admin/router')
 const rigRouter = require('./rig/router')
 
+const errorHandler = require('./error/handler')
+
 class Server {
   static listen() {
     const server = express()
@@ -23,6 +25,8 @@ class Server {
     server.use('/users', userRouter)
     server.use('/admin', adminRouter)
     server.use('/rigs', rigRouter)
+
+    server.use([errorHandler.validationError, errorHandler.defaultError])
 
     server.listen(PORT, () => {
       logger.info(`server is listening on port ${PORT}`)

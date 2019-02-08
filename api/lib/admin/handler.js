@@ -5,28 +5,20 @@ const User = require('../user')
 
 class AdminHandler {
   static async addUser(req, res) {
-    try {
-      const user = new User({
-        email: req.body.email,
-        pass: req.body.pass
-      })
+    const user = new User({
+      email: req.body.email,
+      pass: req.body.pass
+    })
 
-      await user.validate()
+    await user.validate()
 
-      user.pass = await bcrypt.hash(user.pass, config.bcrypt.salt.rounds)
+    user.pass = await bcrypt.hash(user.pass, config.bcrypt.salt.rounds)
 
-      await user.save()
+    await user.save()
 
-      res.json({
-        success: true,
-        message: 'Successfully added user'
-      })
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: error.message
-      })
-    }
+    res.json({
+      message: 'Successfully added user'
+    })
   }
 }
 
