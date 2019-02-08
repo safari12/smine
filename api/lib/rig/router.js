@@ -5,27 +5,29 @@ const token = require('../token')
 
 const router = express.Router()
 
-router.use([token.check, token.checkAdmin])
+router
+  .route('/')
+  .get(token.check, async (req, res) => {
+    res.json(await Rig.find({}))
+  })
+  .post([token.check, token.checkAdmin], async (req, res) => {
+    try {
+      const rig = new Rig({
+        name: req.body.name
+      })
 
-router.route('/').post(async (req, res) => {
-  try {
-    const rig = new Rig({
-      name: req.body.name,
-      miner: req.body.miner
-    })
+      await rig.save()
 
-    await rig.save()
-
-    res.json({
-      success: true,
-      message: 'Successfully added rig'
-    })
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message
-    })
-  }
-})
+      res.json({
+        success: true,
+        message: 'Successfully added rig'
+      })
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message
+      })
+    }
+  })
 
 module.exports = router

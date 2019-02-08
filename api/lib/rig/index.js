@@ -18,8 +18,7 @@ module.exports = mongoose.model(
       default: false
     },
     miner: {
-      type: MinerSchema,
-      required: true
+      type: MinerSchema
     }
   })
 )
