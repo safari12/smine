@@ -3,16 +3,19 @@ const _ = require('lodash')
 const Rig = require('./rig')
 
 class Farm {
-  static async sync() {
+  static async syncRigs() {
     const rigs = await Rig.find({})
 
-    await Promise.all(
-      _.map(rigs, r => {
-        return r.ping()
-      })
-    )
+    const promises = []
 
-    console.log(rigs)
+    _.each(rigs, r => {
+      promises.push(r.ping())
+      promises.push(r.syncMiners())
+    })
+
+    await Promise.all(promises)
+
+    return rigs
   }
 }
 

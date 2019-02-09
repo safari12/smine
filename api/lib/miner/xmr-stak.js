@@ -1,5 +1,5 @@
 class XMRStak {
-  static getHashrate() {
+  static async getHashrate() {
     return 0
   }
 }

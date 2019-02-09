@@ -15,7 +15,7 @@ const farm = require('./farm')
 module.exports = async () => {
   if ((await db.connect()) && (await admin.create())) {
     server.listen()
-    await farm.sync()
+    console.log(await farm.syncRigs())
   }
 
   // let config

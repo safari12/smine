@@ -20,6 +20,6 @@ module.exports = {
     }
   },
   miner: {
-    supported: ['xmr-stak']
+    supported: ['xmr-stak', 'bminer']
   }
 }
