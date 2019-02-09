@@ -1,16 +1,19 @@
-const _ = require('lodash');
+const _ = require('lodash')
 
-const net = require('./net');
+const Rig = require('./rig')
 
 class Farm {
-  static pingRigs(rigs) {
-    return Promise.all(
-      _.map(rigs, async rig => {
-        rig.pingable = await net.ping(rig.name);
-        return rig;
+  static async sync() {
+    const rigs = await Rig.find({})
+
+    await Promise.all(
+      _.map(rigs, r => {
+        return r.ping()
       })
-    );
+    )
+
+    console.log(rigs)
   }
 }
 
-module.exports = Farm;
+module.exports = Farm

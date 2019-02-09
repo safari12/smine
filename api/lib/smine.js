@@ -10,10 +10,12 @@
 const db = require('./db')
 const admin = require('./admin')
 const server = require('./server')
+const farm = require('./farm')
 
 module.exports = async () => {
   if ((await db.connect()) && (await admin.create())) {
     server.listen()
+    await farm.sync()
   }
 
   // let config
