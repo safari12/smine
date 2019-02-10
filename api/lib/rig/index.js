@@ -3,7 +3,7 @@ const _ = require('lodash')
 
 const net = require('../net')
 const config = require('../config')
-const MinerSchema = require('../miner')
+const MinerSchema = require('../miner').schema
 
 const Schema = mongoose.Schema
 
@@ -19,7 +19,8 @@ const RigSchema = new Schema({
     default: false
   },
   miners: {
-    type: Array
+    type: [MinerSchema],
+    required: true
   }
 })
 

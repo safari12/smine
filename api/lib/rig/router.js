@@ -11,4 +11,8 @@ router
   .get(token.check, asyncHandler(handler.getAll))
   .post([token.check, token.checkAdmin], asyncHandler(handler.add))
 
+router
+  .route('/:hostname')
+  .delete([token.check, token.checkAdmin], asyncHandler(handler.remove))
+
 module.exports = router

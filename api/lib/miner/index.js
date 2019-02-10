@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+
+const MinerConfig = require('./config')
 const config = require('../config')
 
 const Schema = mongoose.Schema
@@ -6,19 +8,29 @@ const Schema = mongoose.Schema
 const MinerSchema = new Schema({
   name: {
     type: String,
-    required: true,
-    unique: true,
-    index: true,
     enum: {
       values: config.miner.supported,
       message: 'miner not supported'
     }
   },
-  hashrate: Number,
+  hashrate: {
+    type: Number,
+    default: 0
+  },
   config: {
     type: Schema.Types.ObjectId,
     ref: 'miner_configs'
   }
 })
 
-module.exports = mongoose.model('miners', MinerSchema)
+MinerSchema.pre('validate', async function() {
+  const minerConfig = await MinerConfig.findById(this.config)
+  if (minerConfig.miner != this.name) {
+    throw new Error('config is not compatible with miner')
+  }
+})
+
+module.exports = {
+  model: mongoose.model('miners', MinerSchema),
+  schema: MinerSchema
+}

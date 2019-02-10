@@ -1,7 +1,5 @@
 /* eslint-disable quotes */
-const Miner = require('.')
 const MinerConfig = require('./config')
-
 const config = require('../config')
 
 class MinerHandler {
