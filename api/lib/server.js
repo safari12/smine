@@ -7,6 +7,7 @@ const logger = require('./logger')
 const userRouter = require('./user/router')
 const adminRouter = require('./admin/router')
 const rigRouter = require('./rig/router')
+const minerRouter = require('./miner/router')
 
 const errorHandler = require('./error/handler')
 
@@ -26,6 +27,7 @@ class Server {
       server.use('/users', userRouter)
       server.use('/admin', adminRouter)
       server.use('/rigs', rigRouter)
+      server.use('/miners', minerRouter)
 
       server.use([errorHandler.validationError, errorHandler.defaultError])
 
