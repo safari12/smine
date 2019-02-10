@@ -1,25 +1,33 @@
 /* eslint-disable quotes */
 const Miner = require('.')
+const MinerConfig = require('./config')
+
+const config = require('../config')
 
 class MinerHandler {
-  static async getSupported(req, res) {
-    res.json(await Miner.find({}))
+  static getSupported(req, res) {
+    res.json(config.miner.supported)
   }
-  static async updateAPI(req, res) {
-    const miner = await Miner.findOne({ name: req.body.name })
-
-    if (miner) {
-      miner.api = {
-        port: req.body.port,
-        endpoint: req.body.endpoint
-      }
-      await miner.save()
-      res.json({
-        message: "Successfully updated the miner's api settings"
+  static async getConfigs(req, res) {
+    res.json(
+      await MinerConfig.find({
+        miner: req.params.miner
       })
-    } else {
-      throw new Error('Miner not supported')
-    }
+    )
+  }
+  static async addConfig(req, res) {
+    const minerName = req.params.miner
+    const minerConfig = new MinerConfig({
+      name: req.body.name,
+      miner: minerName,
+      api: req.body.api
+    })
+
+    await minerConfig.save()
+
+    res.json({
+      message: `Successfully added config for ${minerName} miner`
+    })
   }
 }
 

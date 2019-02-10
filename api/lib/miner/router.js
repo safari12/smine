@@ -7,7 +7,10 @@ const token = require('../token')
 const router = express.Router()
 
 router.use([token.check])
-router.route('/supported').get(asyncHandler(handler.getSupported))
-router.route('/api').put(token.checkAdmin, asyncHandler(handler.updateAPI))
+router.route('/supported').get(handler.getSupported)
+router
+  .route('/:miner/configs')
+  .post(token.checkAdmin, asyncHandler(handler.addConfig))
+  .get(token.checkAdmin, asyncHandler(handler.getConfigs))
 
 module.exports = router
