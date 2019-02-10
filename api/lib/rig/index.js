@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
 const _ = require('lodash')
 
-const MinerSchema = require('../miner')
 const net = require('../net')
 const config = require('../config')
 
 const Schema = mongoose.Schema
 
 const RigSchema = new Schema({
-  name: {
+  hostname: {
     type: String,
     required: true,
     unique: true,
@@ -24,7 +23,7 @@ const RigSchema = new Schema({
 })
 
 RigSchema.methods.ping = async function() {
-  this.pingable = await net.ping(this.name)
+  this.pingable = await net.ping(this.hostname)
 }
 
 RigSchema.methods.syncMiners = async function() {

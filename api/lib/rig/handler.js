@@ -7,7 +7,7 @@ class RigHandler {
 
   static async add(req, res) {
     const rig = new Rig({
-      name: req.body.name
+      hostname: req.body.hostname
     })
 
     await rig.save()

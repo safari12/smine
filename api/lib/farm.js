@@ -1,9 +1,12 @@
 const _ = require('lodash')
 
+const logger = require('./logger')
 const Rig = require('./rig')
 
 class Farm {
   static async syncRigs() {
+    logger.info('syncing rigs data from mining farm')
+
     const rigs = await Rig.find({})
 
     const promises = []
@@ -14,6 +17,8 @@ class Farm {
     })
 
     await Promise.all(promises)
+
+    logger.info('successfully synced rigs data from mining farm')
 
     return rigs
   }
