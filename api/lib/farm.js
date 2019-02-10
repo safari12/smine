@@ -17,6 +17,11 @@ class Farm {
     })
 
     await Promise.all(promises)
+    await Promise.all(
+      _.map(rigs, r => {
+        return r.save()
+      })
+    )
 
     logger.info('successfully synced rigs data from mining farm')
 
