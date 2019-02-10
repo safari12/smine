@@ -11,11 +11,13 @@ const db = require('./db')
 const admin = require('./admin')
 const server = require('./server')
 const farm = require('./farm')
+const Miner = require('./miner')
 
 module.exports = async () => {
   if ((await db.connect()) && (await admin.create())) {
-    server.listen()
-    await farm.syncRigs()
+    await server.listen()
+    await Miner.createSupported()
+    await await farm.syncRigs()
   }
 
   // let config

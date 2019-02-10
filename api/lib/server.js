@@ -12,24 +12,27 @@ const errorHandler = require('./error/handler')
 
 class Server {
   static listen() {
-    const server = express()
-    const PORT = config.api.port
+    return new Promise(resolve => {
+      const server = express()
+      const PORT = config.api.port
 
-    server.use(bodyParser.json())
-    server.use(
-      bodyParser.urlencoded({
-        extended: true
+      server.use(bodyParser.json())
+      server.use(
+        bodyParser.urlencoded({
+          extended: true
+        })
+      )
+
+      server.use('/users', userRouter)
+      server.use('/admin', adminRouter)
+      server.use('/rigs', rigRouter)
+
+      server.use([errorHandler.validationError, errorHandler.defaultError])
+
+      server.listen(PORT, () => {
+        logger.info(`server is listening on port ${PORT}`)
+        resolve()
       })
-    )
-
-    server.use('/users', userRouter)
-    server.use('/admin', adminRouter)
-    server.use('/rigs', rigRouter)
-
-    server.use([errorHandler.validationError, errorHandler.defaultError])
-
-    server.listen(PORT, () => {
-      logger.info(`server is listening on port ${PORT}`)
     })
   }
 }
