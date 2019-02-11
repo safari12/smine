@@ -12,7 +12,7 @@ router
   .post([token.check, token.checkAdmin], asyncHandler(handler.add))
 
 router
-  .route('/:hostname')
+  .route('/:id')
   .delete([token.check, token.checkAdmin], asyncHandler(handler.remove))
 
 module.exports = router

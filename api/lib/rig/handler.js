@@ -19,14 +19,12 @@ class RigHandler {
   }
 
   static async remove(req, res) {
-    const hostname = req.params.hostname
-
     await Rig.findOneAndDelete({
-      hostname: req.params.hostname
+      _id: req.params.id
     })
 
     res.json({
-      message: `Successfully removed rig ${hostname}`
+      message: 'Successfully removed rig'
     })
   }
 }
