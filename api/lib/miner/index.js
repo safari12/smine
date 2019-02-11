@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const got = require('got')
 
 const MinerConfig = require('./config')
 const config = require('../config')
@@ -29,6 +30,19 @@ MinerSchema.pre('validate', async function() {
     throw new Error('config is not compatible with miner')
   }
 })
+
+MinerSchema.methods.syncHashrate = async function(hostname) {
+  try {
+    const config = await MinerConfig.findById(this.config)
+    const uri = `${hostname}:${config.api.port}${config.api.endpoint}`
+    const response = await got(uri)
+
+    const miner = require(`./${this.name}`)
+    this.hashrate = miner.getHashrate(response)
+  } catch (error) {
+    this.hashrate = 0
+  }
+}
 
 module.exports = {
   model: mongoose.model('miners', MinerSchema),

@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const _ = require('lodash')
 
 const net = require('../net')
-const config = require('../config')
 const MinerSchema = require('../miner').schema
 
 const Schema = mongoose.Schema
@@ -29,19 +28,9 @@ RigSchema.methods.ping = async function() {
 }
 
 RigSchema.methods.syncMiners = async function() {
-  this.miners = []
-
   await Promise.all(
-    _.map(config.miner.supported, async minerName => {
-      const miner = require(`../miner/${minerName}`)
-      const hashrate = await miner.getHashrate()
-
-      if (hashrate > 0) {
-        this.miners.push({
-          name: minerName,
-          hashrate: hashrate
-        })
-      }
+    _.map(this.miners, m => {
+      return m.syncHashrate(this.hostname)
     })
   )
 }

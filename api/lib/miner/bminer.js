@@ -1,5 +1,5 @@
 class BMiner {
-  static async getHashrate() {
+  static async getHashrate(response) {
     return 25
   }
 }
