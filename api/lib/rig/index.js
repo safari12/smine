@@ -3,7 +3,7 @@ const _ = require('lodash')
 
 const net = require('../net')
 const MinerSchema = require('../miner').schema
-const GPUSchema = require('../gpu')
+const GPUSchema = require('../gpu').schema
 
 const Schema = mongoose.Schema
 

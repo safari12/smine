@@ -18,11 +18,14 @@ GPUSchema.methods.syncCards = async function(hostname) {
   try {
     const config = await GPUConfig.findById(this.config)
     const uri = `http://${hostname}:${config.api.port}${config.api.endpoint}`
-    const response = await got(uri)
-    this.cards = response.json()
+    const { body } = await got(uri, { json: true })
+    this.cards = body
   } catch (error) {
     this.cards = []
   }
 }
 
-module.exports = GPUSchema
+module.exports = {
+  schema: GPUSchema,
+  model: mongoose.model('gpu', GPUSchema)
+}
