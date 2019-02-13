@@ -1,32 +1,10 @@
 const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
-
-const chai = require('chai')
-chai.use(sinonChai)
-
 const expect = require('chai').expect
 const nock = require('nock')
 
 const GPU = require('../../lib/gpu').model
 const GPUConfig = require('../../lib/gpu/config')
-
-const mockGPUCards = [
-  {
-    device: 0,
-    name: 'GeoForce GTX 1070 TI',
-    temp: 56,
-    fan_speed: 21,
-    volatile: 90,
-    watt: {
-      usage: 50,
-      cap: 90
-    },
-    memory: {
-      used: 5600,
-      max: 8000
-    }
-  }
-]
+const mockGPUCards = require('./mock/cards')
 
 describe('GPU', () => {
   describe('syncCards', () => {
