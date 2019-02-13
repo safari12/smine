@@ -34,7 +34,7 @@ MinerSchema.pre('validate', async function() {
 MinerSchema.methods.syncHashrate = async function(hostname) {
   try {
     const config = await MinerConfig.findById(this.config)
-    const uri = `${hostname}:${config.api.port}${config.api.endpoint}`
+    const uri = `http://${hostname}:${config.api.port}${config.api.endpoint}`
     const response = await got(uri)
 
     const miner = require(`./${this.name}`)

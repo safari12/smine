@@ -14,6 +14,7 @@ class Farm {
     _.each(rigs, r => {
       promises.push(r.ping())
       promises.push(r.syncMiners())
+      promises.push(r.syncGPUCards())
     })
 
     await Promise.all(promises)

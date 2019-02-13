@@ -8,7 +8,8 @@ class RigHandler {
   static async add(req, res) {
     const rig = new Rig({
       hostname: req.body.hostname,
-      miners: req.body.miners
+      miners: req.body.miners,
+      gpu: req.body.gpu
     })
 
     await rig.save()

@@ -1,0 +1,28 @@
+const mongoose = require('mongoose')
+const got = require('got')
+
+const GPUConfig = require('./config')
+
+const Schema = mongoose.Schema
+
+const GPUSchema = new Schema({
+  cards: [Object],
+  config: {
+    type: Schema.Types.ObjectId,
+    ref: 'gpu_configs',
+    required: true
+  }
+})
+
+GPUSchema.methods.syncCards = async function(hostname) {
+  try {
+    const config = await GPUConfig.findById(this.config)
+    const uri = `http://${hostname}:${config.api.port}${config.api.endpoint}`
+    const response = await got(uri)
+    this.cards = response.json()
+  } catch (error) {
+    this.cards = []
+  }
+}
+
+module.exports = GPUSchema
