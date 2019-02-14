@@ -2,8 +2,8 @@ const sinon = require('sinon')
 const expect = require('chai').expect
 const nock = require('nock')
 
-const GPU = require('../../lib/gpu').model
-const GPUConfig = require('../../lib/gpu/config')
+const GPU = require('gpu').model
+const GPUConfig = require('gpu/config')
 const mockGPUCards = require('./mock/cards')
 
 describe('GPU', () => {
