@@ -18,7 +18,12 @@ GPUSchema.methods.syncCards = async function(hostname) {
   try {
     const config = await GPUConfig.findById(this.config)
     const uri = `http://${hostname}:${config.api.port}${config.api.endpoint}`
-    const { body } = await got(uri, { json: true })
+    const { body } = await got(uri, {
+      json: true,
+      timeout: config.api.timeout,
+      retry: config.api.retry
+    })
+
     this.cards = body
   } catch (error) {
     this.cards = []

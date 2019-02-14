@@ -11,6 +11,14 @@ module.exports = {
     port: {
       type: Number,
       required: true
+    },
+    timeout: {
+      type: Number,
+      default: 5000
+    },
+    retries: {
+      type: Number,
+      default: 2
     }
   })
 }

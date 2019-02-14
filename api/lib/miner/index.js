@@ -36,7 +36,6 @@ MinerSchema.methods.syncHashrate = async function(hostname) {
     const config = await MinerConfig.findById(this.config)
     const uri = `http://${hostname}:${config.api.port}${config.api.endpoint}`
     const response = await got(uri, { json: true })
-
     const miner = require(`./${this.name}`)
     this.hashrate = miner.getHashrate(response)
   } catch (error) {
