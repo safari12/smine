@@ -5,14 +5,17 @@ const GPUConfig = require('./config')
 
 const Schema = mongoose.Schema
 
-const GPUSchema = new Schema({
-  cards: [Object],
-  config: {
-    type: Schema.Types.ObjectId,
-    ref: 'gpu_configs',
-    required: true
-  }
-})
+const GPUSchema = new Schema(
+  {
+    cards: [Object],
+    config: {
+      type: Schema.Types.ObjectId,
+      ref: 'gpu_configs',
+      required: true
+    }
+  },
+  { _id: false }
+)
 
 GPUSchema.methods.syncCards = async function(hostname) {
   try {

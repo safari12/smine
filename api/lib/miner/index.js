@@ -6,23 +6,26 @@ const config = require('../config')
 
 const Schema = mongoose.Schema
 
-const MinerSchema = new Schema({
-  name: {
-    type: String,
-    enum: {
-      values: config.miner.supported,
-      message: 'miner not supported'
+const MinerSchema = new Schema(
+  {
+    name: {
+      type: String,
+      enum: {
+        values: config.miner.supported,
+        message: 'miner not supported'
+      }
+    },
+    hashrate: {
+      type: Number,
+      default: 0
+    },
+    config: {
+      type: Schema.Types.ObjectId,
+      ref: 'miner_configs'
     }
   },
-  hashrate: {
-    type: Number,
-    default: 0
-  },
-  config: {
-    type: Schema.Types.ObjectId,
-    ref: 'miner_configs'
-  }
-})
+  { _id: false }
+)
 
 MinerSchema.pre('validate', async function() {
   const minerConfig = await MinerConfig.findById(this.config)

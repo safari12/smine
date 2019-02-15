@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
+
 const config = require('../config')
+const APISchema = require('../net/api').schema
 
 const Schema = mongoose.Schema
 
@@ -22,16 +24,7 @@ module.exports = mongoose.model(
       }
     },
     api: {
-      type: new Schema({
-        endpoint: {
-          type: String,
-          default: ''
-        },
-        port: {
-          type: Number,
-          required: true
-        }
-      }),
+      type: APISchema,
       required: true
     }
   })

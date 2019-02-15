@@ -14,21 +14,27 @@ const GPUConfigSchema = new Schema({
     required: true
   },
   card: {
-    type: new Schema({
-      count: {
-        type: Number,
-        required: true
-      }
-    }),
+    type: new Schema(
+      {
+        count: {
+          type: Number,
+          required: true
+        }
+      },
+      { _id: false }
+    ),
     required: true
   },
   power: {
-    type: new Schema({
-      limit: {
-        type: Number,
-        required: true
-      }
-    })
+    type: new Schema(
+      {
+        limit: {
+          type: Number,
+          required: true
+        }
+      },
+      { _id: false }
+    )
   }
 })
 
