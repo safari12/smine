@@ -3,6 +3,16 @@ const jwt = require('jsonwebtoken')
 const config = require('./config')
 
 class Token {
+  static async create(user) {
+    return await jwt.sign(
+      {
+        id: user.id,
+        admin: user.admin
+      },
+      config.api.secret
+    )
+  }
+
   static async check(req, res, next) {
     const token = Token.getToken(req)
 

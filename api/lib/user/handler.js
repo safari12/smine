@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 
 const User = require('.')
-const config = require('../config')
+const token = require('../token')
 
 class UserHandler {
   static async login(req, res) {
@@ -24,17 +23,14 @@ class UserHandler {
       })
     }
 
-    const token = await jwt.sign(
-      {
-        id: user._id,
-        admin: user.admin
-      },
-      config.api.secret
-    )
+    const adminToken = await token.create({
+      id: user._id,
+      admin: user.admin
+    })
 
     res.json({
       success: true,
-      token: token
+      token: adminToken
     })
   }
 }

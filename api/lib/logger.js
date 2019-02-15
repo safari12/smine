@@ -6,15 +6,13 @@ const myFormat = printf(info => {
 })
 
 const logger = createLogger({
-  format: combine(
-    colorize(),
-    label({ label: 'smine' }),
-    timestamp(),
-    myFormat
-  ),
-  transports: [new transports.Console({
-    handleExceptions: true
-  })]
+  format: combine(colorize(), label({ label: 'smine' }), timestamp(), myFormat),
+  transports: [
+    new transports.Console({
+      handleExceptions: true,
+      level: process.env.NODE_ENV === 'test' ? 'error' : 'info'
+    })
+  ]
 })
 
 module.exports = logger

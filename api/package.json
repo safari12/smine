@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon ./bin/smine.js",
-    "test": "NODE_PATH=lib nyc mocha"
+    "test": "NODE_ENV=test NODE_PATH=lib mocha --exit"
   },
   "preferGlobal": true,
   "bin": {
@@ -63,12 +63,14 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-exclude": "^1.0.12",
+    "chai-http": "^4.2.1",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^4.0.0",
     "mocha": "^5.2.0",
     "nock": "^10.0.6",
     "nodemon": "^1.18.10",
-    "nyc": "^13.2.0",
+    "nyc": "^13.3.0",
     "sinon": "^6.3.5",
     "sinon-chai": "^3.3.0"
   }
