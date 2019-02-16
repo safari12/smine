@@ -1,4 +1,3 @@
-
 <div class="container">
   <div class="row auth-section">
     <div class="col col-md-4 col-sm-12 offset-md-4">
@@ -9,16 +8,18 @@
       <hr class="auth-divider">
       <form>
         <div class="form-group">
-            <input type="email" placeholder="Enter Email" class="form-control">
+          <input type="email" placeholder="Enter Email" class="form-control">
+        </div>
+        <div class="form-group">
+          <input type="password" placeholder="Enter Password" class="form-control">
+        </div>
+        <div class="row">
+          <div class="col">
+            <a [routerLink]="['/overview']" href="#" class="btn btn-outline-secondary auth-btn">
+              Sign in
+            </a>
           </div>
-          <div class="form-group">
-            <input type="password" placeholder="Enter Password" class="form-control">
-          </div>
-          <div class="row">
-            <div class="col">
-              <a href="#" class="btn btn-outline-secondary auth-btn">Sign in</a>
-            </div>
-          </div>
+        </div>
       </form>
     </div>
   </div>
