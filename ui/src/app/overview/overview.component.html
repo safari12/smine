@@ -28,68 +28,71 @@
 
   <div class="row mt-5">
     <div class="col-12">
-      <h3>Rigs 22 online / 2 offline</h3>
+      <h2>Rigs</h2>
+    </div>
+    <div class="col-4">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search Rigs" aria-label="Search Rigs"
+          aria-describedby="button-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-2 offset-6">
+      <button class="btn btn-success action-button">
+        <i class="fa fa-plus"></i>
+      </button>
     </div>
     <div class="col-12">
-      <table class="table">
+      <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">Hostname</th>
-            <th scope="col">Status</th>
-            <th scope="col">CPU Miner</th>
-            <th scope="col">GPU Miner</th>
-            <th scope="col">CPUs</th>
-            <th scope="col">GPUs</th>
+            <th scope="col">
+              Status
+              <span>
+                <span class="text-success">10</span>
+                <span> / </span>
+                <span class="text-danger">10</span>
+              </span>
+            </th>
+            <th scope="col">Miner</th>
+            <th scope="col">Hashrate</th>
+            <th scope="col">GPU</th>
+            <th scope="col">GPU Wattage</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">s-m-01</th>
-            <td class="text-danger"><b>OFFLINE</b></td>
-            <td>
-              <ul class="list">
-                <li>xmr-stak - <span class="text-danger">0 h/s</span></li>
-
-              </ul>
-            </td>
-            <td>
-              <ul class="list">
-                <li>bminer - <span class="text-danger">0 h/s</span></li>
-              </ul>
-            </td>
-            <td>
-              <ul class="list">
-                <li>2 Intel i7 - 0W</li>
-              </ul>
-            </td>
-            <td>
-              <ul class="list">
-                <li>6 Nvidia Cards - 0W</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">s-m-02</th>
+          <tr *ngFor="let rig of rigs">
+            <th scope="row">{{rig.hostname}}</th>
             <td class="text-success"><b>ONLINE</b></td>
             <td>
-              <ul class="list">
-                <li>xmr-stak - <span class="text-success">12 h/s</span></li>
-              </ul>
+              xmr-stak
             </td>
             <td>
-              <ul class="list">
-                <li>bminer - <span class="text-success">12 h/s</span></li>
-              </ul>
+              <span class="text-success"><b>25 kH/s</b></span>
             </td>
             <td>
-              <ul class="list">
-                <li>2 Intel i7 - 160W</li>
-              </ul>
+              6 NVIDIA Cards
             </td>
             <td>
-              <ul class="list">
-                <li>6 Nvidia Cards - 420W</li>
-              </ul>
+              430W
+            </td>
+            <td>
+              <div class="row">
+                <div class="col pr-1">
+                  <button class="btn btn-primary action-button">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </div>
+                <div class="col pl-1">
+                  <button class="btn btn-danger action-button">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>

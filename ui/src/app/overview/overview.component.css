@@ -1,5 +1,12 @@
-.list {
-  list-style: none;
-  padding-left: 0px;
-  margin-bottom: 0px;
+.action-button {
+  font-size: 20px;
+  width: 100%;
+}
+
+tbody tr > td {
+  vertical-align: middle;
+}
+
+tbody tr > th {
+  vertical-align: middle;
 }
