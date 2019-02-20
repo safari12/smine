@@ -45,58 +45,7 @@
       </button>
     </div>
     <div class="col-12">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Hostname</th>
-            <th scope="col">
-              Status
-              <span>
-                <span class="text-success">10</span>
-                <span> / </span>
-                <span class="text-danger">10</span>
-              </span>
-            </th>
-            <th scope="col">Miner</th>
-            <th scope="col">Hashrate</th>
-            <th scope="col">GPU</th>
-            <th scope="col">GPU Wattage</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let rig of rigs">
-            <th scope="row">{{rig.hostname}}</th>
-            <td class="text-success"><b>ONLINE</b></td>
-            <td>
-              xmr-stak
-            </td>
-            <td>
-              <span class="text-success"><b>25 kH/s</b></span>
-            </td>
-            <td>
-              6 NVIDIA Cards
-            </td>
-            <td>
-              430W
-            </td>
-            <td>
-              <div class="row">
-                <div class="col pr-1">
-                  <button class="btn btn-primary action-button">
-                    <i class="fa fa-edit"></i>
-                  </button>
-                </div>
-                <div class="col pl-1">
-                  <button class="btn btn-danger action-button">
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <app-rig-table></app-rig-table>
     </div>
   </div>
 </div>

@@ -6,11 +6,12 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { NavigationModule } from './navigation/navigation.module';
 import { AuthModule } from './auth/auth.module';
-import { OverviewComponent } from './overview/overview.component'
+import { OverviewComponent } from './overview/overview.component';
+import { RigModule } from './rig/rig.module'
 
 @NgModule({
   declarations: [AppComponent, OverviewComponent],
-  imports: [BrowserModule, AppRoutingModule, NavigationModule, NgbModule, AuthModule],
+  imports: [BrowserModule, AppRoutingModule, NavigationModule, NgbModule, AuthModule, RigModule],
   providers: [],
   bootstrap: [AppComponent]
 })
