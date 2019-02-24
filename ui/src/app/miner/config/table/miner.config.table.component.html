@@ -1,16 +1,16 @@
 <table class="table table-hover">
-  <thead app-gpu-config-table-header></thead>
+  <thead app-miner-config-table-header></thead>
   <tbody>
     <tr *ngFor="let config of configs">
       <th scope="row">{{config.name}}</th>
+      <td>{{config.miner}}</td>
       <td>{{"*" + config.api.port + config.api.endpoint}}</td>
-      <td>{{config.card.count}}</td>
-      <td>{{config.power.limit}}W</td>
       <td class="text-right">
-        <button class="btn btn-primary mr-3">
+        <button class="btn btn-primary mr-3 action-button">
           <i class="fa fa-edit"></i>
         </button>
-        <button class="btn btn-danger">
+
+        <button class="btn btn-danger action-button">
           <i class="fa fa-trash"></i>
         </button>
       </td>
