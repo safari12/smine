@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { GpuConfigModalComponent } from '../modal/gpu.config.modal.component'
 
 @Component({
   selector: 'app-gpu-config-table',
@@ -7,11 +9,19 @@ import { Component, OnInit } from '@angular/core'
 })
 export class GpuConfigTableComponent implements OnInit {
   configs = []
+  selectedConfig: any = null
 
-  constructor() {}
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit() {
     this.getConfigs()
+  }
+
+  openConfig(config) {
+    const modalRef = this.modalService.open(GpuConfigModalComponent, {
+      size: 'lg'
+    })
+    modalRef.componentInstance.config = config
   }
 
   getConfigs() {

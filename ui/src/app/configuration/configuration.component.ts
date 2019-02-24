@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { GpuConfigModalComponent } from '../gpu/config/modal/gpu.config.modal.component'
 
 @Component({
   selector: 'app-configuration',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./configuration.component.css']
 })
 export class ConfigurationComponent implements OnInit {
+  constructor(private modalService: NgbModal) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  addGPUConfig() {
+    this.modalService.open(GpuConfigModalComponent, {
+      size: 'lg'
+    })
   }
-
 }

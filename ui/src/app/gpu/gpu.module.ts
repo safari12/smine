@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { ConfigModule } from './config/config.module'
+import { GpuConfigModule } from './config/gpu.config.module'
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, ConfigModule],
-  exports: [ConfigModule]
+  imports: [CommonModule, GpuConfigModule],
+  exports: [GpuConfigModule]
 })
 export class GpuModule {}

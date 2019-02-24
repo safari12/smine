@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    {{config ? "GPU Config Details" : "Add New GPU Config"}}
+  </h4>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-row">
+      <div class="form-group col-4">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter Name">
+      </div>
+      <div class="form-group col-4">
+        <label for="cardCount">Number of Cards</label>
+        <input type="number" class="form-control" id="cardCount" placeholder="Enter Number of Cards">
+      </div>
+      <div class="form-group col-4">
+        <label for="powerLimit">Power Limit</label>
+        <input type="number" class="form-control" id="powerLimit" placeholder="Enter Power Limit">
+      </div>
+    </div>
+    <div class="form-row mt-2">
+      <h4 class="ml-1">API</h4>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-6">
+        <label for="endpoint">Endpoint</label>
+        <input type="text" class="form-control" id="endpoint" placeholder="Enter Endpoint">
+      </div>
+      <div class="form-group col-6">
+        <label for="port">Port</label>
+        <input type="number" class="form-control" id="port" placeholder="Enter Port">
+      </div>
+      <div class="form-group col-6">
+        <label for="retries">Retries</label>
+        <input type="number" class="form-control" id="retries" placeholder="Enter Retries">
+      </div>
+      <div class="form-group col-6">
+        <label for="timeout">Timeout</label>
+        <input type="number" class="form-control" id="timeout" placeholder="Enter Timeout">
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-primary" (click)="activeModal.close('Close click')">
+    {{config ? "Update": "Add"}}
+  </button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
