@@ -1,0 +1,25 @@
+<table class="table table-hover">
+  <thead app-gpu-config-table-header></thead>
+  <tbody>
+    <tr *ngFor="let config of configs">
+      <th scope="row">{{config.name}}</th>
+      <td>{{"*" + config.api.port + config.api.endpoint}}</td>
+      <td>{{config.card.count}}</td>
+      <td>{{config.power.limit}}W</td>
+      <td>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-primary action-button">
+              <i class="fa fa-edit"></i>
+            </button>
+          </div>
+          <div class="col">
+            <button class="btn btn-danger action-button">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

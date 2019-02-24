@@ -11,13 +11,14 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-2">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Overview <span class="sr-only">(current)</span></a>
+          <a class="nav-link" [routerLink]="['/overview']" routerLinkActive="router-link-active">
+            Overview
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Rigs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Configuration</a>
+          <a class="nav-link" [routerLink]="['/configuration']" routerLinkActive="router-link-active">
+            Configurations
+          </a>
         </li>
       </ul>
     </div>
