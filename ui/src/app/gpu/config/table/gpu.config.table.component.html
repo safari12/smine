@@ -4,6 +4,8 @@
     <tr *ngFor="let config of configs">
       <th scope="row">{{config.name}}</th>
       <td>{{"*" + config.api.port + config.api.endpoint}}</td>
+      <td>{{config.api.retries}}</td>
+      <td>{{config.api.timeout + "ms"}}</td>
       <td>{{config.card.count}}</td>
       <td>{{config.power.limit}}W</td>
       <td class="text-right">

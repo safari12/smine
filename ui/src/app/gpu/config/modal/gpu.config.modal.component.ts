@@ -3,15 +3,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import GpuConfigService from '../gpu.config.service'
 import { GpuConfig } from '../gpu.config'
-import API from 'src/app/net/api'
 
 @Component({
   selector: 'app-gpu-config-modal',
   templateUrl: './gpu.config.modal.component.html',
   styleUrls: ['./gpu.config.modal.component.css']
 })
-export class GpuConfigModalComponent {
-  @Input() config: any
+export class GpuConfigModalComponent implements OnInit {
+  @Input() config: GpuConfig
 
   configForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -20,10 +19,11 @@ export class GpuConfigModalComponent {
     api: this.fb.group({
       endpoint: ['', Validators.required],
       port: ['', Validators.required],
-      retries: [''],
-      timeout: ['']
+      retries: ['2'],
+      timeout: ['2000']
     })
   })
+
   submitted = false
 
   constructor(
@@ -31,6 +31,17 @@ export class GpuConfigModalComponent {
     private fb: FormBuilder,
     private service: GpuConfigService
   ) {}
+
+  ngOnInit() {
+    if (this.config) {
+      this.configForm.patchValue({
+        name: this.config.name,
+        cardCount: this.config.card.count,
+        powerLimit: this.config.power.limit,
+        api: this.config.api
+      })
+    }
+  }
 
   get cf() {
     return this.configForm.controls
@@ -47,7 +58,7 @@ export class GpuConfigModalComponent {
 
     this.service.add({
       name: value.name,
-      api: { endpoint: value.api.endpoint, port: value.api.port },
+      api: value.api,
       card: { count: value.cardCount },
       power: { limit: value.powerLimit }
     })

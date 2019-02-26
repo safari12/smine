@@ -18,7 +18,6 @@ export class GpuConfigTableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.getConfigs()
     this.service.getAll().subscribe(configs => {
       this.configs = configs
     })
@@ -29,23 +28,5 @@ export class GpuConfigTableComponent implements OnInit {
       size: 'lg'
     })
     modalRef.componentInstance.config = config
-  }
-
-  getConfigs() {
-    for (let i = 0; i < 2; i++) {
-      this.configs.push({
-        name: '6 Half Power GPU',
-        api: {
-          endpoint: '/gpu',
-          port: 6969
-        },
-        card: {
-          count: 6
-        },
-        power: {
-          limit: 90
-        }
-      })
-    }
   }
 }
