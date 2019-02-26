@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { GpuConfigModalComponent } from '../modal/gpu.config.modal.component'
+import GpuConfigService from '../gpu.config.service'
 
 @Component({
   selector: 'app-gpu-config-table',
@@ -11,10 +12,16 @@ export class GpuConfigTableComponent implements OnInit {
   configs = []
   selectedConfig: any = null
 
-  constructor(private modalService: NgbModal) {}
+  constructor(
+    private modalService: NgbModal,
+    private service: GpuConfigService
+  ) {}
 
   ngOnInit() {
-    this.getConfigs()
+    // this.getConfigs()
+    this.service.getAll().subscribe(configs => {
+      this.configs = configs
+    })
   }
 
   openConfig(config) {

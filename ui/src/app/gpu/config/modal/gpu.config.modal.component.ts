@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
+import GpuConfigService from '../gpu.config.service'
+import { GpuConfig } from '../gpu.config'
+import API from 'src/app/net/api'
 
 @Component({
   selector: 'app-gpu-config-modal',
@@ -23,7 +26,11 @@ export class GpuConfigModalComponent {
   })
   submitted = false
 
-  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {}
+  constructor(
+    public activeModal: NgbActiveModal,
+    private fb: FormBuilder,
+    private service: GpuConfigService
+  ) {}
 
   get cf() {
     return this.configForm.controls
@@ -35,6 +42,15 @@ export class GpuConfigModalComponent {
     if (this.configForm.invalid) {
       return
     }
+
+    const value = this.configForm.value
+
+    this.service.add({
+      name: value.name,
+      api: { endpoint: value.api.endpoint, port: value.api.port },
+      card: { count: value.cardCount },
+      power: { limit: value.powerLimit }
+    })
 
     this.activeModal.close('Close click')
   }
