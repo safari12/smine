@@ -23,10 +23,17 @@ export class GpuConfigTableComponent implements OnInit {
     })
   }
 
-  openConfig(config) {
+  openConfig(config, idx) {
     const modalRef = this.modalService.open(GpuConfigModalComponent, {
       size: 'lg'
     })
     modalRef.componentInstance.config = config
+    modalRef.componentInstance.updateConfigEvent.subscribe(config => {
+      this.configs[idx] = config
+    })
+  }
+
+  removeConfig(idx) {
+    this.configs.splice(idx, 1)
   }
 }

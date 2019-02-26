@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import GpuConfigService from '../gpu.config.service'
@@ -11,6 +11,7 @@ import { GpuConfig } from '../gpu.config'
 })
 export class GpuConfigModalComponent implements OnInit {
   @Input() config: GpuConfig
+  @Output() updateConfigEvent = new EventEmitter<GpuConfig>()
 
   configForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -47,6 +48,24 @@ export class GpuConfigModalComponent implements OnInit {
     return this.configForm.controls
   }
 
+  addConfig() {
+    this.service.add(this.getConfigValue())
+  }
+
+  updateConfig() {
+    this.updateConfigEvent.emit(this.getConfigValue())
+  }
+
+  getConfigValue(): GpuConfig {
+    const value = this.configForm.value
+    return {
+      name: value.name,
+      api: value.api,
+      card: { count: value.cardCount },
+      power: { limit: value.powerLimit }
+    }
+  }
+
   onSubmit() {
     this.submitted = true
 
@@ -54,14 +73,11 @@ export class GpuConfigModalComponent implements OnInit {
       return
     }
 
-    const value = this.configForm.value
-
-    this.service.add({
-      name: value.name,
-      api: value.api,
-      card: { count: value.cardCount },
-      power: { limit: value.powerLimit }
-    })
+    if (!this.config) {
+      this.addConfig()
+    } else {
+      this.updateConfig()
+    }
 
     this.activeModal.close('Close click')
   }
