@@ -34,6 +34,6 @@ export class GpuConfigTableComponent implements OnInit {
   }
 
   removeConfig(idx) {
-    this.configs.splice(idx, 1)
+    this.service.remove(idx)
   }
 }

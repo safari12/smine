@@ -10,6 +10,10 @@ export default class GpuConfigService {
     this.configs.push(config)
   }
 
+  remove(idx) {
+    this.configs.splice(idx, 1)
+  }
+
   getAll(): Observable<GpuConfig[]> {
     return of(this.configs)
   }
