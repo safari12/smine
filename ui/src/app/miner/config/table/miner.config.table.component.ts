@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import MinerConfigService from '../miner.config.service'
 
 @Component({
   selector: 'app-miner-config-table',
@@ -8,22 +9,11 @@ import { Component, OnInit } from '@angular/core'
 export class MinerConfigTableComponent implements OnInit {
   configs = []
 
-  constructor() {}
+  constructor(private service: MinerConfigService) {}
 
   ngOnInit() {
-    this.getConfigs()
-  }
-
-  getConfigs() {
-    for (let i = 0; i < 2; i++) {
-      this.configs.push({
-        name: 'XMR-STAK 6 GPU',
-        miner: 'xmr-stak',
-        api: {
-          endpoint: '/api.json',
-          port: 6969
-        }
-      })
-    }
+    this.service.getAll().subscribe(configs => {
+      this.configs = configs
+    })
   }
 }

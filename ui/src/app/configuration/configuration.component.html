@@ -16,8 +16,13 @@
   </div>
 
   <div class="row mt-4">
-    <div class="col-12">
+    <div class="col-4">
       <h2>Miner Configurations</h2>
+    </div>
+    <div class="col-1 offset-7 text-right">
+      <button class="btn btn-success w-100" (click)="addMinerConfig()">
+        <i class="fa fa-plus"></i>
+      </button>
     </div>
     <div class="col-12">
       <app-miner-config-table></app-miner-config-table>
