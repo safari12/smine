@@ -21,5 +21,19 @@ module.exports = {
   },
   miner: {
     supported: ['xmr-stak', 'bminer']
+  },
+  gpu: {
+    datasource: {
+      types: {
+        snvidia: {
+          api: {
+            endpoint: '/gpu',
+            port: 6969,
+            retries: 2,
+            timeout: 2000
+          }
+        }
+      }
+    }
   }
 }

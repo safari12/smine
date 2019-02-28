@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
-const APISchema = require('../net/api')
-
+const GPUDataSourceSchema = require('./datasource')
 const Schema = mongoose.Schema
 
 const GPUConfigSchema = new Schema({
@@ -9,8 +8,8 @@ const GPUConfigSchema = new Schema({
     type: String,
     required: true
   },
-  api: {
-    type: APISchema,
+  datasource: {
+    type: GPUDataSourceSchema,
     required: true
   },
   card: {

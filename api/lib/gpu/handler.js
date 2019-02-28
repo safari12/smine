@@ -1,3 +1,4 @@
+const config = require('../config')
 const GPUConfig = require('./config')
 
 class GPUHandler {
@@ -17,6 +18,9 @@ class GPUHandler {
   }
   static async getConfigs(req, res) {
     res.json(await GPUConfig.find({}))
+  }
+  static getDataSourceTypes(req, res) {
+    res.json(config.gpu.datasource.types)
   }
 }
 

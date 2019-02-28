@@ -12,4 +12,6 @@ router
   .post(asyncHandler(handler.addConfig))
   .get(asyncHandler(handler.getConfigs))
 
+router.route('/datasource/types').get(asyncHandler(handler.getDataSourceTypes))
+
 module.exports = router
