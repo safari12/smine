@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const GPUDataSourceSchema = require('./datasource')
+const GPUDataSourceSchema = require('./datasource').schema
 const Schema = mongoose.Schema
 
 const GPUConfigSchema = new Schema({

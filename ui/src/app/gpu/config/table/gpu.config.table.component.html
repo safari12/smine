@@ -3,7 +3,8 @@
   <tbody>
     <tr *ngFor="let config of configs; index as i">
       <th scope="row">{{config.name}}</th>
-      <td>{{"*" + config.api.port + config.api.endpoint}}</td>
+      <td>{{config.datasource.type}}</td>
+      <td>{{"*:" + config.datasource.api.port + config.datasource.api.endpoint}}</td>
       <td>{{config.card.count}}</td>
       <td>{{config.power.limit}}W</td>
       <td class="text-right">

@@ -5,7 +5,7 @@ class GPUHandler {
   static async addConfig(req, res) {
     const config = new GPUConfig({
       name: req.body.name,
-      api: req.body.api,
+      datasource: req.body.datasource,
       card: req.body.card,
       power: req.body.power
     })

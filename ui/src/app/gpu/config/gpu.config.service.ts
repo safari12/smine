@@ -1,10 +1,13 @@
 import { GpuConfig } from './gpu.config'
 import { Observable, of } from 'rxjs'
 import { Injectable } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
 
 @Injectable()
 export default class GpuConfigService {
   configs: GpuConfig[] = []
+
+  constructor(private http: HttpClient) {}
 
   add(config: GpuConfig) {
     this.configs.push(config)
@@ -15,6 +18,6 @@ export default class GpuConfigService {
   }
 
   getAll(): Observable<GpuConfig[]> {
-    return of(this.configs)
+    return this.http.get<GpuConfig[]>('/api/gpu/configs')
   }
 }
