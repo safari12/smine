@@ -1,15 +1,15 @@
 const mongoose = require('mongoose')
 
-const GPUDataSourceSchema = require('./datasource').schema
+const DataSourceSchema = require('../datasource').schema
 const Schema = mongoose.Schema
 
-const GPUConfigSchema = new Schema({
+const ConfigSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
   datasource: {
-    type: GPUDataSourceSchema,
+    type: DataSourceSchema,
     required: true
   },
   card: {
@@ -37,4 +37,7 @@ const GPUConfigSchema = new Schema({
   }
 })
 
-module.exports = mongoose.model('gpu_configs', GPUConfigSchema)
+module.exports = {
+  model: mongoose.model('gpu_configs', ConfigSchema),
+  schema: ConfigSchema
+}

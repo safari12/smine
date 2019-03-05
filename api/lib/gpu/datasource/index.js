@@ -1,21 +1,18 @@
 const mongoose = require('mongoose')
 
-const config = require('../config')
-
-const APISchema = require('../net/api').schema
+const config = require('../../config')
+const APISchema = require('../../net/api').schema
 const Schema = mongoose.Schema
 
-const GPUDataSourceSchema = new Schema(
+const DataSourceSchema = new Schema(
   {
     type: {
       type: String,
-      required: true,
-      index: true,
-      unique: true,
       enum: {
         values: Object.keys(config.gpu.datasource.types),
-        message: 'datasource type not supported'
-      }
+        message: 'gpu datasource type not supported'
+      },
+      required: true
     },
     api: {
       type: APISchema,
@@ -28,5 +25,6 @@ const GPUDataSourceSchema = new Schema(
 )
 
 module.exports = {
-  schema: GPUDataSourceSchema
+  schema: DataSourceSchema,
+  model: mongoose.model('gpu_datasources', DataSourceSchema)
 }
