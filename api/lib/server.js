@@ -1,16 +1,22 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const token = require('./token')
+
 const userRouter = require('./user/router')
 const adminRouter = require('./admin/router')
 const rigRouter = require('./rig/router')
 const minerRouter = require('./miner/router')
 const gpuRouter = require('./gpu/router')
 
-const errorHandler = require('./error/handler')
+const handler = {
+  error: {
+    common: require('express-common').handlers.error.common,
+    validation: require('./error/handler')
+  }
+}
 
 const server = express()
-
 server.use(bodyParser.json())
 server.use(
   bodyParser.urlencoded({
@@ -24,6 +30,6 @@ server.use('/rigs', rigRouter)
 server.use('/miners', minerRouter)
 server.use('/gpu', gpuRouter)
 
-server.use([errorHandler.validationError, errorHandler.defaultError])
+server.use([handler.error.validation, handler.error.common])
 
 module.exports = server

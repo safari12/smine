@@ -11,8 +11,7 @@ const DataSourceSchema = new Schema(
       enum: {
         values: Object.keys(config.gpu.datasource.types),
         message: 'gpu datasource type not supported'
-      },
-      required: true
+      }
     },
     api: {
       type: APISchema,
