@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const APISchema = require('../../net/api').Schema
+const APISchema = require('../../net/api').schema
 const Schema = mongoose.Schema
 
 const ConfigSchema = new mongoose.Schema({

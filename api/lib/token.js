@@ -9,7 +9,10 @@ class Token {
         id: user.id,
         admin: user.admin
       },
-      config.api.secret
+      config.api.secret,
+      {
+        expiresIn: '2h'
+      }
     )
   }
 
