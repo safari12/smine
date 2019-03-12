@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const DataSourceSchema = require('../datasource').schema
+const APISchema = require('../../net/api').Schema
 const Schema = mongoose.Schema
 
 const ConfigSchema = new mongoose.Schema({
@@ -8,8 +8,8 @@ const ConfigSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  datasource: {
-    type: DataSourceSchema,
+  api: {
+    type: APISchema,
     required: true
   },
   card: {
