@@ -21,8 +21,8 @@ export default class AuthService {
     return this.currentUserSubject.value
   }
 
-  login(email: string, password: string) {
-    return this.http.post<User>('/api/login', { email, password }).pipe(
+  login(email: string, pass: string) {
+    return this.http.post<User>('/api/users/login', { email, pass }).pipe(
       map(user => {
         this.setSession(user)
         return user

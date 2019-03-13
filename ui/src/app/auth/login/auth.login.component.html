@@ -8,7 +8,12 @@
       <hr class="auth-divider" />
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <input type="email" placeholder="Enter Email" class="form-control" />
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Enter Email"
+            class="form-control"
+          />
           <div *ngIf="submitted && f.email.errors" class="text-danger">
             <div *ngIf="f.email.errors.required">Email is required</div>
           </div>
@@ -16,6 +21,7 @@
         <div class="form-group">
           <input
             type="password"
+            formControlName="password"
             placeholder="Enter Password"
             class="form-control"
           />
@@ -27,6 +33,9 @@
           <div class="col">
             <button class="btn btn-outline-secondary auth-btn">Sign in</button>
           </div>
+        </div>
+        <div *ngIf="error" class="alert alert-danger mt-2">
+          {{ error.message }}
         </div>
       </form>
     </div>

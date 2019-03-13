@@ -46,7 +46,7 @@ export class AuthLoginComponent implements OnInit {
           this.router.navigate(['/'])
         },
         error => {
-          this.error = error
+          this.error = error.error
         }
       )
   }
