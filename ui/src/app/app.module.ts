@@ -11,7 +11,8 @@ import { RigModule } from './rig/rig.module'
 import { ConfigurationComponent } from './configuration/configuration.component'
 import { GpuModule } from './gpu/gpu.module'
 import { MinerModule } from './miner/miner.module'
-import { SharedModule } from './shared/shared.module'
+import { TokenInterceptor } from './intercepters/token.intercepter'
+import { HTTP_INTERCEPTORS } from '@angular/common/http'
 
 @NgModule({
   declarations: [AppComponent, OverviewComponent, ConfigurationComponent],
@@ -19,14 +20,19 @@ import { SharedModule } from './shared/shared.module'
     BrowserModule,
     AppRoutingModule,
     NavigationModule,
-    NgbModule,
     AuthModule,
+    NgbModule,
     RigModule,
     GpuModule,
-    MinerModule,
-    SharedModule
+    MinerModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
