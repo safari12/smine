@@ -7,7 +7,8 @@ class AdminHandler {
   static async addUser(req, res) {
     const user = new User({
       email: req.body.email,
-      pass: req.body.pass
+      pass: req.body.pass,
+      admin: false
     })
 
     await user.validate()
@@ -17,7 +18,9 @@ class AdminHandler {
     await user.save()
 
     res.json({
-      message: 'Successfully added user'
+      id: user._id,
+      email: user.email,
+      admin: user.admin
     })
   }
 }

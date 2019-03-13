@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row auth-section">
+    <div class="col col-md-4 col-sm-12 offset-md-4">
+      <div class="auth-logo">
+        <i class="fa fa-btc fa-5x text-success"></i>
+        <h1 class="text-secondary">SMine</h1>
+      </div>
+      <hr class="auth-divider" />
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <input type="email" placeholder="Enter Email" class="form-control" />
+          <div *ngIf="submitted && f.email.errors" class="text-danger">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            placeholder="Enter Password"
+            class="form-control"
+          />
+          <div *ngIf="submitted && f.password.errors" class="text-danger">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-outline-secondary auth-btn">Sign in</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

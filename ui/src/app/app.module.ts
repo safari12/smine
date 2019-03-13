@@ -9,8 +9,9 @@ import { AuthModule } from './auth/auth.module'
 import { OverviewComponent } from './overview/overview.component'
 import { RigModule } from './rig/rig.module'
 import { ConfigurationComponent } from './configuration/configuration.component'
-import { GpuModule } from './gpu/gpu.module';
+import { GpuModule } from './gpu/gpu.module'
 import { MinerModule } from './miner/miner.module'
+import { SharedModule } from './shared/shared.module'
 
 @NgModule({
   declarations: [AppComponent, OverviewComponent, ConfigurationComponent],
@@ -22,7 +23,8 @@ import { MinerModule } from './miner/miner.module'
     AuthModule,
     RigModule,
     GpuModule,
-    MinerModule
+    MinerModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

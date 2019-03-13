@@ -29,7 +29,9 @@ class UserHandler {
     })
 
     res.json({
-      success: true,
+      id: user._id,
+      email: user.email,
+      admin: user.admin,
       token: adminToken
     })
   }
