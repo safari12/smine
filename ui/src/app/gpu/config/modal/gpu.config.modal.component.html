@@ -66,8 +66,26 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">
+  <button 
+    type="button" 
+    class="btn btn-outline-primary" 
+    *ngIf="!loading"
+    [disabled]="configForm.invalid"
+    (click)="onSubmit()">
     {{config ? "Update": "Add"}}
   </button>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    *ngIf="loading"
+    disabled>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Loading...
+  </button>
+  <button 
+    type="button" 
+    class="btn btn-outline-dark" 
+    (click)="activeModal.close('Close click')">
+    Close
+  </button>
 </div>

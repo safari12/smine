@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import GpuConfigService from '../gpu.config.service'
 import { GpuConfig } from '../gpu.config'
+import { delay } from 'rxjs/operators'
 
 @Component({
   selector: 'app-gpu-config-modal',
@@ -26,6 +27,7 @@ export class GpuConfigModalComponent implements OnInit {
   })
 
   submitted = false
+  loading = false
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -49,9 +51,14 @@ export class GpuConfigModalComponent implements OnInit {
   }
 
   addConfig() {
-    this.service.add(this.getConfigValue()).subscribe(() => {
-      this.activeModal.close('Close click')
-    })
+    this.loading = true
+    this.service
+      .add(this.getConfigValue())
+      .pipe(delay(1000))
+      .subscribe(() => {
+        this.loading = false
+        this.activeModal.close('Close click')
+      })
   }
 
   updateConfig() {

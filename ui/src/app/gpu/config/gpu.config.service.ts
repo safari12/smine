@@ -1,5 +1,5 @@
 import { GpuConfig } from './gpu.config'
-import { Observable, of, BehaviorSubject } from 'rxjs'
+import { Observable, of, BehaviorSubject, timer } from 'rxjs'
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { tap } from 'rxjs/operators'
@@ -15,7 +15,7 @@ export default class GpuConfigService {
     return this.configsSubject.value
   }
 
-  add(config: GpuConfig) {
+  add(config: GpuConfig): Observable<GpuConfig> {
     return this.http.post<GpuConfig>('/api/gpu/configs', config).pipe(
       tap(config => {
         this.configsValue.push(config)
