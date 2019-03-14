@@ -18,9 +18,11 @@ export class GpuConfigTableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.service.getAll().subscribe(configs => {
+    this.service.configsSource.subscribe(configs => {
       this.configs = configs
     })
+
+    this.service.getAll()
   }
 
   openConfig(config, idx) {

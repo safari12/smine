@@ -49,7 +49,9 @@ export class GpuConfigModalComponent implements OnInit {
   }
 
   addConfig() {
-    this.service.add(this.getConfigValue())
+    this.service.add(this.getConfigValue()).subscribe(() => {
+      this.activeModal.close('Close click')
+    })
   }
 
   updateConfig() {
@@ -69,16 +71,12 @@ export class GpuConfigModalComponent implements OnInit {
   onSubmit() {
     this.submitted = true
 
-    if (this.configForm.invalid) {
-      return
+    if (!this.configForm.invalid) {
+      if (!this.config) {
+        this.addConfig()
+      } else {
+        this.updateConfig()
+      }
     }
-
-    if (!this.config) {
-      this.addConfig()
-    } else {
-      this.updateConfig()
-    }
-
-    this.activeModal.close('Close click')
   }
 }
