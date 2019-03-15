@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const got = require('got')
 
-const MinerConfig = require('./config')
+const MinerConfig = require('./config').model
 const config = require('../config')
 
 const Schema = mongoose.Schema

@@ -1,15 +1,11 @@
 const express = require('express')
-
-const asyncHandler = require('../async/handler')
 const handler = require('./handler')
+const configRouter = require('./config/router')
+const token = require('../token')
 
 const router = express.Router()
-
+router.use([token.check, token.checkAdmin])
 router.route('/supported').get(handler.getSupported)
-
-router
-  .route('/:miner/configs')
-  .post(asyncHandler(handler.addConfig))
-  .get(asyncHandler(handler.getConfigs))
+router.use('/configs', configRouter)
 
 module.exports = router
