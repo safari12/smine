@@ -3,6 +3,7 @@ import { Observable, of, BehaviorSubject, timer } from 'rxjs'
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { tap } from 'rxjs/operators'
+import * as _ from 'lodash'
 
 @Injectable()
 export default class GpuConfigService {
@@ -18,14 +19,18 @@ export default class GpuConfigService {
   add(config: GpuConfig): Observable<GpuConfig> {
     return this.http.post<GpuConfig>('/api/gpu/configs', config).pipe(
       tap(config => {
-        this.configsValue.push(config)
-        this.configsSubject.next(this.configsValue)
+        this.configsSubject.next(_.concat(this.configsValue, config))
       })
     )
   }
 
-  remove(idx) {
-    // this.configs.splice(idx, 1)
+  remove(config: GpuConfig) {
+    return this.http.delete<GpuConfig>(`/api/gpu/configs/${config._id}`).pipe(
+      tap(config => {
+        _.remove(this.configsValue, { _id: config._id })
+        this.configsSubject.next(this.configsValue)
+      })
+    )
   }
 
   getAll() {

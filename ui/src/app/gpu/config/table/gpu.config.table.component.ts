@@ -35,7 +35,7 @@ export class GpuConfigTableComponent implements OnInit {
     })
   }
 
-  removeConfig(idx) {
-    this.service.remove(idx)
+  removeConfig(config) {
+    this.service.remove(config).subscribe(() => {})
   }
 }

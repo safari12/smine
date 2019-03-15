@@ -17,6 +17,7 @@ class Power {
 }
 
 export class GpuConfig {
+  _id?: string
   name: string
   api: API
   card: Card
