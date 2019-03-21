@@ -12,7 +12,8 @@ export class MinerConfigTableComponent implements OnInit {
   constructor(private service: MinerConfigService) {}
 
   ngOnInit() {
-    this.service.getAll().subscribe(configs => {
+    this.service.find().subscribe(configs => {
+      console.log('configs: ', configs)
       this.configs = configs
     })
   }

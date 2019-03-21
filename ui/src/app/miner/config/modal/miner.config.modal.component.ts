@@ -45,7 +45,7 @@ export class MinerConfigModalComponent implements OnInit {
   }
 
   addConfig() {
-    this.service.add(this.getConfigValue())
+    // this.service.add(this.getConfigValue())
   }
 
   updateConfig() {

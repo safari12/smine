@@ -1,6 +1,7 @@
 import API from 'src/app/net/api'
 
 export class MinerConfig {
+  id?: string
   name: string
   api: API
 
