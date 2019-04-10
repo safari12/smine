@@ -1,29 +1,31 @@
 <div class="container">
   <div class="row mt-5">
     <div class="col-4">
-      <h2>GPU Configurations</h2>
+      <h3>GPU Configurations</h3>
     </div>
-    <div class="col-1 offset-7 text-right">
+    <div class="col-2 offset-6">
       <button class="btn btn-success w-100" (click)="addGPUConfig()">
         <i class="fa fa-plus"></i>
       </button>
     </div>
   </div>
-  <div class="row">
+  <div class="row mt-1">
     <div class="col-12">
       <app-gpu-config-table></app-gpu-config-table>
     </div>
   </div>
 
   <div class="row mt-4">
-    <div class="col-5">
-      <h2>Miner Configurations</h2>
+    <div class="col-4">
+      <h3>Miner Configurations</h3>
     </div>
-    <div class="col-1 offset-6 text-right">
+    <div class="col-2 offset-6">
       <button class="btn btn-success w-100" (click)="addMinerConfig()">
         <i class="fa fa-plus"></i>
       </button>
     </div>
+  </div>
+  <div class="row mt-1">
     <div class="col-12">
       <app-miner-config-table></app-miner-config-table>
     </div>

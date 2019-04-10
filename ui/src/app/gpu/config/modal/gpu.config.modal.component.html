@@ -2,6 +2,9 @@
   <h4 class="modal-title">
     {{config ? "GPU Config Details" : "Add New GPU Config"}}
   </h4>
+  <button type="button" class="close" aria-label="Close" (click)="onClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 <div class="modal-body">
   <form [formGroup]="configForm">
@@ -66,26 +69,15 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button 
-    type="button" 
-    class="btn btn-outline-primary" 
-    *ngIf="!loading"
-    [disabled]="configForm.invalid"
+  <button type="button" class="btn btn-outline-primary" *ngIf="!loading" [disabled]="configForm.invalid"
     (click)="onSubmit()">
     {{config ? "Update": "Add"}}
   </button>
-  <button
-    type="button"
-    class="btn btn-primary"
-    *ngIf="loading"
-    disabled>
+  <button type="button" class="btn btn-primary" *ngIf="loading" disabled>
     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     Loading...
   </button>
-  <button 
-    type="button" 
-    class="btn btn-outline-dark" 
-    (click)="activeModal.close('Close click')">
+  <button type="button" class="btn btn-outline-dark" (click)="onClose()">
     Close
   </button>
 </div>

@@ -86,4 +86,8 @@ export class GpuConfigModalComponent implements OnInit {
       }
     }
   }
+
+  onClose() {
+    this.activeModal.close('Close click')
+  }
 }

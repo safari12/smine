@@ -15,13 +15,15 @@ export class ConfigurationComponent implements OnInit {
 
   addGPUConfig() {
     this.modalService.open(GpuConfigModalComponent, {
-      size: 'lg'
+      size: 'lg',
+      centered: true
     })
   }
 
   addMinerConfig() {
     this.modalService.open(MinerConfigModalComponent, {
-      size: 'lg'
+      size: 'lg',
+      centered: true
     })
   }
 }
