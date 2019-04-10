@@ -21,5 +21,13 @@ module.exports = {
   },
   miner: {
     supported: ['xmr-stak', 'bminer']
+  },
+  gpu: {
+    api: {
+      port: process.env.SM_GPU_API_PORT || 6969,
+      endpoint: process.env.SM_GPU_API_ENDPOINT || '/gpu',
+      timeout: process.env.SM_GPU_API_TIMEOUT || 5000,
+      retries: process.env.SM_GPU_API_RETRIES || 2
+    }
   }
 }
