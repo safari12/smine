@@ -8,10 +8,11 @@ import {
 import AuthService from '../auth/auth.service'
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
+import { Router } from '@angular/router'
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -19,7 +20,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError(err => {
-        if ([401, 403].indexOf(err.status) !== -1) {
+        if (
+          this.router.url !== '/login' &&
+          [401, 403].indexOf(err.status) !== -1
+        ) {
           this.authService.logout()
           location.reload(true)
         }

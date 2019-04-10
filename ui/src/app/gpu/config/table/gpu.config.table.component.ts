@@ -30,9 +30,6 @@ export class GpuConfigTableComponent implements OnInit {
       size: 'lg'
     })
     modalRef.componentInstance.config = config
-    modalRef.componentInstance.updateConfigEvent.subscribe(config => {
-      this.configs[idx] = config
-    })
   }
 
   removeConfig(config) {

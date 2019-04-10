@@ -33,6 +33,18 @@ export default class GpuConfigService {
     )
   }
 
+  update(config: GpuConfig) {
+    return this.http
+      .put<GpuConfig>(`/api/gpu/configs/${config._id}`, config)
+      .pipe(
+        tap(() => {
+          const idx = _.findIndex(this.configsValue, { _id: config._id })
+          this.configsValue[idx] = config
+          this.configsSubject.next(this.configsValue)
+        })
+      )
+  }
+
   getAll() {
     this.http.get<GpuConfig[]>('/api/gpu/configs').subscribe(configs => {
       this.configsSubject.next(configs)

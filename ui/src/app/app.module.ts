@@ -13,6 +13,7 @@ import { GpuModule } from './gpu/gpu.module'
 import { MinerModule } from './miner/miner.module'
 import { TokenInterceptor } from './intercepters/token.intercepter'
 import { HTTP_INTERCEPTORS } from '@angular/common/http'
+import { ErrorInterceptor } from './intercepters/error.intercepter'
 
 @NgModule({
   declarations: [AppComponent, OverviewComponent, ConfigurationComponent],
@@ -30,6 +31,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http'
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ],

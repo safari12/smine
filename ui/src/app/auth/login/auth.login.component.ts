@@ -42,11 +42,11 @@ export class AuthLoginComponent implements OnInit {
       .login(this.f.email.value, this.f.password.value)
       .pipe(first())
       .subscribe(
-        data => {
+        () => {
           this.router.navigate(['/'])
         },
         error => {
-          this.error = error.error
+          this.error = error
         }
       )
   }

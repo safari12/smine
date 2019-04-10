@@ -56,15 +56,23 @@ export class GpuConfigModalComponent implements OnInit {
   }
 
   updateConfig() {
-    this.updateConfigEvent.emit(this.getConfigValue())
+    const value = this.getConfigValue()
+    this.loading = true
+    this.config.name = value.name
+    this.config.power = value.power
+    this.service
+      .update(this.config)
+      .pipe(delay(1000))
+      .subscribe(() => {
+        this.loading = false
+        this.activeModal.close('Close click')
+      })
   }
 
   getConfigValue(): GpuConfig {
     const value = this.configForm.value
     return {
       name: value.name,
-      api: value.api,
-      card: { count: value.cardCount },
       power: { limit: value.powerLimit }
     }
   }
