@@ -19,7 +19,6 @@ export class GpuConfigModalComponent implements OnInit {
     powerLimit: ['', [Validators.required, Validators.min(90)]]
   })
 
-  submitted = false
   loading = false
 
   constructor(
@@ -32,15 +31,17 @@ export class GpuConfigModalComponent implements OnInit {
     if (this.config) {
       this.configForm.patchValue({
         name: this.config.name,
-        cardCount: this.config.card.count,
-        powerLimit: this.config.power.limit,
-        api: this.config.api
+        powerLimit: this.config.power.limit
       })
     }
   }
 
-  get cf() {
-    return this.configForm.controls
+  get name() {
+    return this.configForm.controls.name
+  }
+
+  get powerLimit() {
+    return this.configForm.controls.powerLimit
   }
 
   addConfig() {
@@ -69,8 +70,6 @@ export class GpuConfigModalComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true
-
     if (!this.configForm.invalid) {
       if (!this.config) {
         this.addConfig()

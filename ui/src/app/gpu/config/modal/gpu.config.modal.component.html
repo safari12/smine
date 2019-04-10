@@ -12,18 +12,18 @@
       <div class="form-group col-6">
         <label for="name">Name</label>
         <input type="text" formControlName="name" class="form-control" id="name" placeholder="Enter Name">
-        <div *ngIf="submitted && cf.name.errors" class="text-danger">
-          <div *ngIf="cf.name.errors.required">Required</div>
+        <div *ngIf="(name.dirty || name.touched) && name.errors" class="text-danger">
+          <div *ngIf="name.errors.required">Required</div>
         </div>
       </div>
       <div class="form-group col-6">
         <label for="powerLimit">Power Limit</label>
         <input type="number" formControlName="powerLimit" class="form-control" id="powerLimit"
           placeholder="Enter Power Limit">
-        <div *ngIf="submitted && cf.powerLimit.errors" class="text-danger">
-          <div *ngIf="cf.powerLimit.errors.required">Required</div>
-          <div *ngIf="cf.powerLimit.errors.min">
-            {{"Minimum is " + cf.powerLimit.errors.min.min + "W"}}
+        <div *ngIf="(powerLimit.dirty || powerLimit.touched) && powerLimit.errors" class="text-danger">
+          <div *ngIf="powerLimit.errors.required">Required</div>
+          <div *ngIf="powerLimit.errors.min">
+            {{"Minimum is " + powerLimit.errors.min.min + "W"}}
           </div>
         </div>
       </div>
