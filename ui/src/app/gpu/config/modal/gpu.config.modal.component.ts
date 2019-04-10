@@ -16,14 +16,7 @@ export class GpuConfigModalComponent implements OnInit {
 
   configForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
-    cardCount: ['', [Validators.required, Validators.min(1)]],
-    powerLimit: ['', [Validators.required, Validators.min(75)]],
-    api: this.fb.group({
-      endpoint: ['', Validators.required],
-      port: ['', Validators.required],
-      retries: ['2'],
-      timeout: ['2000']
-    })
+    powerLimit: ['', [Validators.required, Validators.min(90)]]
   })
 
   submitted = false

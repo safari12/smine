@@ -6,28 +6,17 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
-  <form [formGroup]="configForm">
+<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+  <div class="modal-body">
     <div class="form-row">
-      <div class="form-group col-4">
+      <div class="form-group col-6">
         <label for="name">Name</label>
         <input type="text" formControlName="name" class="form-control" id="name" placeholder="Enter Name">
         <div *ngIf="submitted && cf.name.errors" class="text-danger">
           <div *ngIf="cf.name.errors.required">Required</div>
         </div>
       </div>
-      <div class="form-group col-4">
-        <label for="cardCount">Number of Cards</label>
-        <input type="number" formControlName="cardCount" class="form-control" id="cardCount"
-          placeholder="Enter Number of Cards">
-        <div *ngIf="submitted && cf.cardCount.errors" class="text-danger">
-          <div *ngIf="cf.cardCount.errors.required">Required</div>
-          <div *ngIf="cf.cardCount.errors.min">
-            {{"Minimum is " + cf.cardCount.errors.min.min + " cards"}}
-          </div>
-        </div>
-      </div>
-      <div class="form-group col-4">
+      <div class="form-group col-6">
         <label for="powerLimit">Power Limit</label>
         <input type="number" formControlName="powerLimit" class="form-control" id="powerLimit"
           placeholder="Enter Power Limit">
@@ -39,45 +28,17 @@
         </div>
       </div>
     </div>
-    <div class="form-row mt-2">
-      <h4 class="ml-1">API</h4>
-    </div>
-    <div formGroupName="api" class="form-row">
-      <div class="form-group col-6">
-        <label for="endpoint">Endpoint</label>
-        <input type="text" formControlName="endpoint" class="form-control" id="endpoint" placeholder="Enter Endpoint">
-        <div *ngIf="submitted && cf.api.controls.endpoint.errors" class="text-danger">
-          <div *ngIf="cf.api.controls.endpoint.errors.required">Required</div>
-        </div>
-      </div>
-      <div class="form-group col-6">
-        <label for="port">Port</label>
-        <input type="number" formControlName="port" class="form-control" id="port" placeholder="Enter Port">
-        <div *ngIf="submitted && cf.api.controls.port.errors" class="text-danger">
-          <div *ngIf="cf.api.controls.port.errors.required">Required</div>
-        </div>
-      </div>
-      <div class="form-group col-6">
-        <label for="retries">Retries</label>
-        <input type="number" formControlName="retries" class="form-control" id="retries" placeholder="Enter Retries">
-      </div>
-      <div class="form-group col-6">
-        <label for="timeout">Timeout</label>
-        <input type="number" formControlName="timeout" class="form-control" id="timeout" placeholder="Enter Timeout">
-      </div>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-primary" *ngIf="!loading" [disabled]="configForm.invalid"
-    (click)="onSubmit()">
-    {{config ? "Update": "Add"}}
-  </button>
-  <button type="button" class="btn btn-primary" *ngIf="loading" disabled>
-    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    Loading...
-  </button>
-  <button type="button" class="btn btn-outline-dark" (click)="onClose()">
-    Close
-  </button>
-</div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-primary" *ngIf="!loading" [disabled]="configForm.invalid">
+      {{config ? "Update": "Add"}}
+    </button>
+    <button type="button" class="btn btn-primary" *ngIf="loading" disabled>
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Loading...
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="onClose()">
+      Close
+    </button>
+  </div>
+</form>
