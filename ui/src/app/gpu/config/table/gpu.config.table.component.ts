@@ -25,7 +25,7 @@ export class GpuConfigTableComponent implements OnInit {
     this.service.getAll()
   }
 
-  openConfig(config, idx) {
+  openConfig(config) {
     const modalRef = this.modalService.open(GpuConfigModalComponent, {
       size: 'lg'
     })

@@ -13,7 +13,6 @@ export class MinerConfigTableComponent implements OnInit {
 
   ngOnInit() {
     this.service.find().subscribe(configs => {
-      console.log('configs: ', configs)
       this.configs = configs
     })
   }

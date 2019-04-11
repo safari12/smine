@@ -20,7 +20,14 @@ module.exports = {
     }
   },
   miner: {
-    supported: ['xmr-stak', 'bminer']
+    supported: {
+      'xmr-stak': {
+        coins: ['monero', 'aeon', 'masari', 'loki']
+      },
+      bminer: {
+        coins: ['grin']
+      }
+    }
   },
   gpu: {
     api: {

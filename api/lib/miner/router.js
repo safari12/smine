@@ -6,6 +6,7 @@ const token = require('../token')
 const router = express.Router()
 router.use([token.check, token.checkAdmin])
 router.route('/supported').get(handler.getSupported)
+router.route('/:type/coins').get(handler.getSupportedCoins)
 router.use('/configs', configRouter)
 
 module.exports = router
