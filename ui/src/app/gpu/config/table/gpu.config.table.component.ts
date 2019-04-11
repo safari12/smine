@@ -10,7 +10,6 @@ import GpuConfigService from '../gpu.config.service'
 })
 export class GpuConfigTableComponent implements OnInit {
   configs = []
-  selectedConfig: any = null
 
   constructor(
     private modalService: NgbModal,
@@ -18,11 +17,10 @@ export class GpuConfigTableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.service.configsSource.subscribe(configs => {
+    this.service.modelSource.subscribe(configs => {
       this.configs = configs
     })
-
-    this.service.getAll()
+    this.getConfigs()
   }
 
   openConfig(config) {
@@ -34,5 +32,9 @@ export class GpuConfigTableComponent implements OnInit {
 
   removeConfig(config) {
     this.service.remove(config).subscribe(() => {})
+  }
+
+  getConfigs() {
+    this.service.readAll()
   }
 }

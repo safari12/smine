@@ -47,7 +47,7 @@ export class GpuConfigModalComponent implements OnInit {
   addConfig() {
     this.loading = true
     this.service
-      .add(this.getConfigValue())
+      .create(this.getConfigValue())
       .pipe(delay(1000))
       .subscribe(() => {
         this.loading = false

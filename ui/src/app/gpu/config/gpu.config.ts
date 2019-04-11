@@ -1,18 +1,10 @@
-class Power {
-  limit: number
+import MongoDocument from '../../shared/mongo/mongo.document'
 
-  constructor(limit) {
-    this.limit = limit
-  }
+interface Power {
+  limit: number
 }
 
-export class GpuConfig {
-  _id?: string
+export interface GpuConfig extends MongoDocument {
   name: string
   power: Power
-
-  constructor(name: string, power: Power) {
-    this.name = name
-    this.power = power
-  }
 }

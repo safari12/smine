@@ -1,7 +1,7 @@
 <table class="table table-hover">
   <thead app-gpu-config-table-header></thead>
   <tbody>
-    <tr *ngFor="let config of configs; index as i">
+    <tr *ngFor="let config of configs">
       <th scope="row">{{ config.name }}</th>
       <td>{{ config.power.limit }}W</td>
       <td class="text-right">

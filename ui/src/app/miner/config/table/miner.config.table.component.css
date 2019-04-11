@@ -5,3 +5,7 @@ tbody tr > td {
 tbody tr > th {
   vertical-align: middle;
 }
+
+.table {
+  border-bottom: 1px solid #dddddd;
+}
