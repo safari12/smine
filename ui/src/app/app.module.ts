@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
+import { HTTP_INTERCEPTORS } from '@angular/common/http'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 
 import { AppRoutingModule } from './app-routing.module'
@@ -12,7 +13,6 @@ import { ConfigurationComponent } from './configuration/configuration.component'
 import { GpuModule } from './gpu/gpu.module'
 import { MinerModule } from './miner/miner.module'
 import { TokenInterceptor } from './intercepters/token.intercepter'
-import { HTTP_INTERCEPTORS } from '@angular/common/http'
 import { ErrorInterceptor } from './intercepters/error.intercepter'
 
 @NgModule({

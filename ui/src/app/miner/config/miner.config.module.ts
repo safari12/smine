@@ -5,7 +5,6 @@ import { MinerConfigTableComponent } from './table/miner.config.table.component'
 import MinerConfigService from './miner.config.service'
 import { MinerConfigModalComponent } from './modal/miner.config.modal.component'
 import { ReactiveFormsModule } from '@angular/forms'
-import { CrudModule } from 'ngx-crud'
 
 @NgModule({
   declarations: [
@@ -13,7 +12,7 @@ import { CrudModule } from 'ngx-crud'
     MinerConfigTableComponent,
     MinerConfigModalComponent
   ],
-  imports: [CommonModule, ReactiveFormsModule, CrudModule],
+  imports: [CommonModule, ReactiveFormsModule],
   entryComponents: [MinerConfigModalComponent],
   providers: [MinerConfigService],
   exports: [MinerConfigTableComponent, MinerConfigTableHeaderComponent]
