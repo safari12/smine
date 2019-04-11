@@ -1,12 +1,7 @@
 import API from 'src/app/net/api'
+import MongoDocument from '../../shared/mongo/mongo.document'
 
-export class MinerConfig {
-  id?: string
+export interface MinerConfig extends MongoDocument {
   name: string
   api: API
-
-  constructor(name: string, api: API) {
-    this.name = name
-    this.api = api
-  }
 }
