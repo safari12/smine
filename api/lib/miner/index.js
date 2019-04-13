@@ -17,13 +17,6 @@ const MinerSchema = new mongoose.Schema(
   { _id: false }
 )
 
-MinerSchema.pre('validate', async function() {
-  const minerConfig = await MinerConfig.findById(this.config)
-  if (minerConfig.miner != this.name) {
-    throw new Error('config is not compatible with miner')
-  }
-})
-
 MinerSchema.methods.syncHashrate = async function(hostname) {
   try {
     const minerConfig = await MinerConfig.findById(this.config)
