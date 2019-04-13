@@ -2,25 +2,15 @@ const mongoose = require('mongoose')
 const got = require('got')
 
 const MinerConfig = require('./config').model
-const config = require('../config')
 
-const Schema = mongoose.Schema
-
-const MinerSchema = new Schema(
+const MinerSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      enum: {
-        values: config.miner.supported,
-        message: 'miner not supported'
-      }
-    },
     hashrate: {
       type: Number,
       default: 0
     },
     config: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'miner_configs'
     }
   },
