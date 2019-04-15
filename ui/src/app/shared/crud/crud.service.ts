@@ -32,7 +32,7 @@ export class CRUDService<T extends MongoDocument> {
     })
   }
 
-  remove(model) {
+  remove(model: T) {
     return this.http.delete<T>(`${this.endpoint}/${model._id}`).pipe(
       tap(model => {
         _.remove(this.modelValue, (n: T) => {

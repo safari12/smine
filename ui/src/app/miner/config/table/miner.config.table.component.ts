@@ -1,24 +1,22 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import MinerConfigService from '../miner.config.service'
+import { MinerConfig } from '../miner.config'
 
 @Component({
   selector: 'app-miner-config-table',
   templateUrl: './miner.config.table.component.html',
   styleUrls: ['./miner.config.table.component.css']
 })
-export class MinerConfigTableComponent implements OnInit {
-  configs = []
+export class MinerConfigTableComponent {
+  @Input() configs: MinerConfig[]
+  @Output() onEdit = new EventEmitter<MinerConfig>()
+  @Output() onDelete = new EventEmitter<MinerConfig>()
 
-  constructor(private service: MinerConfigService) {}
-
-  ngOnInit() {
-    this.service.modelSource.subscribe(configs => {
-      this.configs = configs
-    })
-    this.getConfigs()
+  edit(config: MinerConfig) {
+    this.onEdit.emit(config)
   }
 
-  getConfigs() {
-    this.service.readAll()
+  delete(config: MinerConfig) {
+    this.onDelete.emit(config)
   }
 }

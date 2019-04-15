@@ -2,7 +2,7 @@
   <h4 class="modal-title">
     {{config ? "GPU Config Details" : "Add New GPU Config"}}
   </h4>
-  <button type="button" class="close" aria-label="Close" (click)="onClose()">
+  <button type="button" class="close" aria-label="Close" (click)="close()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -37,7 +37,7 @@
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Loading...
     </button>
-    <button type="button" class="btn btn-outline-dark" (click)="onClose()">
+    <button type="button" class="btn btn-outline-dark" (click)="close()">
       Close
     </button>
   </div>

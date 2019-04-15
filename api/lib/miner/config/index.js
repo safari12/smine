@@ -12,8 +12,6 @@ const MinerConfigSchema = new Schema({
   miner: {
     type: String,
     required: true,
-    unique: true,
-    index: true,
     enum: {
       values: Object.keys(config.miner.supported),
       message: 'miner not supported'

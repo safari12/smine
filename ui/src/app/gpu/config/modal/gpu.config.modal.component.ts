@@ -51,7 +51,7 @@ export class GpuConfigModalComponent implements OnInit {
       .pipe(delay(1000))
       .subscribe(() => {
         this.loading = false
-        this.activeModal.close('Close click')
+        this.close()
       })
   }
 
@@ -65,7 +65,7 @@ export class GpuConfigModalComponent implements OnInit {
       .pipe(delay(1000))
       .subscribe(() => {
         this.loading = false
-        this.activeModal.close('Close click')
+        this.close()
       })
   }
 
@@ -87,7 +87,7 @@ export class GpuConfigModalComponent implements OnInit {
     }
   }
 
-  onClose() {
+  close() {
     this.activeModal.close('Close click')
   }
 }

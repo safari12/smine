@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import { MinerConfig } from '../miner.config'
-import MinerConfigService from '../miner.config.service'
 
 @Component({
   selector: 'app-miner-config-modal',
@@ -11,10 +10,14 @@ import MinerConfigService from '../miner.config.service'
 })
 export class MinerConfigModalComponent implements OnInit {
   @Input() config: MinerConfig
-  @Output() updateConfigEvent = new EventEmitter<MinerConfig>()
+  @Input() miners: string[]
+  @Input() loading: boolean
+  @Output() onUpdate = new EventEmitter<MinerConfig>()
+  @Output() onCreate = new EventEmitter<MinerConfig>()
 
-  configForm: FormGroup = this.fb.group({
+  form: FormGroup = this.fb.group({
     name: ['', Validators.required],
+    miner: ['', Validators.required],
     api: this.fb.group({
       endpoint: ['', Validators.required],
       port: ['', Validators.required],
@@ -23,56 +26,82 @@ export class MinerConfigModalComponent implements OnInit {
     })
   })
 
-  submitted = false
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private fb: FormBuilder,
-    private service: MinerConfigService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {}
 
   ngOnInit() {
     if (this.config) {
-      this.configForm.patchValue({
+      this.form.patchValue({
         name: this.config.name,
+        miner: this.config.miner,
         api: this.config.api
+      })
+    } else {
+      this.form.patchValue({
+        miner: this.miners[0]
       })
     }
   }
 
-  get cf() {
-    return this.configForm.controls
+  get name() {
+    return this.form.controls.name
   }
 
-  addConfig() {
-    // this.service.add(this.getConfigValue())
+  get miner() {
+    return this.form.controls.miner
   }
 
-  updateConfig() {
-    this.updateConfigEvent.emit(this.getConfigValue())
+  get api() {
+    return this.form.controls.api as FormGroup
+  }
+
+  get endpoint() {
+    return this.api.controls.endpoint
+  }
+
+  get port() {
+    return this.api.controls.port
+  }
+
+  get retries() {
+    return this.api.controls.retries
+  }
+
+  get timeout() {
+    return this.api.controls.timeout
+  }
+
+  create() {
+    this.onCreate.emit(this.getConfigValue())
+  }
+
+  update() {
+    const value = this.getConfigValue()
+    this.config.name = value.name
+    this.config.miner = value.miner
+    this.config.api = value.api
+    this.onUpdate.emit(this.config)
   }
 
   getConfigValue(): MinerConfig {
-    const value = this.configForm.value
+    const value = this.form.value
     return {
       name: value.name,
+      miner: value.miner,
       api: value.api
     }
   }
 
   onSubmit() {
-    this.submitted = true
-
-    if (this.configForm.invalid) {
-      return
+    if (!this.form.invalid) {
+      if (!this.config) {
+        this.create()
+      } else {
+        this.update()
+      }
     }
+  }
 
-    if (!this.config) {
-      this.addConfig()
-    } else {
-      this.updateConfig()
-    }
-
-    this.activeModal.close('Close click')
+  close() {
+    this.activeModal.close()
   }
 }
