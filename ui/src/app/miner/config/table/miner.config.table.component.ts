@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
-import MinerConfigService from '../miner.config.service'
+import { Component, Input, Output, EventEmitter } from '@angular/core'
 import { MinerConfig } from '../miner.config'
 
 @Component({
