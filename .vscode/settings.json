@@ -1,4 +1,8 @@
 {
   "javascript.validate.enable": false,
-  "prettier.disableLanguages": ["html"]
+  "prettier.disableLanguages": ["html"],
+  "html.format.enable": false,
+  "[html]": {
+    "editor.formatOnSave": false
+  }
 }
