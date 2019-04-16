@@ -1,40 +1,22 @@
-import { Component, OnInit } from '@angular/core'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { GpuConfigModalComponent } from '../modal/gpu.config.modal.component'
-import GpuConfigService from '../gpu.config.service'
+import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { GpuConfig } from '../gpu.config'
 
 @Component({
   selector: 'app-gpu-config-table',
   templateUrl: './gpu.config.table.component.html',
   styleUrls: ['./gpu.config.table.component.css']
 })
-export class GpuConfigTableComponent implements OnInit {
-  configs = []
+export class GpuConfigTableComponent {
+  @Input() configs: GpuConfig[]
 
-  constructor(
-    private modalService: NgbModal,
-    private service: GpuConfigService
-  ) {}
+  @Output() onEdit = new EventEmitter<GpuConfig>()
+  @Output() onDelete = new EventEmitter<GpuConfig>()
 
-  ngOnInit() {
-    this.service.modelSource.subscribe(configs => {
-      this.configs = configs
-    })
-    this.getConfigs()
+  edit(config: GpuConfig) {
+    this.onEdit.emit(config)
   }
 
-  openConfig(config) {
-    const modalRef = this.modalService.open(GpuConfigModalComponent, {
-      size: 'lg'
-    })
-    modalRef.componentInstance.config = config
-  }
-
-  removeConfig(config) {
-    this.service.remove(config).subscribe(() => {})
-  }
-
-  getConfigs() {
-    this.service.readAll()
+  delete(config: GpuConfig) {
+    this.onDelete.emit(config)
   }
 }

@@ -5,10 +5,12 @@
       <th scope="row">{{ config.name }}</th>
       <td>{{ config.power.limit }}W</td>
       <td class="text-right">
-        <button class="btn btn-primary mr-3" (click)="openConfig(config)">
+        <button class="btn btn-primary mr-3"
+                (click)="edit(config)">
           <i class="fa fa-edit"></i>
         </button>
-        <button class="btn btn-danger" (click)="removeConfig(config)">
+        <button class="btn btn-danger"
+                (click)="delete(config)">
           <i class="fa fa-trash"></i>
         </button>
       </td>

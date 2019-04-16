@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
-import GpuConfigService from '../gpu.config.service'
 import { GpuConfig } from '../gpu.config'
-import { delay } from 'rxjs/operators'
 
 @Component({
   selector: 'app-gpu-config-modal',
@@ -12,24 +10,20 @@ import { delay } from 'rxjs/operators'
 })
 export class GpuConfigModalComponent implements OnInit {
   @Input() config: GpuConfig
-  @Output() updateConfigEvent = new EventEmitter<GpuConfig>()
+  @Input() loading = false
+  @Output() onCreate = new EventEmitter<GpuConfig>()
+  @Output() onUpdate = new EventEmitter<GpuConfig>()
 
-  configForm: FormGroup = this.fb.group({
+  form: FormGroup = this.fb.group({
     name: ['', Validators.required],
     powerLimit: ['', [Validators.required, Validators.min(90)]]
   })
 
-  loading = false
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private fb: FormBuilder,
-    private service: GpuConfigService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {}
 
   ngOnInit() {
     if (this.config) {
-      this.configForm.patchValue({
+      this.form.patchValue({
         name: this.config.name,
         powerLimit: this.config.power.limit
       })
@@ -37,40 +31,26 @@ export class GpuConfigModalComponent implements OnInit {
   }
 
   get name() {
-    return this.configForm.controls.name
+    return this.form.controls.name
   }
 
   get powerLimit() {
-    return this.configForm.controls.powerLimit
+    return this.form.controls.powerLimit
   }
 
-  addConfig() {
-    this.loading = true
-    this.service
-      .create(this.getConfigValue())
-      .pipe(delay(1000))
-      .subscribe(() => {
-        this.loading = false
-        this.close()
-      })
+  create() {
+    this.onCreate.emit(this.getConfigValue())
   }
 
-  updateConfig() {
+  update() {
     const value = this.getConfigValue()
-    this.loading = true
     this.config.name = value.name
-    this.config.power = value.power
-    this.service
-      .update(this.config)
-      .pipe(delay(1000))
-      .subscribe(() => {
-        this.loading = false
-        this.close()
-      })
+    this.config.power.limit = value.power.limit
+    this.onUpdate.emit(this.config)
   }
 
   getConfigValue(): GpuConfig {
-    const value = this.configForm.value
+    const value = this.form.value
     return {
       name: value.name,
       power: { limit: value.powerLimit }
@@ -78,16 +58,16 @@ export class GpuConfigModalComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.configForm.invalid) {
+    if (this.form.valid) {
       if (!this.config) {
-        this.addConfig()
+        this.create()
       } else {
-        this.updateConfig()
+        this.update()
       }
     }
   }
 
   close() {
-    this.activeModal.close('Close click')
+    this.activeModal.close()
   }
 }
