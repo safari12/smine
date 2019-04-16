@@ -1,5 +1,3 @@
-/* @media (min-width: 1200px) {
-  .container {
-    max-width: 960px;
-  }
-} */
+:host ::ng-deep app-miner-configs .container-fluid {
+  margin-top: 25px;
+}

@@ -14,21 +14,5 @@
       <app-gpu-config-table></app-gpu-config-table>
     </div>
   </div>
-  <div class="row mt-4">
-    <div class="col-4">
-      <h3>Miner Configurations</h3>
-    </div>
-    <div class="col-2 offset-6">
-      <button class="btn btn-success w-100" (click)="createMinerConfig()">
-        <i class="fa fa-plus"></i>
-      </button>
-    </div>
-  </div>
-  <div class="row mt-1">
-    <div class="col-12">
-      <app-miner-config-table [configs]="minerConfigs" (onEdit)="editMinerConfig($event)"
-        (onDelete)="deleteMinerConfig($event)">
-      </app-miner-config-table>
-    </div>
-  </div>
+  <app-miner-configs></app-miner-configs>
 </div>
