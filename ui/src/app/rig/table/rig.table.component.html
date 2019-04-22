@@ -5,7 +5,9 @@
       <th scope="row">{{rig.hostname}}</th>
       <td class="text-success"><b>ONLINE</b></td>
       <td>
-        xmr-stak
+        <span *ngFor="let miner of rig.miners">
+          {{miner.name}}
+        </span>
       </td>
       <td>
         <span class="text-success"><b>25 kH/s</b></span>

@@ -18,6 +18,10 @@ const RigSchema = new Schema({
     type: Boolean,
     default: false
   },
+  hashrate: {
+    type: Number,
+    default: 0
+  },
   miners: {
     type: [MinerSchema],
     required: true
@@ -28,11 +32,11 @@ const RigSchema = new Schema({
   }
 })
 
-RigSchema.methods.ping = async function() {
+RigSchema.methods.ping = async function () {
   this.pingable = await net.ping(this.hostname)
 }
 
-RigSchema.methods.syncMiners = function() {
+RigSchema.methods.syncMiners = function () {
   return Promise.all(
     _.map(this.miners, m => {
       return m.syncHashrate(this.hostname)
@@ -40,7 +44,7 @@ RigSchema.methods.syncMiners = function() {
   )
 }
 
-RigSchema.methods.syncGPUCards = function() {
+RigSchema.methods.syncGPUCards = function () {
   return this.gpu.syncCards(this.hostname)
 }
 

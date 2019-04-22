@@ -1,0 +1,68 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    Create Rig
+  </h4>
+  <button type="button"
+          class="close"
+          aria-label="Close"
+          (click)="close()"
+          aria-hidden="true">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<form [formGroup]="form"
+      (ngSubmit)="onSubmit()">
+  <div class="modal-body">
+    <div class="form-row">
+      <div class="form-group col-4">
+        <label for="hostname">Hostname</label>
+        <input type="text"
+               formControlName="hostname"
+               class="form-control"
+               id="hostname"
+               placeholder="Enter Hostname">
+      </div>
+      <div class="form-group col-4">
+        <label for="gpu">GPU Config</label>
+        <select name="gpu"
+                id="gpu"
+                formControlName="gpu">
+          <option [value]="config"
+                  *ngFor="let config of gpuConfigs">
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-4">
+        <label for="miners">Miners</label>
+        <ng-select [items]="minerConfigs"
+                   [selectOnTab]="true"
+                   placeholder="Select Miner"
+                   formControlName="miners">
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit"
+            class="btn btn-outline-primary"
+            *ngIf="!loading"
+            [disabled]="form.invalid">
+      Add
+    </button>
+    <button type="button"
+            class="btn btn-primary"
+            *ngIf="loading"
+            disabled>
+      <span class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"></span>
+      Loading...
+    </button>
+    <button type="button"
+            class="btn btn-outline-dark"
+            (click)="close()">
+      Close
+    </button>
+  </div>
+</form>
