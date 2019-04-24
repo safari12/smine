@@ -36,12 +36,15 @@ RigSchema.methods.ping = async function () {
   this.pingable = await net.ping(this.hostname)
 }
 
-RigSchema.methods.syncMiners = function () {
-  return Promise.all(
+RigSchema.methods.syncMiners = async function () {
+  await Promise.all(
     _.map(this.miners, m => {
       return m.syncHashrate(this.hostname)
     })
   )
+  this.hashrate = _.reduce(this.miners, (h, m) => {
+    return h + m.hashrate
+  }, 0)
 }
 
 RigSchema.methods.syncGPUCards = function () {
