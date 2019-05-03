@@ -1,8 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const token = require('./token')
-
 const userRouter = require('./user/router')
 const adminRouter = require('./admin/router')
 const rigRouter = require('./rig/router')
