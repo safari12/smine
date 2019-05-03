@@ -1,15 +1,15 @@
-const express = require('express')
+const expressCrud = require('express-crud')
+const CRUDHandler = expressCrud.handler
+const CRUDRouter = expressCrud.router
+const token = require('../token')
 
-const handler = require('./handler')
-const asyncHandler = require('../async/handler')
-
-const router = express.Router()
-
-router
-  .route('/')
-  .get(asyncHandler(handler.getAll))
-  .post(asyncHandler(handler.add))
-
-router.route('/:id').delete(asyncHandler(handler.remove))
+const model = require('.')
+const handler = new CRUDHandler(model)
+const router = CRUDRouter(handler, {
+  middlewares: {
+    get: [token.check],
+    all: [token.check, token.checkAdmin]
+  }
+})
 
 module.exports = router
