@@ -48,7 +48,7 @@
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "express-crud-router": "git+ssh://git@github.com/safari12/express-crud-router.git",
+    "express-crud": "git+ssh://git@github.com/safari12/express-crud.git",
     "got": "^9.6.0",
     "jsonschema": "^1.2.4",
     "jsonwebtoken": "^8.5.0",

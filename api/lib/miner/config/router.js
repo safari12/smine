@@ -1,5 +1,5 @@
-const CRUDHandler = require('express-crud-router').handler
-const CRUDRouter = require('express-crud-router').router
+const CRUDHandler = require('express-crud').handler
+const CRUDRouter = require('express-crud').router
 
 const model = require('.').model
 const handler = new CRUDHandler(model)
