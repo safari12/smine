@@ -4,18 +4,7 @@
       <h2>Rigs</h2>
     </div>
     <div class="col-4">
-      <div class="input-group mb-3">
-        <input type="text"
-               class="form-control"
-               placeholder="Search Rigs"
-               aria-label="Search Rigs"
-               aria-describedby="button-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary"
-                  type="button"
-                  id="button-addon2">Search</button>
-        </div>
-      </div>
+      <app-rig-searchbar></app-rig-searchbar>
     </div>
     <div class="col-2 offset-6">
       <button class="btn btn-success action-button">
@@ -23,7 +12,7 @@
       </button>
     </div>
     <div class="col-12">
-      <app-rig-table></app-rig-table>
+      <app-rig-table [rigs$]="rigs$"></app-rig-table>
     </div>
   </div>
 </div>

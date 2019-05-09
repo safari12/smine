@@ -1,22 +1,21 @@
 <table class="table table-hover">
   <thead app-rig-table-header></thead>
   <tbody>
-    <tr *ngFor="let rig of rigs">
+    <tr *ngFor="let rig of rigs$ | async">
       <th scope="row">{{rig.hostname}}</th>
-      <td class="text-success"><b>ONLINE</b></td>
+      <td [ngClass]="{'text-success': rig.pingable, 'text-danger': !rig.pingable}">
+        <b>{{rig.pingable | yesOrNo}}</b>
+      </td>
       <td>
         <span *ngFor="let miner of rig.miners">
-          {{miner.name}}
+          {{miner.config.name}}
         </span>
       </td>
       <td>
-        <span class="text-success"><b>25 kH/s</b></span>
+        <span class="text-success"><b>{{rig.hashrate}} H/s</b></span>
       </td>
       <td>
-        6 NVIDIA Cards
-      </td>
-      <td>
-        430W
+        {{rig.gpu.cards.length}} Cards
       </td>
       <td>
         <div class="row">

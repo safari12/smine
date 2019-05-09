@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core'
-import Rig from '../rig'
+import { Component, Input } from '@angular/core';
+import { Rig } from '../rig';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-rig-table',
@@ -7,5 +8,5 @@ import Rig from '../rig'
   styleUrls: ['./rig.table.component.css']
 })
 export class RigTableComponent {
-  @Input() rigs: Rig[]
+  @Input() rigs$: Observable<Rig[]>;
 }
