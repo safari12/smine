@@ -25,19 +25,18 @@
       </div>
       <div class="form-group col-4">
         <label for="gpu">GPU Config</label>
-        <select name="gpu"
-                id="gpu"
-                formControlName="gpu">
-          <option [value]="config"
-                  *ngFor="let config of gpuConfigs">
-          </option>
-        </select>
+        <ng-select [items]="gpuConfigs$ | async"
+                   bindLabel="name"
+                   bindValue="_id"
+                   formControlName="gpu">
+        </ng-select>
       </div>
       <div class="form-group col-4">
         <label for="miners">Miners</label>
-        <ng-select [items]="minerConfigs"
-                   [selectOnTab]="true"
-                   placeholder="Select Miner"
+        <ng-select [items]="minerConfigs$ | async"
+                   [multiple]="true"
+                   bindLabel="name"
+                   bindValue="_id"
                    formControlName="miners">
         </ng-select>
       </div>
