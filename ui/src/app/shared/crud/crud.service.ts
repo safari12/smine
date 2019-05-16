@@ -7,12 +7,12 @@ import MongoDocument from '../mongo/mongo.document';
 
 @Injectable()
 export class CRUDService<T extends MongoDocument> {
-  private modelSubject = new BehaviorSubject<T[]>([]);
+  protected modelSubject = new BehaviorSubject<T[]>([]);
   public readonly modelSource = this.modelSubject.asObservable();
 
   protected endpoint: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(protected http: HttpClient) {}
 
   public get modelValue() {
     return this.modelSubject.value;

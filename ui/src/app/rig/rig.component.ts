@@ -11,11 +11,10 @@ import RigService from './rig.service';
 export class RigComponent implements OnInit {
   rigs$: Observable<Rig[]>;
 
-  constructor(private service: RigService) {
-    this.rigs$ = service.modelSource;
-  }
+  constructor(private service: RigService) {}
 
   ngOnInit() {
+    this.rigs$ = this.service.modelSource;
     this.getRigs();
   }
 

@@ -47,6 +47,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-crud": "git+ssh://git@github.com/safari12/express-crud.git",
     "got": "^9.6.0",
@@ -59,6 +60,7 @@
     "nodemailer": "^4.7.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
+    "socket.io": "^2.2.0",
     "winston": "^3.2.1",
     "yargs": "^11.1.0"
   },

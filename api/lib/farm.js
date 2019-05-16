@@ -1,33 +1,41 @@
-const _ = require('lodash')
+const _ = require('lodash');
 
-const logger = require('./logger')
-const Rig = require('./rig')
+const logger = require('./logger');
+const Rig = require('./rig');
 
 class Farm {
-  static async syncRigs() {
-    logger.info('syncing rigs data from mining farm')
+  constructor(socket) {
+    this.socket = socket;
+  }
+
+  async syncRigs() {
+    logger.info('syncing rigs data from mining farm');
 
     const rigs = await Rig.find({})
+      .populate('gpu.config')
+      .populate('miners.config');
 
-    const promises = []
+    const promises = [];
 
     _.each(rigs, r => {
-      promises.push(r.ping())
-      promises.push(r.syncMiners())
-      promises.push(r.syncGPUCards())
-    })
+      promises.push(r.ping());
+      promises.push(r.syncMiners());
+      promises.push(r.syncGPUCards());
+    });
 
-    await Promise.all(promises)
+    await Promise.all(promises);
     await Promise.all(
       _.map(rigs, r => {
-        return r.save()
+        return r.save();
       })
-    )
+    );
 
-    logger.info('successfully synced rigs data from mining farm')
+    logger.info('successfully synced rigs data from mining farm');
 
-    return rigs
+    this.socket.emit('rigs-synced', rigs);
+
+    return rigs;
   }
 }
 
-module.exports = Farm
+module.exports = Farm;

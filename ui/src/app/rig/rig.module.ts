@@ -9,6 +9,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import RigService from './rig.service';
 import { SharedModule } from '../shared/shared.module';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = {
+  url: 'http://localhost:3000',
+  options: {}
+};
 
 @NgModule({
   declarations: [
@@ -18,7 +24,13 @@ import { SharedModule } from '../shared/shared.module';
     RigModalComponent,
     RigSearchBarComponent
   ],
-  imports: [CommonModule, ReactiveFormsModule, NgSelectModule, SharedModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    NgSelectModule,
+    SharedModule,
+    SocketIoModule.forRoot(config)
+  ],
   entryComponents: [RigModalComponent],
   providers: [RigService],
   exports: [RigComponent, RigTableComponent]
