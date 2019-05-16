@@ -7,38 +7,38 @@ import MongoDocument from '../mongo/mongo.document';
 
 @Injectable()
 export class CRUDService<T extends MongoDocument> {
-  protected modelSubject = new BehaviorSubject<T[]>([]);
-  public readonly modelSource = this.modelSubject.asObservable();
+  protected readonly _items = new BehaviorSubject<T[]>([]);
+  readonly items$ = this._items.asObservable();
 
   protected endpoint: string;
 
   constructor(protected http: HttpClient) {}
 
-  public get modelValue() {
-    return this.modelSubject.value;
+  public get items() {
+    return this._items.value;
   }
 
   create(model: T): Observable<T> {
     return this.http.post<T>(this.endpoint, model).pipe(
       tap(model => {
-        this.modelSubject.next(_.concat(this.modelValue, model));
+        this._items.next(_.concat(this.items, model));
       })
     );
   }
 
   readAll(): void {
     this.http.get<T[]>(this.endpoint).subscribe(model => {
-      this.modelSubject.next(model);
+      this._items.next(model);
     });
   }
 
   remove(model: T) {
     return this.http.delete<T>(`${this.endpoint}/${model._id}`).pipe(
       tap(model => {
-        _.remove(this.modelValue, (n: T) => {
+        _.remove(this.items, (n: T) => {
           return n._id === model._id;
         });
-        this.modelSubject.next(this.modelValue);
+        this._items.next(this.items);
       })
     );
   }
@@ -46,11 +46,11 @@ export class CRUDService<T extends MongoDocument> {
   update(model: T) {
     return this.http.put<T>(`${this.endpoint}/${model._id}`, model).pipe(
       tap(() => {
-        const idx = _.findIndex(this.modelValue, (n: T) => {
+        const idx = _.findIndex(this.items, (n: T) => {
           return n._id === model._id;
         });
-        this.modelValue[idx] = model;
-        this.modelSubject.next(this.modelValue);
+        this.items[idx] = model;
+        this._items.next(this.items);
       })
     );
   }

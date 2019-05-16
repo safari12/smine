@@ -1,10 +1,11 @@
-import { Component } from '@angular/core'
-import { MinerConfig } from './miner.config'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import MinerService from '../miner.service'
-import MinerConfigService from './miner.config.service'
-import { MinerConfigModalComponent } from './modal/miner.config.modal.component'
-import { delay } from 'rxjs/operators'
+import { Component } from '@angular/core';
+import { MinerConfig } from './miner.config';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import MinerService from '../miner.service';
+import MinerConfigService from './miner.config.service';
+import { MinerConfigModalComponent } from './modal/miner.config.modal.component';
+import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-miner-configs',
@@ -12,8 +13,8 @@ import { delay } from 'rxjs/operators'
   styleUrls: ['./miner.config.component.css']
 })
 export class MinerConfigComponent {
-  configs: MinerConfig[]
-  miners: string[]
+  configs$: Observable<MinerConfig[]>;
+  miners: string[];
 
   constructor(
     private modalService: NgbModal,
@@ -22,55 +23,53 @@ export class MinerConfigComponent {
   ) {}
 
   ngOnInit() {
-    this.minerConfigService.modelSource.subscribe(minerConfigs => {
-      this.configs = minerConfigs
-    })
+    this.configs$ = this.minerConfigService.items$;
     this.minerService.getSupported().subscribe(miners => {
-      this.miners = miners
-    })
-    this.minerConfigService.readAll()
+      this.miners = miners;
+    });
+    this.minerConfigService.readAll();
   }
 
   openModal() {
     const modal = this.modalService.open(MinerConfigModalComponent, {
       size: 'lg',
       centered: true
-    })
-    modal.componentInstance.miners = this.miners
+    });
+    modal.componentInstance.miners = this.miners;
 
-    return modal
+    return modal;
   }
 
   create() {
-    const modal = this.openModal()
+    const modal = this.openModal();
     modal.componentInstance.onCreate.subscribe(config => {
-      modal.componentInstance.loading = true
+      modal.componentInstance.loading = true;
       this.minerConfigService
         .create(config)
         .pipe(delay(500))
         .subscribe(() => {
-          modal.componentInstance.loading = false
-          modal.close()
-        })
-    })
+          modal.componentInstance.loading = false;
+          modal.close();
+        });
+    });
   }
 
   edit(config) {
-    const modal = this.openModal()
-    modal.componentInstance.config = config
+    const modal = this.openModal();
+    modal.componentInstance.config = config;
     modal.componentInstance.onUpdate.subscribe(config => {
-      modal.componentInstance.loading = true
+      modal.componentInstance.loading = true;
       this.minerConfigService
         .update(config)
         .pipe(delay(500))
         .subscribe(() => {
-          modal.componentInstance.loading = false
-          modal.close()
-        })
-    })
+          modal.componentInstance.loading = false;
+          modal.close();
+        });
+    });
   }
 
   delete(config) {
-    this.minerConfigService.remove(config)
+    this.minerConfigService.remove(config);
   }
 }

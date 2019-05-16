@@ -8,5 +8,5 @@ import { Observable } from 'rxjs';
   styleUrls: ['./rig.table.component.css']
 })
 export class RigTableComponent {
-  @Input() rigs$: Observable<Rig[]>;
+  @Input() rigs: Rig[];
 }

@@ -15,8 +15,7 @@ export default class RigService extends CRUDService<Rig> {
 
   private listen() {
     this.socket.fromEvent<Rig[]>('rigs-synced').subscribe(rigs => {
-      console.log('rigs: ', rigs);
-      this.modelSubject.next(rigs);
+      this._items.next(rigs);
     });
   }
 }

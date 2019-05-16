@@ -14,11 +14,7 @@ export class RigComponent implements OnInit {
   constructor(private service: RigService) {}
 
   ngOnInit() {
-    this.rigs$ = this.service.modelSource;
-    this.getRigs();
-  }
-
-  getRigs() {
+    this.rigs$ = this.service.items$;
     this.service.readAll();
   }
 }

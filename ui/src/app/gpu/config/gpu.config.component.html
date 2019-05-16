@@ -12,7 +12,7 @@
   </div>
   <div class="row mt-1">
     <div class="col-12">
-      <app-gpu-config-table [configs]="configs"
+      <app-gpu-config-table [configs]="configs$ | async"
                             (onEdit)="edit($event)"
                             (onDelete)="delete($event)"></app-gpu-config-table>
     </div>

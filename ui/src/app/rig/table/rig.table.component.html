@@ -1,7 +1,7 @@
 <table class="table table-hover">
   <thead app-rig-table-header></thead>
   <tbody>
-    <tr *ngFor="let rig of rigs$ | async">
+    <tr *ngFor="let rig of rigs">
       <th scope="row">{{rig.hostname}}</th>
       <td [ngClass]="{'text-success': rig.pingable, 'text-danger': !rig.pingable}">
         <b>{{rig.pingable | yesOrNo}}</b>
