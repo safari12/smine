@@ -10,3 +10,10 @@ tbody tr > td {
 tbody tr > th {
   vertical-align: middle;
 }
+
+.scrollable-container {
+  position: relative;
+  height: 400px;
+  overflow: auto;
+  display: block;
+}

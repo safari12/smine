@@ -1,36 +1,38 @@
-<table class="table table-hover">
-  <thead app-rig-table-header></thead>
-  <tbody>
-    <tr *ngFor="let rig of rigs">
-      <th scope="row">{{rig.hostname}}</th>
-      <td [ngClass]="{'text-success': rig.pingable, 'text-danger': !rig.pingable}">
-        <b>{{rig.pingable | yesOrNo}}</b>
-      </td>
-      <td>
-        <span *ngFor="let miner of rig.miners">
-          {{miner.config.name}}
-        </span>
-      </td>
-      <td>
-        <span class="text-success"><b>{{rig.hashrate}} H/s</b></span>
-      </td>
-      <td>
-        {{rig.gpu.cards.length}} Cards
-      </td>
-      <td>
-        <div class="row">
-          <div class="col pr-1">
-            <button class="btn btn-primary action-button">
-              <i class="fa fa-edit"></i>
-            </button>
+<div class="scrollable-container">
+  <table class="table table-hover table-scrollable">
+    <thead app-rig-table-header></thead>
+    <tbody>
+      <tr *ngFor="let rig of rigs">
+        <th scope="row">{{rig.hostname}}</th>
+        <td [ngClass]="{'text-success': rig.pingable, 'text-danger': !rig.pingable}">
+          <b>{{rig.pingable | yesOrNo}}</b>
+        </td>
+        <td>
+          <span *ngFor="let miner of rig.miners">
+            {{miner.config.name}}
+          </span>
+        </td>
+        <td>
+          <span class="text-success"><b>{{rig.hashrate}} H/s</b></span>
+        </td>
+        <td>
+          {{rig.gpu.cards.length}} Cards
+        </td>
+        <td>
+          <div class="row">
+            <div class="col pr-1">
+              <button class="btn btn-primary action-button">
+                <i class="fa fa-edit"></i>
+              </button>
+            </div>
+            <div class="col pl-1">
+              <button class="btn btn-danger action-button">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
           </div>
-          <div class="col pl-1">
-            <button class="btn btn-danger action-button">
-              <i class="fa fa-trash"></i>
-            </button>
-          </div>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
