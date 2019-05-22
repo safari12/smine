@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Rig } from '../rig';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-rig-table',
@@ -9,4 +8,9 @@ import { Observable } from 'rxjs';
 })
 export class RigTableComponent {
   @Input() rigs: Rig[];
+  @Output() onDelete = new EventEmitter();
+
+  delete(rig: Rig) {
+    this.onDelete.emit(rig);
+  }
 }

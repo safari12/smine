@@ -7,6 +7,7 @@ import { RigModalComponent } from './modal/rig.modal.component';
 import MinerConfigService from '../miner/config/miner.config.service';
 import GpuConfigService from '../gpu/config/gpu.config.service';
 import { delay } from 'rxjs/operators';
+import { ConfirmModalComponent } from '../shared/confirm/confirm.modal.component';
 
 @Component({
   selector: 'app-rigs',
@@ -46,6 +47,21 @@ export class RigComponent implements OnInit {
           modal.componentInstance.loading = false;
           modal.close();
         });
+    });
+  }
+
+  delete(rig: Rig) {
+    const modal = this.modalService.open(ConfirmModalComponent, {
+      centered: true
+    });
+    modal.componentInstance.title = 'Deleting Rig';
+    modal.componentInstance.message = `Are you sure want to delete rig ${
+      rig.hostname
+    }?`;
+    modal.componentInstance.onConfirm.subscribe(() => {
+      this.service.remove(rig).subscribe(() => {
+        modal.close();
+      });
     });
   }
 }

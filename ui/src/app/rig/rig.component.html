@@ -13,7 +13,8 @@
       </button>
     </div>
     <div class="col-12">
-      <app-rig-table [rigs]="rigs$ | async"></app-rig-table>
+      <app-rig-table [rigs]="rigs$ | async"
+                     (onDelete)="delete($event)"></app-rig-table>
     </div>
   </div>
 </div>
