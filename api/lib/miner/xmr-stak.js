@@ -1,7 +1,9 @@
+const _ = require('lodash');
+
 class XMRStak {
   static async getHashrate(response) {
-    return 100
+    return _.random(50);
   }
 }
 
-module.exports = XMRStak
+module.exports = XMRStak;

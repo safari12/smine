@@ -3,6 +3,7 @@ import { CRUDService } from '../shared/crud/crud.service';
 import { Rig } from './rig';
 import { HttpClient } from '@angular/common/http';
 import { Socket } from 'ngx-socket-io';
+import * as _ from 'lodash';
 
 @Injectable()
 export default class RigService extends CRUDService<Rig> {
@@ -15,9 +16,14 @@ export default class RigService extends CRUDService<Rig> {
 
   private listen() {
     this.socket.fromEvent<Rig[]>('rigs-synced').subscribe(rigs => {
-      if (rigs.length === this.items.length) {
-        this._items.next(rigs);
-      }
+      this._items.next(this.syncRigs(rigs));
+    });
+  }
+
+  private syncRigs(rigs) {
+    return _.map(this.items, item => {
+      const n = rigs[item._id];
+      return n ? n : item;
     });
   }
 }
