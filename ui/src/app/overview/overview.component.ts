@@ -19,12 +19,14 @@ export class OverviewComponent implements OnInit {
   }
 
   get gpuTotalWattage() {
-    return _.reduce(
-      this.rigs,
-      (total, r) => {
-        return total + r.gpu.totalWattage;
-      },
-      0
+    return humanFormat(
+      _.reduce(
+        this.rigs,
+        (total, r) => {
+          return total + r.gpu.totalWattage;
+        },
+        0
+      )
     );
   }
 
