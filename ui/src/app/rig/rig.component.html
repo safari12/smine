@@ -3,17 +3,18 @@
     <div class="col-12">
       <h2>Rigs</h2>
     </div>
-    <div class="col-4">
-      <app-rig-searchbar></app-rig-searchbar>
+    <div class="mt-2 col-4">
+      <app-rig-searchbar [(searchText)]="searchText">
+      </app-rig-searchbar>
     </div>
-    <div class="col-2 offset-6">
+    <div class="col-1 offset-7">
       <button class="btn btn-success action-button"
               (click)="create()">
         <i class="fa fa-plus"></i>
       </button>
     </div>
     <div class="col-12">
-      <app-rig-table [rigs]="rigs$ | async"
+      <app-rig-table [rigs]="rigs$ | async | search: searchText"
                      (onDelete)="delete($event)"></app-rig-table>
     </div>
   </div>

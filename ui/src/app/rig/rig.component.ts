@@ -16,6 +16,7 @@ import { ConfirmModalComponent } from '../shared/confirm/confirm.modal.component
 })
 export class RigComponent implements OnInit {
   rigs$: Observable<Rig[]>;
+  searchText: string;
 
   constructor(
     private service: RigService,

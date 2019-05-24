@@ -5,11 +5,12 @@ import { RigTableHeaderComponent } from './table/header/rig.table.header.compone
 import { RigModalComponent } from './modal/rig.modal.component';
 import { RigSearchBarComponent } from './searchbar/rig.searchbar';
 import { RigComponent } from './rig.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import RigService from './rig.service';
 import { SharedModule } from '../shared/shared.module';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { RigSearchPipe } from './rig.search.pipe';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:3000',
@@ -22,10 +23,12 @@ const config: SocketIoConfig = {
     RigTableComponent,
     RigTableHeaderComponent,
     RigModalComponent,
-    RigSearchBarComponent
+    RigSearchBarComponent,
+    RigSearchPipe
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
     SharedModule,
