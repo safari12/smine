@@ -6,6 +6,10 @@ const _ = require('lodash');
 
 const GPUSchema = new Schema(
   {
+    totalWattage: {
+      type: Number,
+      default: 0
+    },
     cards: [Object],
     config: {
       type: Schema.Types.ObjectId,
@@ -36,6 +40,13 @@ GPUSchema.methods.syncCards = async function(hostname) {
         wattage: 90
       };
     });
+    this.totalWattage = _.reduce(
+      this.cards,
+      (acc, c) => {
+        return acc + c.wattage;
+      },
+      0
+    );
   }
 };
 

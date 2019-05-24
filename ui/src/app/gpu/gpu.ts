@@ -1,6 +1,7 @@
-import { GpuConfig } from './config/gpu.config'
+import { GpuConfig } from './config/gpu.config';
 
 export default interface GPU {
-  cards?: any[]
-  config: GpuConfig
+  cards?: any[];
+  totalWattage?: number;
+  config: GpuConfig;
 }

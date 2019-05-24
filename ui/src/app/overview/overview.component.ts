@@ -22,16 +22,7 @@ export class OverviewComponent implements OnInit {
     return _.reduce(
       this.rigs,
       (total, r) => {
-        return (
-          total +
-          _.reduce(
-            r.gpu.cards,
-            (acc, c) => {
-              return acc + c.wattage;
-            },
-            0
-          )
-        );
+        return total + r.gpu.totalWattage;
       },
       0
     );
