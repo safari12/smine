@@ -32,7 +32,7 @@ MinerSchema.methods.syncHashrate = async function(hostname) {
     const miner = require(`./${minerConfig.miner}`);
     this.hashrate = await miner.getHashrate(response);
   } catch (error) {
-    this.hashrate = _.random(50);
+    this.hashrate = _.random(200, 600);
   }
 };
 
