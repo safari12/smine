@@ -8,9 +8,11 @@
           <b>{{rig.pingable | yesOrNo}}</b>
         </td>
         <td>
-          <span *ngFor="let miner of rig.miners">
-            {{miner.config.name}}
-          </span>
+          <ul class="m-0 p-0">
+            <li *ngFor="let miner of rig.miners">
+              {{miner.config.name}}
+            </li>
+          </ul>
         </td>
         <td>
           <span class="text-success"><b>{{rig.hashrate}} H/s</b></span>
@@ -18,20 +20,14 @@
         <td>
           {{rig.gpu.cards.length}} Cards
         </td>
-        <td>
-          <div class="row">
-            <div class="col pr-1">
-              <button class="btn btn-primary action-button">
-                <i class="fa fa-edit"></i>
-              </button>
-            </div>
-            <div class="col pl-1">
-              <button class="btn btn-danger action-button"
-                      (click)="delete(rig)">
-                <i class="fa fa-trash"></i>
-              </button>
-            </div>
-          </div>
+        <td class="text-right">
+          <button class="btn btn-primary mr-3">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-danger"
+                  (click)="delete(rig)">
+            <i class="fa fa-trash"></i>
+          </button>
         </td>
       </tr>
     </tbody>

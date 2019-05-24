@@ -1,14 +1,13 @@
-.action-button {
-  font-size: 20px;
-  width: 100%;
-}
-
 tbody tr > td {
   vertical-align: middle;
 }
 
 tbody tr > th {
   vertical-align: middle;
+}
+
+ul {
+  list-style-type: none;
 }
 
 .scrollable-container {

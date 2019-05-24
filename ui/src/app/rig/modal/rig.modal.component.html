@@ -15,7 +15,7 @@
       (ngSubmit)="onSubmit()">
   <div class="modal-body">
     <div class="form-row">
-      <div class="form-group col-4">
+      <div class="form-group col-6">
         <label for="hostname">Hostname</label>
         <input type="text"
                formControlName="hostname"
@@ -23,7 +23,7 @@
                id="hostname"
                placeholder="Enter Hostname">
       </div>
-      <div class="form-group col-4">
+      <div class="form-group col-6">
         <label for="gpu">GPU Config</label>
         <ng-select [items]="gpuConfigs$ | async"
                    bindLabel="name"
@@ -31,7 +31,7 @@
                    formControlName="gpu">
         </ng-select>
       </div>
-      <div class="form-group col-4">
+      <div class="form-group col-12">
         <label for="miners">Miners</label>
         <ng-select [items]="minerConfigs$ | async"
                    [multiple]="true"
