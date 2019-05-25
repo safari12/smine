@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">
-    Create Rig
+    {{title}}
   </h4>
   <button type="button"
           class="close"
@@ -47,7 +47,7 @@
             class="btn btn-outline-primary"
             *ngIf="!loading"
             [disabled]="form.invalid">
-      Add
+      {{actionTitle}}
     </button>
     <button type="button"
             class="btn btn-primary"

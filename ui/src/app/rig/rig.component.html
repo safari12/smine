@@ -15,6 +15,7 @@
     </div>
     <div class="col-12">
       <app-rig-table [rigs]="rigs$ | async | search: searchText"
+                     (onEdit)="edit($event)"
                      (onDelete)="delete($event)"></app-rig-table>
     </div>
   </div>

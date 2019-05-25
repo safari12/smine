@@ -51,6 +51,26 @@ export class RigComponent implements OnInit {
     });
   }
 
+  edit(rig: Rig) {
+    const modal = this.modalService.open(RigModalComponent, {
+      size: 'lg',
+      centered: true
+    });
+    modal.componentInstance.rig = rig;
+    modal.componentInstance.minerConfigs$ = this.minerConfigService.items$;
+    modal.componentInstance.gpuConfigs$ = this.gpuConfigService.items$;
+    modal.componentInstance.onUpdate.subscribe(rig => {
+      modal.componentInstance.loading = true;
+      this.service
+        .update(rig)
+        .pipe(delay(500))
+        .subscribe(() => {
+          modal.componentInstance.loading = false;
+          modal.close();
+        });
+    });
+  }
+
   delete(rig: Rig) {
     const modal = this.modalService.open(ConfirmModalComponent, {
       centered: true

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 import { GpuConfig } from 'src/app/gpu/config/gpu.config';
@@ -12,11 +12,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './rig.modal.component.html',
   styleUrls: ['./rig.modal.component.css']
 })
-export class RigModalComponent {
+export class RigModalComponent implements OnInit {
+  @Input() rig: Rig;
   @Input() gpuConfigs$: Observable<GpuConfig[]>;
   @Input() minerConfigs$: Observable<MinerConfig[]>;
   @Input() loading: boolean = false;
   @Output() onCreate = new EventEmitter<Rig>();
+  @Output() onUpdate = new EventEmitter<Rig>();
 
   form = this.fb.group({
     hostname: ['', Validators.required],
@@ -25,6 +27,24 @@ export class RigModalComponent {
   });
 
   constructor(private fb: FormBuilder, private activeModal: NgbActiveModal) {}
+
+  ngOnInit() {
+    this.patchForm();
+  }
+
+  get title() {
+    return this.rig ? `Update Rig ${this.rig.hostname}` : 'Create Rig';
+  }
+
+  get actionTitle() {
+    return this.rig ? 'Update' : 'Create';
+  }
+
+  patchForm() {
+    if (this.rig) {
+      this.form.patchValue(this.rig);
+    }
+  }
 
   newRig(): Rig {
     const value = this.form.value;
@@ -43,7 +63,11 @@ export class RigModalComponent {
 
   onSubmit() {
     if (this.form.invalid) return;
-    this.onCreate.emit(this.newRig());
+    if (this.rig) {
+      this.onUpdate.emit(this.newRig());
+    } else {
+      this.onCreate.emit(this.newRig());
+    }
   }
 
   close() {

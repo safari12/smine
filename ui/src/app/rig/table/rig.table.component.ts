@@ -8,7 +8,12 @@ import { Rig } from '../rig';
 })
 export class RigTableComponent {
   @Input() rigs: Rig[];
-  @Output() onDelete = new EventEmitter();
+  @Output() onEdit = new EventEmitter<Rig>();
+  @Output() onDelete = new EventEmitter<Rig>();
+
+  edit(rig: Rig) {
+    this.onEdit.emit(rig);
+  }
 
   delete(rig: Rig) {
     this.onDelete.emit(rig);
