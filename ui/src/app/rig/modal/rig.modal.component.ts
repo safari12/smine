@@ -42,7 +42,11 @@ export class RigModalComponent implements OnInit {
 
   patchForm() {
     if (this.rig) {
-      this.form.patchValue(this.rig);
+      this.form.patchValue({
+        hostname: this.rig.hostname,
+        gpu: this.rig.gpu.config._id,
+        miners: _.map(this.rig.miners, m => m.config._id)
+      });
     }
   }
 
