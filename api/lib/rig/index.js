@@ -1,13 +1,10 @@
-const mongoose = require('mongoose')
-const _ = require('lodash')
+const mongoose = require('mongoose');
 
-const net = require('../net')
-const MinerSchema = require('../miner').schema
-const GPUSchema = require('../gpu').schema
+const methods = require('./methods');
+const MinerSchema = require('../miner').schema;
+const GPUSchema = require('../gpu').schema;
 
-const Schema = mongoose.Schema
-
-const RigSchema = new Schema({
+const RigSchema = new mongoose.Schema({
   hostname: {
     type: String,
     required: true,
@@ -30,25 +27,10 @@ const RigSchema = new Schema({
     type: GPUSchema,
     required: true
   }
-})
+});
 
-RigSchema.methods.ping = async function () {
-  this.pingable = await net.ping(this.hostname)
-}
+RigSchema.methods.ping = methods.ping;
+RigSchema.methods.syncMiners = methods.syncMiners;
+RigSchema.methods.syncGPUCards = methods.syncGPUCards;
 
-RigSchema.methods.syncMiners = async function () {
-  await Promise.all(
-    _.map(this.miners, m => {
-      return m.syncHashrate(this.hostname)
-    })
-  )
-  this.hashrate = _.reduce(this.miners, (h, m) => {
-    return h + m.hashrate
-  }, 0)
-}
-
-RigSchema.methods.syncGPUCards = function () {
-  return this.gpu.syncCards(this.hostname)
-}
-
-module.exports = mongoose.model('rigs', RigSchema)
+module.exports = mongoose.model('rigs', RigSchema);

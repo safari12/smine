@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-const got = require('got');
-const _ = require('lodash');
-
-const MinerConfig = require('./config').model;
+const methods = require('./methods');
 
 const MinerSchema = new mongoose.Schema(
   {
@@ -20,21 +17,7 @@ const MinerSchema = new mongoose.Schema(
   }
 );
 
-MinerSchema.methods.syncHashrate = async function(hostname) {
-  try {
-    const minerConfig = await MinerConfig.findById(this.config);
-    const uri = `http://${hostname}:${minerConfig.api.port}${
-      minerConfig.api.endpoint
-    }`;
-    const response = await got(uri, {
-      json: true
-    });
-    const miner = require(`./${minerConfig.miner}`);
-    this.hashrate = await miner.getHashrate(response);
-  } catch (error) {
-    this.hashrate = _.random(200, 600);
-  }
-};
+MinerSchema.methods.syncHashrate = methods.syncHashrate;
 
 module.exports = {
   model: mongoose.model('miners', MinerSchema),
