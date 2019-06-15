@@ -7,10 +7,11 @@ import { RigSearchBarComponent } from './searchbar/rig.searchbar';
 import { RigComponent } from './rig.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import RigService from './rig.service';
 import { SharedModule } from '../shared/shared.module';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { RigSearchPipe } from './rig.search.pipe';
+import { RigService } from './state/rig.service';
+import { RigQuery } from './state/rig.query';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:3000',
@@ -35,7 +36,7 @@ const config: SocketIoConfig = {
     SocketIoModule.forRoot(config)
   ],
   entryComponents: [RigModalComponent],
-  providers: [RigService],
+  providers: [RigService, RigQuery],
   exports: [RigComponent, RigTableComponent]
 })
 export class RigModule {}

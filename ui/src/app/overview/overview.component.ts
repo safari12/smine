@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import RigService from '../rig/rig.service';
 import * as _ from 'lodash';
-
 import humanFormat from 'human-format';
+import { RigQuery } from '../rig/state/rig.query';
 
 @Component({
   selector: 'app-overview',
@@ -10,18 +9,24 @@ import humanFormat from 'human-format';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
-  constructor(private rigService: RigService) {}
+  numberOfRigs: number;
+  gpuTotalWattage: number;
+  totalHashrate: number;
 
-  ngOnInit() {}
+  constructor(private rigQuery: RigQuery) {}
 
-  get rigs() {
-    return this.rigService.items;
+  ngOnInit() {
+    this.rigQuery.selectAll().subscribe(rigs => {
+      this.numberOfRigs = rigs.length;
+      this.setGpuTotalWattage(rigs);
+      this.setTotalHashrate(rigs);
+    });
   }
 
-  get gpuTotalWattage() {
-    return humanFormat(
+  private setGpuTotalWattage(rigs) {
+    this.gpuTotalWattage = humanFormat(
       _.reduce(
-        this.rigs,
+        rigs,
         (total, r) => {
           return total + r.gpu.totalWattage;
         },
@@ -30,10 +35,10 @@ export class OverviewComponent implements OnInit {
     );
   }
 
-  get totalHashrate() {
-    return humanFormat(
+  private setTotalHashrate(rigs) {
+    this.totalHashrate = humanFormat(
       _.reduce(
-        this.rigs,
+        rigs,
         (acc, r) => {
           return acc + r.hashrate;
         },

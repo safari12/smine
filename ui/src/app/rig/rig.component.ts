@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Rig } from './rig';
-import RigService from './rig.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RigModalComponent } from './modal/rig.modal.component';
 import { ConfirmModalComponent } from '../shared/confirm/confirm.modal.component';
 import { GpuConfigQuery } from '../gpu/config/state/gpu.config.query';
 import { MinerConfigQuery } from '../miner/config/state/miner.config.query';
+import { RigService } from './state/rig.service';
+import { RigQuery } from './state/rig.query';
 
 @Component({
   selector: 'app-rigs',
@@ -19,22 +20,20 @@ export class RigComponent implements OnInit {
 
   constructor(
     private service: RigService,
-    private modalService: NgbModal,
+    private query: RigQuery,
     private minerConfigQuery: MinerConfigQuery,
-    private gpuConfigQuery: GpuConfigQuery
+    private gpuConfigQuery: GpuConfigQuery,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
-    this.rigs$ = this.service.items$;
-    this.service.readAll();
+    this.rigs$ = this.query.selectAll();
   }
 
   create() {
     const modal = this.openModal();
     modal.componentInstance.onCreate.subscribe(rig => {
-      modal.componentInstance.loading = true;
       this.service.create(rig).subscribe(() => {
-        modal.componentInstance.loading = false;
         modal.close();
       });
     });
@@ -44,9 +43,7 @@ export class RigComponent implements OnInit {
     const modal = this.openModal();
     modal.componentInstance.rig = rig;
     modal.componentInstance.onUpdate.subscribe(rig => {
-      modal.componentInstance.loading = true;
       this.service.update(rig).subscribe(() => {
-        modal.componentInstance.loading = false;
         modal.close();
       });
     });
@@ -61,7 +58,7 @@ export class RigComponent implements OnInit {
       rig.hostname
     }?`;
     modal.componentInstance.onConfirm.subscribe(() => {
-      this.service.remove(rig).subscribe(() => {
+      this.service.delete(rig).subscribe(() => {
         modal.close();
       });
     });
@@ -74,6 +71,7 @@ export class RigComponent implements OnInit {
     });
     modal.componentInstance.minerConfigs$ = this.minerConfigQuery.selectAll();
     modal.componentInstance.gpuConfigs$ = this.gpuConfigQuery.selectAll();
+    modal.componentInstance.loading$ = this.query.selectLoading();
 
     return modal;
   }

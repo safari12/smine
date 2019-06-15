@@ -3,6 +3,7 @@ import AuthService from './auth/auth.service';
 import User from './user/user';
 import { GpuConfigService } from './gpu/config/state/gpu.config.service';
 import { MinerConfigService } from './miner/config/state/miner.config.service';
+import { RigService } from './rig/state/rig.service';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,13 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private rigService: RigService,
     private gpuConfigService: GpuConfigService,
     private minerConfigService: MinerConfigService
   ) {}
 
   ngOnInit() {
+    this.rigService.readAll();
     this.gpuConfigService.readAll();
     this.minerConfigService.readAll();
   }

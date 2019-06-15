@@ -12,7 +12,9 @@ export abstract class EntityService<
   constructor(protected http: HttpClient, protected store: EntityStore<S, T>) {}
 
   readAll() {
+    this.store.setLoading(true);
     this.http.get<T[]>(this.endpoint).subscribe(entities => {
+      this.store.setLoading(false);
       this.store.set(entities);
     });
   }

@@ -16,7 +16,7 @@ export class RigModalComponent implements OnInit {
   @Input() rig: Rig;
   @Input() gpuConfigs$: Observable<GpuConfig[]>;
   @Input() minerConfigs$: Observable<MinerConfig[]>;
-  @Input() loading: boolean = false;
+  @Input() loading$: Observable<boolean>;
   @Output() onCreate = new EventEmitter<Rig>();
   @Output() onUpdate = new EventEmitter<Rig>();
 
