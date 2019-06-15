@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { MinerConfigTableHeaderComponent } from './table/header/miner.config.table.header.component'
-import { MinerConfigTableComponent } from './table/miner.config.table.component'
-import MinerConfigService from './miner.config.service'
-import { MinerConfigModalComponent } from './modal/miner.config.modal.component'
-import { ReactiveFormsModule } from '@angular/forms'
-import { MinerConfigComponent } from './miner.config.component'
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MinerConfigTableHeaderComponent } from './table/header/miner.config.table.header.component';
+import { MinerConfigTableComponent } from './table/miner.config.table.component';
+import { MinerConfigModalComponent } from './modal/miner.config.modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MinerConfigComponent } from './miner.config.component';
+import { MinerConfigService } from './state/miner.config.service';
+import { MinerConfigQuery } from './state/miner.config.query';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { MinerConfigComponent } from './miner.config.component'
   ],
   imports: [CommonModule, ReactiveFormsModule],
   entryComponents: [MinerConfigModalComponent],
-  providers: [MinerConfigService],
+  providers: [MinerConfigService, MinerConfigQuery],
   exports: [
     MinerConfigTableComponent,
     MinerConfigTableHeaderComponent,
