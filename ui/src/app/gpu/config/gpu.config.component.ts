@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GpuConfig } from './gpu.config';
-import GpuConfigService from './gpu.config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GpuConfigModalComponent } from './modal/gpu.config.modal.component';
-import { delay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { GpuConfigService } from './state/gpu.config.service';
+import { GpuConfigQuery } from './state/gpu.config.query';
 
 @Component({
   selector: 'app-gpu-configs',
@@ -16,32 +16,30 @@ export class GpuConfigComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private service: GpuConfigService
+    private service: GpuConfigService,
+    private query: GpuConfigQuery
   ) {}
 
   ngOnInit() {
-    this.configs$ = this.service.items$;
-    this.service.readAll();
+    this.configs$ = this.query.selectAll();
   }
 
   openModal() {
-    return this.modalService.open(GpuConfigModalComponent, {
+    const modal = this.modalService.open(GpuConfigModalComponent, {
       size: 'lg',
       centered: true
     });
+    modal.componentInstance.loading$ = this.query.selectLoading();
+
+    return modal;
   }
 
   create() {
     const modal = this.openModal();
     modal.componentInstance.onCreate.subscribe(config => {
-      modal.componentInstance.loading = true;
-      this.service
-        .create(config)
-        .pipe(delay(500))
-        .subscribe(() => {
-          modal.componentInstance.loading = false;
-          modal.close();
-        });
+      this.service.create(config).subscribe(() => {
+        modal.close();
+      });
     });
   }
 
@@ -49,18 +47,13 @@ export class GpuConfigComponent implements OnInit {
     const modal = this.openModal();
     modal.componentInstance.config = config;
     modal.componentInstance.onUpdate.subscribe(config => {
-      modal.componentInstance.loading = true;
-      this.service
-        .update(config)
-        .pipe(delay(500))
-        .subscribe(() => {
-          modal.componentInstance.loading = false;
-          modal.close();
-        });
+      this.service.update(config).subscribe(() => {
+        modal.close();
+      });
     });
   }
 
   delete(config: GpuConfig) {
-    this.service.remove(config).subscribe();
+    this.service.delete(config).subscribe();
   }
 }

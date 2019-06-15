@@ -19,6 +19,7 @@
     "@angular/platform-browser": "^7.2.10",
     "@angular/platform-browser-dynamic": "^7.2.10",
     "@angular/router": "^7.2.10",
+    "@datorama/akita": "^3.15.1",
     "@ng-bootstrap/ng-bootstrap": "^4.1.0",
     "@ng-select/ng-select": "^2.19.0",
     "@types/lodash": "^4.14.123",

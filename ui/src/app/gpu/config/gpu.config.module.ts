@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { ReactiveFormsModule } from '@angular/forms'
-import { HttpClientModule } from '@angular/common/http'
-import { GpuConfigTableComponent } from './table/gpu.config.table.component'
-import { GpuConfigTableHeaderComponent } from './table/header/gpu.config.table.header.component'
-import { GpuConfigModalComponent } from './modal/gpu.config.modal.component'
-import GpuConfigService from './gpu.config.service'
-import { GpuConfigComponent } from './gpu.config.component'
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { GpuConfigTableComponent } from './table/gpu.config.table.component';
+import { GpuConfigTableHeaderComponent } from './table/header/gpu.config.table.header.component';
+import { GpuConfigModalComponent } from './modal/gpu.config.modal.component';
+import { GpuConfigComponent } from './gpu.config.component';
+import { GpuConfigService } from './state/gpu.config.service';
+import { GpuConfigQuery } from './state/gpu.config.query';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { GpuConfigComponent } from './gpu.config.component'
     GpuConfigModalComponent,
     GpuConfigComponent
   ],
-  providers: [GpuConfigService],
+  providers: [GpuConfigService, GpuConfigQuery],
   entryComponents: [GpuConfigModalComponent],
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   exports: [
