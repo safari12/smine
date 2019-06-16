@@ -15,7 +15,7 @@ class GPUMethods {
       );
     } catch (error) {
       this.cards = [];
-      this.error = error.message;
+      this.error = `error getting gpu cards: ${error.message}`;
     }
   }
 
@@ -25,7 +25,7 @@ class GPUMethods {
         const gpuConfig = await GPUConfig.findOne(this.config);
         await api.powerLimitCards(hostname, gpuConfig.power.limit);
       } catch (error) {
-        this.error = error.message;
+        this.error = `error setting power limit for gpus: ${error.message}`;
       }
     }
   }

@@ -20,14 +20,7 @@ export class RigService extends EntityService<RigState, Rig> {
 
   private listen() {
     this.socket.fromEvent<Rig[]>('rigs-synced').subscribe(rigs => {
-      this.store.set(rigs);
+      this.store.upsertMany(rigs);
     });
   }
-
-  // private syncRigs(rigs) {
-  //   return _.map(this.items, item => {
-  //     const n = rigs[item._id];
-  //     return n ? n : item;
-  //   });
-  // }
 }
