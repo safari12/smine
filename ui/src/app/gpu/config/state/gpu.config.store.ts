@@ -8,6 +8,6 @@ export interface GpuConfigState extends EntityState<GpuConfig> {}
 @StoreConfig({ name: 'gpuConfigs', idKey: '_id' })
 export class GpuConfigStore extends EntityStore<GpuConfigState, GpuConfig> {
   constructor() {
-    super();
+    super({ loading: false });
   }
 }

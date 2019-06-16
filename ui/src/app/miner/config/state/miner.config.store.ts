@@ -11,6 +11,6 @@ export class MinerConfigStore extends EntityStore<
   MinerConfig
 > {
   constructor() {
-    super();
+    super({ loading: false });
   }
 }
