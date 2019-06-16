@@ -7,6 +7,7 @@ const RETRIES = config.gpu.api.retries;
 class GPUApi {
   static async powerLimitCards(hostname, limit) {
     return got.post(`${this.getUrl(hostname)}/cards/power`, {
+      json: true,
       body: { limit },
       timeout: TIMEOUT,
       retries: RETRIES
@@ -15,6 +16,7 @@ class GPUApi {
 
   static async getCards(hostname) {
     return got.get(`${this.getUrl(hostname)}/cards`, {
+      json: true,
       timeout: TIMEOUT,
       retries: RETRIES
     });

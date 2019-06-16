@@ -7,6 +7,9 @@ const MinerSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
+    error: {
+      type: String
+    },
     config: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'miner_configs'
