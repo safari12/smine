@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon ./bin/smine.js",
+    "start:debug": "NODE_ENV=dev nodemon --inspect ./bin/smine.js",
     "test": "NODE_ENV=test NODE_PATH=lib mocha --exit"
   },
   "preferGlobal": true,

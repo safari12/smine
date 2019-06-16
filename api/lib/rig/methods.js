@@ -21,8 +21,9 @@ class RigActions {
     );
   }
 
-  static syncGPUCards() {
-    return this.gpu.syncCards(this.hostname);
+  static async syncGPUCards() {
+    await this.gpu.syncCards(this.hostname);
+    await this.gpu.powerLimitCards(this.hostname);
   }
 }
 

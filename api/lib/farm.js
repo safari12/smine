@@ -32,7 +32,7 @@ class Farm {
 
     logger.info('successfully synced rigs data from mining farm');
 
-    this.socket.emit('rigs-synced', _.keyBy(rigs, '_id'));
+    this.socket.emit('rigs-synced', rigs);
 
     return rigs;
   }

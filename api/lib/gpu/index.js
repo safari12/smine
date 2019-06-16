@@ -12,6 +12,9 @@ const GPUSchema = new Schema(
     cards: {
       type: [GPUCardSchema]
     },
+    error: {
+      type: String
+    },
     config: {
       type: Schema.Types.ObjectId,
       ref: 'gpu_configs',
@@ -24,6 +27,7 @@ const GPUSchema = new Schema(
 );
 
 GPUSchema.methods.syncCards = methods.syncCards;
+GPUSchema.methods.powerLimitCards = methods.powerLimitCards;
 
 module.exports = {
   schema: GPUSchema,
