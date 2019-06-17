@@ -26,8 +26,8 @@ const GPUSchema = new Schema(
   }
 );
 
-GPUSchema.methods.syncCards = methods.syncCards;
-GPUSchema.methods.powerLimitCards = methods.powerLimitCards;
+GPUSchema.statics.syncCards = methods.syncCards;
+GPUSchema.statics.powerLimitCards = methods.powerLimitCards;
 
 module.exports = {
   schema: GPUSchema,

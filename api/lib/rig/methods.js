@@ -1,4 +1,5 @@
 const net = require('../net');
+const GPU = require('../gpu').model;
 const _ = require('lodash');
 
 class RigActions {
@@ -21,9 +22,9 @@ class RigActions {
     );
   }
 
-  static async syncGPUCards() {
-    await this.gpu.syncCards(this.hostname);
-    await this.gpu.powerLimitCards(this.hostname);
+  static async syncGPUCards(rig) {
+    await GPU.syncCards(rig.gpu, rig.hostname);
+    await GPU.powerLimitCards(rig.gpu, rig.hostname);
   }
 }
 

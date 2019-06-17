@@ -1,34 +1,42 @@
-const _ = require('lodash');
+const _ = require('lodash/fp');
 const GPUConfig = require('./config');
 const api = require('./api');
 
 class GPUMethods {
-  static async syncCards(hostname) {
+  static async syncCards(gpu, hostname) {
     try {
-      this.cards = await api.getCards(hostname);
-      this.error = null;
-      this.totalWattage = _.reduce(
-        this.cards,
-        (acc, c) => {
-          return acc + c.wattage;
-        },
-        0
-      );
+      const cards = await api.getCards(hostname);
+      const totalWattage = _.reduce((acc, c) => acc + c.wattage, cards);
+
+      return {
+        ...gpu,
+        cards,
+        totalWattage,
+        error: null
+      };
     } catch (error) {
-      this.cards = [];
-      this.error = `error getting gpu cards: ${error.message}`;
+      return {
+        ...gpu,
+        cards: [],
+        totalWattage: 0,
+        error: `error getting gpu cards: ${error.message}`
+      };
     }
   }
 
-  static async powerLimitCards(hostname) {
-    if (this.cards.length > 0) {
-      try {
-        const gpuConfig = await GPUConfig.findOne(this.config);
-        await api.powerLimitCards(hostname, gpuConfig.power.limit);
-        this.error = null;
-      } catch (error) {
-        this.error = `error setting power limit for gpus: ${error.message}`;
-      }
+  static async powerLimitCards(gpu, hostname) {
+    try {
+      const c = await GPUConfig.findOne(this.config);
+      await api.powerLimitCards(hostname, c.power.limit);
+      return {
+        ...gpu,
+        error: null
+      };
+    } catch (error) {
+      return {
+        ...gpu,
+        error: `error setting power limit for gpus: ${error.message}`
+      };
     }
   }
 }
