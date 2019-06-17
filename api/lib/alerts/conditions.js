@@ -1,7 +1,9 @@
+const _ = require('lodash/fp');
+
 function checkGPUErrors(source, updated) {
   return {
-    met: !source.gpu.error && updated.gpu.error,
-    message: `there are gpu errors: ${updated.gpu.error}`
+    triggered: !source.gpu.error && updated.gpu.error,
+    message: `${source.hostname} - there are gpu errors: ${updated.gpu.error}`
   };
 }
 
@@ -11,16 +13,37 @@ function checkGPUCardsWentDown(source, updated) {
   const diff = sourceGpuCount - updatedGpuCount;
 
   return {
-    met: sourceGpuCount > updatedGpuCount,
-    message: `${diff} gpu cards went down`
+    triggered: sourceGpuCount > updatedGpuCount,
+    message: `${source.hostname} - ${diff} gpu cards went down`
   };
 }
 
 function checkRigWentDown(source, updated) {
   return {
-    met: source.pingable && !updated.pingable,
-    message: 'rig went down, not pingable'
+    triggered: source.pingable && !updated.pingable,
+    message: `${source.hostname} went down, not pingable`
   };
 }
 
-module.exports = [checkGPUErrors, checkGPUCardsWentDown, checkRigWentDown];
+function checkMinersWentDown(source, updated) {
+  const sourceErrors = _.pipe(
+    _.filter('error'),
+    _.map('error')
+  )(source.miners);
+  const updatedErrors = _.pipe(
+    _.filter('error'),
+    _.map('error')
+  )(updated.miners);
+
+  return {
+    triggered: !sourceErrors && updatedErrors,
+    message: `${source.hostname} - ${_.join(', ')(updatedErrors)}`
+  };
+}
+
+module.exports = [
+  checkGPUErrors,
+  checkGPUCardsWentDown,
+  checkRigWentDown,
+  checkMinersWentDown
+];

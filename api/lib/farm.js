@@ -1,19 +1,14 @@
 const _ = require('lodash');
 
 const logger = require('./logger');
-const Rig = require('./rig');
 
 class Farm {
   constructor(socket) {
     this.socket = socket;
   }
 
-  async syncRigs() {
+  async syncRigs(rigs) {
     logger.info('syncing rigs data from mining farm');
-
-    const rigs = await Rig.find({})
-      .populate('gpu.config')
-      .populate('miners.config');
 
     const promises = [];
 

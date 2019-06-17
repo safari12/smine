@@ -32,5 +32,10 @@ const RigSchema = new mongoose.Schema({
 RigSchema.methods.ping = methods.ping;
 RigSchema.methods.syncMiners = methods.syncMiners;
 RigSchema.methods.syncGPUCards = methods.syncGPUCards;
+RigSchema.statics.findWithPopulated = function() {
+  return this.find({})
+    .populate('gpu.config')
+    .populate('miners.config');
+};
 
 module.exports = mongoose.model('rigs', RigSchema);

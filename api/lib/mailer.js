@@ -1,5 +1,7 @@
-const nodemailer = require('nodemailer')
-const _ = require('lodash')
+const nodemailer = require('nodemailer');
+const _ = require('lodash/fp').convert({
+  rearg: true
+});
 
 /**
  * Class representing a program that sends email messages
@@ -7,35 +9,37 @@ const _ = require('lodash')
 class Mailer {
   /**
    * constructor
-   * @param {Object} options 
+   * @param {Object} options
    */
   constructor(options) {
-    this.username = options.auth.user
-    this.recipients = options.recipients
-    this.transporter = nodemailer.createTransport(options)
+    this.username = options.auth.user;
+    this.recipients = options.recipients;
+    this.transporter = nodemailer.createTransport(options);
   }
 
   /**
    * send email with subject and html content
-   * @param {string} subject 
-   * @param {string} html 
+   * @param {string} subject
+   * @param {string} html
    */
-  async sendMail(subject, html) {
-    const promises = []
-
-    _.each(this.recipients, (recipient) => {
-      const options = {
+  async sendMail(subject, messages) {
+    const html = this.getHtml(messages);
+    return _.map(recipient => {
+      return this.transporter.sendMail({
         from: this.username,
         to: recipient,
         subject: subject,
         html: html
-      }
+      });
+    })(this.recipients);
+  }
 
-      promises.push(this.transporter.sendMail(options))
-    })
-
-    return promises
+  getHtml(messages) {
+    return _.pipe(
+      _.concat(_.map(m => `<li>${m}</li>`)(messages)),
+      _.concat('</ul>')
+    )('<ul>');
   }
 }
 
-module.exports = Mailer
+module.exports = Mailer;

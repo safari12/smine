@@ -14,6 +14,12 @@ module.exports = {
     port: process.env.SM_API_PORT || 3000,
     secret: process.env.SM_API_SECRET || 'thisisasecret'
   },
+  mailer: {
+    auth: {
+      user: process.env.SM_MAILER_USER,
+      pass: process.env.SM_MAILER_PASS
+    }
+  },
   bcrypt: {
     salt: {
       rounds: 10
