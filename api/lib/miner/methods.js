@@ -1,17 +1,25 @@
-const _ = require('lodash');
 const MinerConfig = require('./config').model;
+const api = require('./api');
 
 class MinerMethods {
-  static async syncHashrate(hostname) {
+  static async syncStats(miner, hostname) {
     try {
-      const minerConfig = await MinerConfig.findById(this.config);
-      const response = await minerConfig.callApi(hostname);
-      const miner = require(`./types/${minerConfig.miner}`);
-      this.hashrate = await miner.getHashrate(response);
-      this.error = null;
+      const c = await MinerConfig.findById(miner.config);
+      const status = await api.getStatus(c.miner, hostname);
+      const parser = require(`./parsers/${c.miner}`);
+      const hashrate = await parser.getHashrate(status);
+
+      return {
+        ...miner,
+        hashrate,
+        error: null
+      };
     } catch (error) {
-      this.hashrate = 0;
-      this.error = error.message;
+      return {
+        ...miner,
+        hashrate: 0,
+        error: error.message
+      };
     }
   }
 }

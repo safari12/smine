@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const methods = require('./methods');
 const Schema = mongoose.Schema;
 
 const GPUConfigSchema = Schema({
@@ -21,8 +20,6 @@ const GPUConfigSchema = Schema({
     )
   }
 });
-
-GPUConfigSchema.methods.callApi = methods.callApi;
 
 module.exports = {
   model: mongoose.model('gpu_configs', GPUConfigSchema),

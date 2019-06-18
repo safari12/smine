@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const methods = require('./methods');
+const actions = require('./actions');
 const MinerSchema = require('../miner').schema;
 const GPUSchema = require('../gpu').schema;
 
@@ -29,13 +29,16 @@ const RigSchema = new mongoose.Schema({
   }
 });
 
-RigSchema.methods.ping = methods.ping;
-RigSchema.methods.syncMiners = methods.syncMiners;
-RigSchema.statics.syncGPUCards = methods.syncGPUCards;
+RigSchema.statics.ping = actions.ping;
+RigSchema.statics.syncMiners = actions.syncMiners;
+RigSchema.statics.syncGPUCards = actions.syncGPUCards;
 RigSchema.statics.findWithPopulated = function() {
   return this.find({})
     .populate('gpu.config')
     .populate('miners.config');
 };
 
-module.exports = mongoose.model('rigs', RigSchema);
+module.exports = {
+  schema: RigSchema,
+  model: mongoose.model('rigs', RigSchema)
+};

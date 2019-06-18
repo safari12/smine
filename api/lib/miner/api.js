@@ -1,0 +1,15 @@
+const got = require('got');
+const config = require('../config');
+
+class MinerApi {
+  static getStatus(type, hostname) {
+    const api = config.suppported[type].api;
+    return got.get(`${hostname}:${api.port}${api.endpoint}`, {
+      json: true,
+      retry: 3,
+      timeout: 3000
+    });
+  }
+}
+
+module.exports = MinerApi;

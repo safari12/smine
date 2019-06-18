@@ -6,7 +6,7 @@ const http = require('http').Server(server);
 const socket = require('socket.io')(http);
 const Farm = require('./farm');
 const Mailer = require('./mailer');
-const Rig = require('./rig');
+const Rig = require('./rig').model;
 const User = require('./user');
 const Alerts = require('./alerts');
 const config = require('./config');
@@ -29,10 +29,9 @@ module.exports = async () => {
       mailer.recipients = await User.findRecipients();
 
       const rigs = await Rig.findWithPopulated();
-      const sourceRigs = _.cloneDeep(rigs);
-      await farm.syncRigs(rigs);
+      const updatedRigs = await farm.syncRigs(rigs);
 
-      const conditions = alerts.getTriggeredConditions(sourceRigs, rigs);
+      const conditions = alerts.getTriggeredConditions(rigs, updatedRigs);
       if (conditions.length > 0) {
         await mailer.sendMail('SMine Alerts', _.map(conditions, 'message'));
       }

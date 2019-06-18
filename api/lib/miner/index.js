@@ -20,7 +20,7 @@ const MinerSchema = new mongoose.Schema(
   }
 );
 
-MinerSchema.methods.syncHashrate = methods.syncHashrate;
+MinerSchema.statics.syncStats = methods.syncStats;
 
 module.exports = {
   model: mongoose.model('miners', MinerSchema),
