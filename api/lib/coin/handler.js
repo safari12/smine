@@ -3,7 +3,11 @@ const config = require('../config');
 
 class CoinHandler {
   static getSupported(req, res) {
-    res.json(_.keys(config.coins));
+    const coins = _.pipe(
+      _.keys,
+      _.map(k => ({ name: k }))
+    )(config.coins);
+    res.json(coins);
   }
 }
 
