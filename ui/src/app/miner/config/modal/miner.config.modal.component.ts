@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class MinerConfigModalComponent implements OnInit {
   @Input() config: MinerConfig;
+  @Input() coins$: Observable<string[]>;
   @Input() miners$: Observable<string[]>;
   @Input() loading$: Observable<boolean>;
   @Output() onUpdate = new EventEmitter<MinerConfig>();
@@ -19,12 +20,7 @@ export class MinerConfigModalComponent implements OnInit {
   form: FormGroup = this.fb.group({
     name: ['', Validators.required],
     miner: ['', Validators.required],
-    api: this.fb.group({
-      endpoint: ['', Validators.required],
-      port: ['', Validators.required],
-      retries: ['2'],
-      timeout: ['2000']
-    })
+    coin: ['', Validators.required]
   });
 
   constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {}
@@ -33,8 +29,8 @@ export class MinerConfigModalComponent implements OnInit {
     if (this.config) {
       this.form.patchValue({
         name: this.config.name,
-        miner: this.config.miner,
-        api: this.config.api
+        miner: this.config.type,
+        coin: this.config.coin
       });
     }
   }
@@ -47,24 +43,8 @@ export class MinerConfigModalComponent implements OnInit {
     return this.form.controls.miner;
   }
 
-  get api() {
-    return this.form.controls.api as FormGroup;
-  }
-
-  get endpoint() {
-    return this.api.controls.endpoint;
-  }
-
-  get port() {
-    return this.api.controls.port;
-  }
-
-  get retries() {
-    return this.api.controls.retries;
-  }
-
-  get timeout() {
-    return this.api.controls.timeout;
+  get coin() {
+    return this.form.controls.coin;
   }
 
   create() {
@@ -74,8 +54,8 @@ export class MinerConfigModalComponent implements OnInit {
   update() {
     const value = this.getConfigValue();
     this.config.name = value.name;
-    this.config.miner = value.miner;
-    this.config.api = value.api;
+    this.config.type = value.type;
+    this.config.coin = value.coin;
     this.onUpdate.emit(this.config);
   }
 
@@ -83,8 +63,8 @@ export class MinerConfigModalComponent implements OnInit {
     const value = this.form.value;
     return {
       name: value.name,
-      miner: value.miner,
-      api: value.api
+      coin: value.coin,
+      type: value.miner
     };
   }
 

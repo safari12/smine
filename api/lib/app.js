@@ -34,7 +34,6 @@ module.exports = async () => {
       socket.emit('rigs-synced', updatedRigs);
 
       logger.info('successfully synced rigs from datacenter');
-
       logger.info('checking alerts for rigs');
 
       const alerts = _.pipe(

@@ -26,71 +26,37 @@
         </div>
       </div>
       <div class="form-group col-6">
-        <label for="miner">Miner</label>
-        <select formControlName="miner"
+        <label for="coin">Coin</label>
+        <select formControlName="coin"
                 class="form-control"
-                id="miner">
-          <option *ngFor="let name of miners$ | async">
-            {{name}}
+                id="coin">
+          <option *ngFor="let coin of coins$ | async">
+            {{coin}}
           </option>
         </select>
-        <div *ngIf="(miner.dirty || miner.touched) && miner.errors"
-             class="text-danger">
-          <div *ngIf="miner.errors.required">Required</div>
-        </div>
       </div>
-    </div>
-    <div class="form-row mt-2">
-      <h4 class="ml-1">API</h4>
-    </div>
-    <div formGroupName="api"
-         class="form-row">
-      <div class="form-group col-6">
-        <label for="endpoint">Endpoint</label>
-        <input type="text"
-               formControlName="endpoint"
-               class="form-control"
-               id="endpoint"
-               placeholder="Enter Endpoint">
-        <div *ngIf="(endpoint.dirty || endpoint.touched) && endpoint.errors"
-             class="text-danger">
-          <div *ngIf="endpoint.errors.required">Required</div>
+      <div *ngIf="coin.value">
+        <div class="form-group col-6">
+          <label for="miner">Miner</label>
+          <select formControlName="miner"
+                  class="form-control"
+                  id="miner">
+            <option *ngFor="let name of miners$ | async">
+              {{name}}
+            </option>
+          </select>
+          <div *ngIf="(miner.dirty || miner.touched) && miner.errors"
+               class="text-danger">
+            <div *ngIf="miner.errors.required">Required</div>
+          </div>
         </div>
-      </div>
-      <div class="form-group col-6">
-        <label for="port">Port</label>
-        <input type="number"
-               formControlName="port"
-               class="form-control"
-               id="port"
-               placeholder="Enter Port">
-        <div *ngIf="(port.dirty || port.touched) && port.errors"
-             class="text-danger">
-          <div *ngIf="port.errors.required">Required</div>
-        </div>
-      </div>
-      <div class="form-group col-6">
-        <label for="retries">Retries</label>
-        <input type="number"
-               formControlName="retries"
-               class="form-control"
-               id="retries"
-               placeholder="Enter Retries">
-        <div *ngIf="(retries.dirty || retries.touched) && retries.errors"
-             class="text-danger">
-          <div *ngIf="retries.errors.required">Required</div>
-        </div>
-      </div>
-      <div class="form-group col-6">
-        <label for="timeout">Timeout</label>
-        <input type="number"
-               formControlName="timeout"
-               class="form-control"
-               id="timeout"
-               placeholder="Enter Timeout">
-        <div *ngIf="(timeout.dirty || timeout.touched) && timeout.errors"
-             class="text-danger">
-          <div *ngIf="timeout.errors.required">Required</div>
+        <div class="form-group col-6">
+          <label for="Device">Device</label>
+          <select formControlName="device"
+                  class="form-control"
+                  id="device">
+            <option>GPU</option>
+          </select>
         </div>
       </div>
     </div>

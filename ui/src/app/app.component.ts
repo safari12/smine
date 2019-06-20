@@ -4,6 +4,7 @@ import User from './user/user';
 import { GpuConfigService } from './gpu/config/state/gpu.config.service';
 import { MinerConfigService } from './miner/config/state/miner.config.service';
 import { RigService } from './rig/state/rig.service';
+import { CoinService } from './coin/state/coin.service';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +18,15 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private rigService: RigService,
     private gpuConfigService: GpuConfigService,
-    private minerConfigService: MinerConfigService
+    private minerConfigService: MinerConfigService,
+    private coinService: CoinService
   ) {}
 
   ngOnInit() {
     this.rigService.readAll();
     this.gpuConfigService.readAll();
     this.minerConfigService.readAll();
+    this.coinService.getSupported();
   }
 
   get currentUser(): User {

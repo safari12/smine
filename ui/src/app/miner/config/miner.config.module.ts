@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MinerConfigComponent } from './miner.config.component';
 import { MinerConfigService } from './state/miner.config.service';
 import { MinerConfigQuery } from './state/miner.config.query';
+import { CoinModule } from 'src/app/coin/coin.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { MinerConfigQuery } from './state/miner.config.query';
     MinerConfigModalComponent,
     MinerConfigComponent
   ],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, CoinModule],
   entryComponents: [MinerConfigModalComponent],
   providers: [MinerConfigService, MinerConfigQuery],
   exports: [
