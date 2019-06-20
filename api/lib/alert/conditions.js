@@ -2,7 +2,7 @@ const _ = require('lodash/fp');
 
 function checkGPUErrors(source, updated) {
   return {
-    triggered: !source.gpu.error && updated.gpu.error,
+    triggered: updated.pingable && !source.gpu.error && updated.gpu.error,
     message: `${source.hostname} - there are gpu errors: ${updated.gpu.error}`
   };
 }
@@ -13,7 +13,7 @@ function checkGPUCardsWentDown(source, updated) {
   const diff = sourceGpuCount - updatedGpuCount;
 
   return {
-    triggered: sourceGpuCount > updatedGpuCount,
+    triggered: updated.pingable && sourceGpuCount > updatedGpuCount,
     message: `${source.hostname} - ${diff} gpu cards went down`
   };
 }
@@ -36,7 +36,7 @@ function checkMinersWentDown(source, updated) {
   )(updated.miners);
 
   return {
-    triggered: !sourceErrors && updatedErrors,
+    triggered: updated.pingable && !sourceErrors && updatedErrors,
     message: `${source.hostname} - ${_.join(', ')(updatedErrors)}`
   };
 }
