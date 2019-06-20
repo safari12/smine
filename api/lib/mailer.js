@@ -3,6 +3,8 @@ const _ = require('lodash/fp').convert({
   rearg: true
 });
 
+const html = require('./html');
+
 /**
  * Class representing a program that sends email messages
  */
@@ -23,22 +25,15 @@ class Mailer {
    * @param {string} html
    */
   async sendMail(subject, messages) {
-    const html = this.getHtml(messages);
+    const htmlList = html.generateList(messages);
     return _.map(recipient => {
       return this.transporter.sendMail({
         from: this.username,
         to: recipient,
         subject: subject,
-        html: html
+        html: htmlList
       });
     })(this.recipients);
-  }
-
-  getHtml(messages) {
-    return _.pipe(
-      _.concat(_.map(m => `<li>${m}</li>`)(messages)),
-      _.concat('</ul>')
-    )('<ul>');
   }
 }
 

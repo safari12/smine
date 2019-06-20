@@ -2,6 +2,7 @@ const net = require('../net');
 const Rig = require('.').model;
 const GPU = require('../gpu').model;
 const Miner = require('../miner').model;
+const Alert = require('../alert').model;
 const _ = require('lodash/fp');
 
 class RigActions {
@@ -33,6 +34,32 @@ class RigActions {
       ...rig.toObject(),
       gpu
     });
+  }
+
+  static checkAlerts(rigs, updatedRigs) {
+    updatedRigs = _.keyBy('_id', updatedRigs);
+
+    return _.map(
+      r =>
+        new Rig({
+          ...r.toObject(),
+          alerts: Alert.check(r, updatedRigs[r._id])
+        })
+    )(rigs);
+  }
+
+  static sync(rigs) {
+    return Promise.all(
+      _.map(async r => {
+        r = await Rig.ping(r);
+        r = await Rig.syncGPUCards(r);
+        return await Rig.syncMiners(r);
+      })(rigs)
+    );
+  }
+
+  static saveMany(rigs) {
+    return Promise.all(_.map(r => r.save(), rigs));
   }
 }
 

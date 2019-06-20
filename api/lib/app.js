@@ -4,14 +4,12 @@ const admin = require('./admin');
 const server = require('./server');
 const http = require('http').Server(server);
 const socket = require('socket.io')(http);
-const Farm = require('./farm');
 const Mailer = require('./mailer');
 const Rig = require('./rig').model;
 const User = require('./user');
-const Alerts = require('./alerts');
 const config = require('./config');
 const schedule = require('node-schedule');
-const _ = require('lodash');
+const _ = require('lodash/fp');
 const PORT = config.api.port;
 
 module.exports = async () => {
@@ -19,21 +17,37 @@ module.exports = async () => {
     await http.listen(PORT);
     logger.info(`server is listening on port ${PORT}`);
 
-    const farm = new Farm(socket);
     const mailer = new Mailer({
       auth: config.mailer.auth
     });
-    const alerts = new Alerts(require('./alerts/conditions'));
 
     schedule.scheduleJob('*/30 * * * * *', async () => {
       mailer.recipients = await User.findRecipients();
 
-      const rigs = await Rig.findWithPopulated();
-      const updatedRigs = await farm.syncRigs(rigs);
+      logger.info('syncing rigs from datacenter');
 
-      const conditions = alerts.getTriggeredConditions(rigs, updatedRigs);
-      if (conditions.length > 0) {
-        await mailer.sendMail('SMine Alerts', _.map(conditions, 'message'));
+      const rigs = await Rig.findWithPopulated();
+      let updatedRigs = await Rig.sync();
+      updatedRigs = Rig.checkAlerts(rigs, updatedRigs);
+      await Rig.saveMany(updatedRigs);
+
+      socket.emit('rigs-synced', updatedRigs);
+
+      logger.info('successfully synced rigs from datacenter');
+
+      logger.info('checking alerts for rigs');
+
+      const alerts = _.pipe(
+        _.map('alerts'),
+        _.flatten()
+      )(updatedRigs);
+
+      if (alerts.length > 0) {
+        logger.info('there are alerts for rigs, notifying users');
+        await mailer.sendMail('SMine Alerts', _.map('message', alerts));
+        logger.info('successfully notified users');
+      } else {
+        logger.info('no alerts for rigs');
       }
     });
   }

@@ -1,34 +1,17 @@
-const _ = require('lodash')
+const _ = require('lodash/fp').convert({
+  rearg: true
+});
 
 /**
  * Class that generates html tags
  */
 class HTML {
-
-  /**
-   * Generates a HTML list tag
-   * @param {Array} items 
-   */
-  static generateListTag(items) {
-    let content = '<ul>\n'
-
-    _.each(items, (i) => {
-      content += `<li>${i}</li>\n`
-    })
-
-    content += '</ul>\n'
-
-    return content
-  }
-
-  /**
-   * Generates a header from size
-   * @param {number} size 
-   * @param {string} text 
-   */
-  static generateHeaderTag(size, text) {
-    return `<h${size}>${text}</h${size}>`
+  static generateList(messages) {
+    return _.pipe(
+      _.concat(_.map(m => `<li>${m}</li>`)(messages)),
+      _.concat('</ul>')
+    )('<ul>');
   }
 }
 
-module.exports = HTML
+module.exports = HTML;
