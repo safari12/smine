@@ -21,7 +21,7 @@ class RigActions {
     return new Rig({
       ...rig.toObject(),
       miners,
-      hashrate: _.reduce((h, m) => h + m.hostname, 0, miners)
+      hashrate: _.reduce((h, m) => h + m.hashrate, 0, miners)
     });
   }
 
