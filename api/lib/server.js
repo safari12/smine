@@ -7,6 +7,7 @@ const adminRouter = require('./admin/router');
 const rigRouter = require('./rig/router');
 const minerRouter = require('./miner/router');
 const gpuRouter = require('./gpu/router');
+const coinRouter = require('./coin/router');
 
 const handler = {
   error: {
@@ -23,13 +24,12 @@ server.use(
   })
 );
 server.use(cors());
-
 server.use('/users', userRouter);
 server.use('/admin', adminRouter);
 server.use('/rigs', rigRouter);
 server.use('/miners', minerRouter);
 server.use('/gpu', gpuRouter);
-
+server.use('/coins', coinRouter);
 server.use([handler.error.validation, handler.error.common]);
 
 module.exports = server;

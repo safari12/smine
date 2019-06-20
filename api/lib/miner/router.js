@@ -1,12 +1,11 @@
-const express = require('express')
-const handler = require('./handler')
-const configRouter = require('./config/router')
-const token = require('../token')
+const express = require('express');
+const handler = require('./handler');
+const configRouter = require('./config/router');
+const token = require('../token');
 
-const router = express.Router()
-router.use([token.check, token.checkAdmin])
-router.route('/supported').get(handler.getSupported)
-router.route('/:type/coins').get(handler.getSupportedCoins)
-router.use('/configs', configRouter)
+const router = express.Router();
+router.use([token.check, token.checkAdmin]);
+router.route('/:coin/supported').get(handler.getSupported);
+router.use('/configs', configRouter);
 
-module.exports = router
+module.exports = router;
