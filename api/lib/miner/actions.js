@@ -1,13 +1,13 @@
 const MinerConfig = require('./config').model;
 const api = require('./api');
 
-class MinerMethods {
+class MinerActions {
   static async syncStats(miner, hostname) {
     try {
-      const c = await MinerConfig.findById(miner.config);
-      const status = await api.getStatus(c.miner, hostname);
-      const parser = require(`./parsers/${c.miner}`);
-      const hashrate = await parser.getHashrate(status);
+      const minerConfig = await MinerConfig.findById(miner.config);
+      const status = await api.getStatus(minerConfig.type, hostname);
+      const parser = require(`./parsers/${minerConfig.type}`);
+      const hashrate = parser.getHashrate(minerConfig, status);
 
       return {
         ...miner,
@@ -24,4 +24,4 @@ class MinerMethods {
   }
 }
 
-module.exports = MinerMethods;
+module.exports = MinerActions;

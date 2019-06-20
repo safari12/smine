@@ -3,7 +3,7 @@ const config = require('../config');
 
 class MinerApi {
   static getStatus(type, hostname) {
-    const api = config.suppported[type].api;
+    const api = config.miners[type].api;
     return got.get(`${hostname}:${api.port}${api.endpoint}`, {
       json: true,
       retry: 3,

@@ -25,21 +25,19 @@ module.exports = {
       rounds: 10
     }
   },
-  miner: {
-    supported: {
-      'xmr-stak': {
-        coins: ['monero', 'aeon', 'masari', 'loki'],
-        api: {
-          port: 6968,
-          endpoint: '/api.json'
-        }
+  coins: {
+    grin: {
+      miners: ['bminer']
+    }
+  },
+  miners: {
+    bminer: {
+      algorithms: {
+        grin: 'cuckaroo29'
       },
-      bminer: {
-        coins: ['grin'],
-        api: {
-          port: 6967,
-          endpoint: '/api/status'
-        }
+      api: {
+        port: 6967,
+        endpoint: '/api/status'
       }
     }
   },

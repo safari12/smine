@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const methods = require('./methods');
+const actions = require('./actions');
 
 const MinerSchema = new mongoose.Schema(
   {
@@ -20,7 +20,7 @@ const MinerSchema = new mongoose.Schema(
   }
 );
 
-MinerSchema.statics.syncStats = methods.syncStats;
+MinerSchema.statics.syncStats = actions.syncStats;
 
 module.exports = {
   model: mongoose.model('miners', MinerSchema),

@@ -39,7 +39,7 @@ module.exports = async () => {
 
       const alerts = _.pipe(
         _.map('alerts'),
-        _.flatten()
+        _.flatten
       )(updatedRigs);
 
       if (alerts.length > 0) {

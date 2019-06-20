@@ -8,12 +8,20 @@ const MinerConfigSchema = new Schema({
     type: String,
     required: true
   },
-  miner: {
+  coin: {
     type: String,
     required: true,
     enum: {
-      values: Object.keys(config.miner.supported),
-      message: 'miner not supported'
+      values: Object.keys(config.coins),
+      message: 'coin not supported'
+    }
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: {
+      values: Object.keys(config.miners),
+      message: 'type not supported'
     }
   }
 });
