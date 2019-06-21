@@ -7,7 +7,7 @@ class GPUApi {
     return got.post(`${this.getUrl(hostname)}/cards/power`, {
       json: true,
       body: { limit },
-      timeout: 200,
+      timeout: 2000,
       retry: 1
     });
   }
@@ -15,7 +15,7 @@ class GPUApi {
   static async getCards(hostname) {
     return got(`${this.getUrl(hostname)}/cards`, {
       json: true,
-      timeout: 200,
+      timeout: 2000,
       retry: 1
     });
   }

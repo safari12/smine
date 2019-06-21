@@ -21,7 +21,9 @@ class GPUMethods {
       if (error.code === 'ECONNREFUSED') {
         gpuError.api = 'could not connect to nvidia gpu api';
       } else {
-        gpuError.cards = `error getting gpu cards: ${error.message}`;
+        if (error.body) {
+          gpuError.cards = `error getting gpu cards: ${error.body.error}`;
+        }
       }
 
       return {
@@ -47,7 +49,11 @@ class GPUMethods {
       if (error.code === 'ECONNREFUSED') {
         gpuError.api = 'could not connect to nvidia gpu api';
       } else {
-        gpuError.cards = `error setting power limit for gpus: ${error.message}`;
+        if (error.body) {
+          gpuError.cards = `error setting power limit for gpus: ${
+            error.body.error
+          }`;
+        }
       }
 
       return {
