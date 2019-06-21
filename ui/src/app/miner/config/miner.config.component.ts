@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { MinerConfigService } from './state/miner.config.service';
 import { MinerConfigQuery } from './state/miner.config.query';
 import { CoinQuery } from 'src/app/coin/state/coin.query';
+import { Coin } from 'src/app/coin/coin';
 
 @Component({
   selector: 'app-miner-configs',
@@ -14,7 +15,7 @@ import { CoinQuery } from 'src/app/coin/state/coin.query';
   styleUrls: ['./miner.config.component.css']
 })
 export class MinerConfigComponent {
-  coins$: Observable<string[]>;
+  coins$: Observable<Coin[]>;
   miners$: Observable<string[]>;
   configs$: Observable<MinerConfig[]>;
 
@@ -28,8 +29,7 @@ export class MinerConfigComponent {
 
   ngOnInit() {
     this.configs$ = this.configQuery.selectAll();
-    this.coins$ = this.coinQuery.select();
-    this.coinQuery.select().subscribe(coins => console.log(coins));
+    this.coins$ = this.coinQuery.selectAll();
   }
 
   openModal() {
@@ -38,8 +38,10 @@ export class MinerConfigComponent {
       centered: true
     });
     modal.componentInstance.loading$ = this.configQuery.selectLoading();
-    modal.componentInstance.miners$ = this.service.getSupported();
     modal.componentInstance.coins$ = this.coins$;
+    modal.componentInstance.onCoinSelect.subscribe(coin => {
+      modal.componentInstance.miners$ = this.service.getSupported(coin);
+    });
 
     return modal;
   }
@@ -64,6 +66,6 @@ export class MinerConfigComponent {
   }
 
   delete(config) {
-    this.configService.delete(config);
+    this.configService.delete(config).subscribe();
   }
 }

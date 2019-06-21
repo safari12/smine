@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MinerConfig } from '../miner.config';
 import { Observable } from 'rxjs';
+import { Coin } from 'src/app/coin/coin';
 
 @Component({
   selector: 'app-miner-config-modal',
@@ -11,26 +12,30 @@ import { Observable } from 'rxjs';
 })
 export class MinerConfigModalComponent implements OnInit {
   @Input() config: MinerConfig;
-  @Input() coins$: Observable<string[]>;
+  @Input() coins$: Observable<Coin[]>;
   @Input() miners$: Observable<string[]>;
   @Input() loading$: Observable<boolean>;
   @Output() onUpdate = new EventEmitter<MinerConfig>();
   @Output() onCreate = new EventEmitter<MinerConfig>();
+  @Output() onCoinSelect = new EventEmitter<Coin>();
 
   form: FormGroup = this.fb.group({
     name: ['', Validators.required],
     miner: ['', Validators.required],
-    coin: ['', Validators.required]
+    coin: ['', Validators.required],
+    device: ['', Validators.required]
   });
 
   constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {}
 
   ngOnInit() {
     if (this.config) {
+      this.onCoinSelect.emit(this.config.coin);
       this.form.patchValue({
         name: this.config.name,
         miner: this.config.type,
-        coin: this.config.coin
+        coin: this.config.coin,
+        device: this.config.device
       });
     }
   }
@@ -56,6 +61,7 @@ export class MinerConfigModalComponent implements OnInit {
     this.config.name = value.name;
     this.config.type = value.type;
     this.config.coin = value.coin;
+    this.config.device = value.device;
     this.onUpdate.emit(this.config);
   }
 
@@ -64,8 +70,17 @@ export class MinerConfigModalComponent implements OnInit {
     return {
       name: value.name,
       coin: value.coin,
-      type: value.miner
+      type: value.miner.toLowerCase(),
+      device: value.device
     };
+  }
+
+  compareCoins(c1: Coin, c2: Coin): boolean {
+    return c1 && c2 && c1.name === c2.name;
+  }
+
+  onChangeCoin() {
+    this.onCoinSelect.emit(this.coin.value);
   }
 
   onSubmit() {

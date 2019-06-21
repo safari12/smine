@@ -3,14 +3,17 @@
   <tbody>
     <tr *ngFor="let config of configs">
       <th scope="row">{{config.name}}</th>
-      <td>{{config.miner}}</td>
-      <td>{{"*:" + config.api.port + config.api.endpoint}}</td>
+      <td>{{config.coin.name | titlecase }}</td>
+      <td>{{config.type | titlecase }}</td>
+      <td>{{config.device }}</td>
       <td class="text-right">
-        <button class="btn btn-primary mr-3 action-button" (click)="edit(config)">
+        <button class="btn btn-primary mr-3 action-button"
+                (click)="edit(config)">
           <i class="fa fa-edit"></i>
         </button>
 
-        <button class="btn btn-danger action-button" (click)="delete(config)">
+        <button class="btn btn-danger action-button"
+                (click)="delete(config)">
           <i class="fa fa-trash"></i>
         </button>
       </td>

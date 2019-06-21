@@ -27,37 +27,45 @@
       </div>
       <div class="form-group col-6">
         <label for="coin">Coin</label>
-        <select formControlName="coin"
+        <select [compareWith]="compareCoins"
+                formControlName="coin"
                 class="form-control"
-                id="coin">
-          <option *ngFor="let coin of coins$ | async">
-            {{coin}}
+                id="coin"
+                (change)="onChangeCoin()">
+          <option [ngValue]="null"
+                  [disabled]="true">Select</option>
+          <option *ngFor="let coin of coins$ | async"
+                  [ngValue]="coin">
+            {{coin.name | titlecase }}
           </option>
         </select>
       </div>
-      <div *ngIf="coin.value">
-        <div class="form-group col-6">
-          <label for="miner">Miner</label>
-          <select formControlName="miner"
-                  class="form-control"
-                  id="miner">
-            <option *ngFor="let name of miners$ | async">
-              {{name}}
-            </option>
-          </select>
-          <div *ngIf="(miner.dirty || miner.touched) && miner.errors"
-               class="text-danger">
-            <div *ngIf="miner.errors.required">Required</div>
-          </div>
+    </div>
+    <div class="form-row"
+         *ngIf="coin.value">
+      <div class="form-group col-6">
+        <label for="miner">Miner</label>
+        <select formControlName="miner"
+                class="form-control"
+                id="miner">
+          <option [ngValue]="null"
+                  [disabled]="true">Select</option>
+          <option *ngFor="let miner of miners$ | async">
+            {{miner.name | titlecase }}
+          </option>
+        </select>
+        <div *ngIf="(miner.dirty || miner.touched) && miner.errors"
+             class="text-danger">
+          <div *ngIf="miner.errors.required">Required</div>
         </div>
-        <div class="form-group col-6">
-          <label for="Device">Device</label>
-          <select formControlName="device"
-                  class="form-control"
-                  id="device">
-            <option>GPU</option>
-          </select>
-        </div>
+      </div>
+      <div class="form-group col-6">
+        <label for="Device">Device</label>
+        <select formControlName="device"
+                class="form-control"
+                id="device">
+          <option>GPU</option>
+        </select>
       </div>
     </div>
   </div>

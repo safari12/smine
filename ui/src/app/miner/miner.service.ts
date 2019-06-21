@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 export class MinerService {
   constructor(private http: HttpClient) {}
 
-  getSupported(): Observable<string[]> {
-    return this.http.get<string[]>('/api/miners/supported');
+  getSupported(coin): Observable<string[]> {
+    return this.http.get<string[]>(`/api/miners/${coin.name}/supported`);
   }
 }

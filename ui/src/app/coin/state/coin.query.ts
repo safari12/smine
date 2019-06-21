@@ -1,9 +1,10 @@
-import { Query } from '@datorama/akita';
+import { QueryEntity } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { CoinStore } from './coin.store';
+import { CoinStore, CoinState } from './coin.store';
+import { Coin } from '../coin';
 
 @Injectable()
-export class CoinQuery extends Query<string[]> {
+export class CoinQuery extends QueryEntity<CoinState, Coin> {
   constructor(protected store: CoinStore) {
     super(store);
   }

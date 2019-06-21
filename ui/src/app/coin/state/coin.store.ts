@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Store, StoreConfig } from '@datorama/akita';
+import { Store, StoreConfig, EntityState, EntityStore } from '@datorama/akita';
+import { Coin } from '../coin';
 
-@Injectable()
-@StoreConfig({ name: 'coins', idKey: '' })
-export class CoinStore extends Store<string[]> {
+export interface CoinState extends EntityState<Coin> {}
+
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'coins', idKey: 'name' })
+export class CoinStore extends EntityStore<CoinState, Coin> {
   constructor() {
-    super([]);
+    super();
   }
 }
