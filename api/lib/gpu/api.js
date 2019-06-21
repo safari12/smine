@@ -13,7 +13,7 @@ class GPUApi {
   }
 
   static async getCards(hostname) {
-    return got.get(`${this.getUrl(hostname)}/cards`, {
+    return got(`${this.getUrl(hostname)}/cards`, {
       json: true,
       timeout: 200,
       retry: 1
@@ -21,7 +21,7 @@ class GPUApi {
   }
 
   static getUrl(hostname) {
-    return `${hostname}:${PORT}/gpu`;
+    return `http://${hostname}:${PORT}/gpu`;
   }
 }
 

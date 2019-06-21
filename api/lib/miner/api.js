@@ -4,7 +4,7 @@ const config = require('../config');
 class MinerApi {
   static getStatus(type, hostname) {
     const api = config.miners[type].api;
-    return got.get(`${hostname}:${api.port}${api.endpoint}`, {
+    return got.get(`http://${hostname}:${api.port}${api.endpoint}`, {
       json: true,
       retry: 3,
       timeout: 500

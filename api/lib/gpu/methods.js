@@ -5,8 +5,9 @@ const api = require('./api');
 class GPUMethods {
   static async syncCards(gpu, hostname) {
     try {
-      const cards = await api.getCards(hostname);
-      const totalWattage = _.reduce((acc, c) => acc + c.wattage, cards);
+      const { body } = await api.getCards(hostname);
+      const cards = body;
+      const totalWattage = _.reduce((acc, c) => acc + c.power.usage, 0, cards);
 
       return {
         ...gpu,
