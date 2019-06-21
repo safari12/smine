@@ -13,7 +13,8 @@ const GPUSchema = new Schema(
       type: [GPUCardSchema]
     },
     error: {
-      type: String
+      type: Schema.Types.Mixed,
+      default: {}
     },
     config: {
       type: Schema.Types.ObjectId,
@@ -22,7 +23,8 @@ const GPUSchema = new Schema(
     }
   },
   {
-    _id: false
+    _id: false,
+    minimize: false
   }
 );
 

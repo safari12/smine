@@ -5,33 +5,38 @@ const MinerSchema = require('../miner').schema;
 const GPUSchema = require('../gpu').schema;
 const AlertSchema = require('../alert').schema;
 
-const RigSchema = new mongoose.Schema({
-  hostname: {
-    type: String,
-    required: true,
-    unique: true,
-    index: true
+const RigSchema = new mongoose.Schema(
+  {
+    hostname: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true
+    },
+    pingable: {
+      type: Boolean,
+      default: false
+    },
+    hashrate: {
+      type: Number,
+      default: 0
+    },
+    miners: {
+      type: [MinerSchema],
+      required: true
+    },
+    gpu: {
+      type: GPUSchema,
+      required: true
+    },
+    alerts: {
+      type: [AlertSchema]
+    }
   },
-  pingable: {
-    type: Boolean,
-    default: false
-  },
-  hashrate: {
-    type: Number,
-    default: 0
-  },
-  miners: {
-    type: [MinerSchema],
-    required: true
-  },
-  gpu: {
-    type: GPUSchema,
-    required: true
-  },
-  alerts: {
-    type: [AlertSchema]
+  {
+    minimize: false
   }
-});
+);
 
 RigSchema.statics.ping = actions.ping;
 RigSchema.statics.syncMiners = actions.syncMiners;

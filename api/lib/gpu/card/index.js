@@ -1,14 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const RangeSchema = new Schema({
-  usage: {
-    type: Number
+const RangeSchema = new Schema(
+  {
+    usage: {
+      type: Number
+    },
+    cap: {
+      type: Number
+    }
   },
-  cap: {
-    type: Number
+  {
+    _id: false
   }
-});
+);
 
 const GPUCardSchema = new Schema(
   {
