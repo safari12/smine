@@ -26,14 +26,17 @@ class Mailer {
    */
   async sendMail(subject, messages) {
     const htmlList = html.generateList(messages);
-    return _.map(recipient => {
-      return this.transporter.sendMail({
-        from: this.username,
-        to: recipient,
-        subject: subject,
-        html: htmlList
-      });
-    })(this.recipients);
+
+    return Promise.all(
+      _.map(recipient => {
+        return this.transporter.sendMail({
+          from: this.username,
+          to: recipient,
+          subject: subject,
+          html: htmlList
+        });
+      })(this.recipients)
+    );
   }
 }
 

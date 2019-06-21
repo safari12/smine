@@ -18,12 +18,13 @@ module.exports = async () => {
     logger.info(`server is listening on port ${PORT}`);
 
     const mailer = new Mailer({
+      service: 'gmail',
       auth: config.mailer.auth
     });
 
     let jobCompleted = true;
 
-    schedule.scheduleJob('*/30 * * * * *', async () => {
+    schedule.scheduleJob('*/10 * * * * *', async () => {
       if (jobCompleted) {
         jobCompleted = false;
         mailer.recipients = await User.findRecipients();

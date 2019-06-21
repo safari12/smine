@@ -40,10 +40,10 @@ class RigActions {
   }
 
   static checkAlerts(rigs, updatedRigs) {
-    updatedRigs = _.keyBy('_id', updatedRigs);
+    rigs = _.keyBy('_id', rigs);
 
-    return _.map(r => ({ ...r, alerts: Alert.check(r, updatedRigs[r._id]) }))(
-      rigs
+    return _.map(r => ({ ...r, alerts: Alert.check(rigs[r._id], r) }))(
+      updatedRigs
     );
   }
 

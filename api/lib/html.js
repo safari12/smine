@@ -9,7 +9,8 @@ class HTML {
   static generateList(messages) {
     return _.pipe(
       _.concat(_.map(m => `<li>${m}</li>`)(messages)),
-      _.concat('</ul>')
+      _.concat('</ul>'),
+      _.join('')
     )('<ul>');
   }
 }

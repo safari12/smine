@@ -1,5 +1,5 @@
 const _ = require('lodash/fp');
-const GPUConfig = require('./config');
+const GPUConfig = require('./config').model;
 const api = require('./api');
 
 class GPUMethods {
@@ -26,7 +26,7 @@ class GPUMethods {
 
   static async powerLimitCards(gpu, hostname) {
     try {
-      const c = await GPUConfig.findOne(this.config);
+      const c = await GPUConfig.findById(gpu.config);
       await api.powerLimitCards(hostname, c.power.limit);
       return {
         ...gpu,
