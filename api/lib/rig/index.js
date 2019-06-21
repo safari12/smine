@@ -39,11 +39,7 @@ RigSchema.statics.syncGPUCards = actions.syncGPUCards;
 RigSchema.statics.checkAlerts = actions.checkAlerts;
 RigSchema.statics.sync = actions.sync;
 RigSchema.statics.saveMany = actions.saveMany;
-RigSchema.statics.findWithPopulated = function() {
-  return this.find({})
-    .populate('gpu.config')
-    .populate('miners.config');
-};
+RigSchema.statics.findAll = actions.findAll;
 
 module.exports = {
   schema: RigSchema,

@@ -1,54 +1,54 @@
 const net = require('../net');
-const Rig = require('.').model;
 const GPU = require('../gpu').model;
 const Miner = require('../miner').model;
 const Alert = require('../alert').model;
 const _ = require('lodash/fp');
+const logger = require('../logger');
 
 class RigActions {
   static async ping(rig) {
-    return new Rig({
-      ...rig.toObject(),
-      pingable: await net.ping(this.hostname)
-    });
+    logger.info(`pinging rig ${rig.hostname}`);
+    return {
+      ...rig,
+      pingable: await net.ping(rig.hostname)
+    };
   }
 
   static async syncMiners(rig) {
+    logger.info(`syncing miner stats for ${rig.hostname}`);
     const miners = await Promise.all(
-      _.map(m => Miner.syncStats(m, rig.hostname))
+      _.map(m => Miner.syncStats(m, rig.hostname))(rig.miners)
     );
 
-    return new Rig({
-      ...rig.toObject(),
+    return {
+      ...rig,
       miners,
       hashrate: _.reduce((h, m) => h + m.hashrate, 0, miners)
-    });
+    };
   }
 
   static async syncGPUCards(rig) {
+    logger.info(`syncing gpu card stats for ${rig.hostname}`);
     // TODO: compose promises
     let gpu = await GPU.syncCards(rig.gpu, rig.hostname);
     gpu = await GPU.powerLimitCards(gpu, rig.hostname);
 
-    return new Rig({
-      ...rig.toObject(),
+    return {
+      ...rig,
       gpu
-    });
+    };
   }
 
   static checkAlerts(rigs, updatedRigs) {
     updatedRigs = _.keyBy('_id', updatedRigs);
 
-    return _.map(
-      r =>
-        new Rig({
-          ...r.toObject(),
-          alerts: Alert.check(r, updatedRigs[r._id])
-        })
-    )(rigs);
+    return _.map(r => ({ ...r, alerts: Alert.check(r, updatedRigs[r._id]) }))(
+      rigs
+    );
   }
 
   static sync(rigs) {
+    const Rig = this;
     return Promise.all(
       _.map(async r => {
         r = await Rig.ping(r);
@@ -58,8 +58,24 @@ class RigActions {
     );
   }
 
+  static async findAll() {
+    let rigs = await this.find({})
+      .populate('gpu.config')
+      .populate('miners.config');
+
+    return _.map(r => r.toObject())(rigs);
+  }
+
   static saveMany(rigs) {
-    return Promise.all(_.map(r => r.save(), rigs));
+    const Rig = this;
+    const results = _.pipe(
+      _.map(r => new Rig(r)),
+      _.map(r => {
+        r.isNew = false;
+        return r.save();
+      })
+    )(rigs);
+    return Promise.all(results);
   }
 }
 

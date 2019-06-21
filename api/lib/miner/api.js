@@ -7,7 +7,7 @@ class MinerApi {
     return got.get(`${hostname}:${api.port}${api.endpoint}`, {
       json: true,
       retry: 3,
-      timeout: 3000
+      timeout: 500
     });
   }
 }
