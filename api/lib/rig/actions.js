@@ -29,9 +29,14 @@ class RigActions {
 
   static async syncGPUCards(rig) {
     logger.info(`syncing gpu card stats for ${rig.hostname}`);
-    // TODO: compose promises
-    let gpu = await GPU.syncCards(rig.gpu, rig.hostname);
-    gpu = await GPU.powerLimitCards(gpu, rig.hostname);
+    let gpu = rig.gpu;
+
+    try {
+      gpu = await GPU.syncCards(gpu, rig.hostname);
+      gpu = await GPU.powerLimitCards(gpu, rig.hostname);
+    } catch (error) {
+      gpu.error = error.toObject();
+    }
 
     return {
       ...rig,

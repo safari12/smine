@@ -1,6 +1,11 @@
 const _ = require('lodash/fp');
 const GPUConfig = require('./config').model;
 const api = require('./api');
+const {
+  GPUApiError,
+  GPUSyncCardsError,
+  GPUPowerLimitCardsError
+} = require('./errors');
 
 class GPUActions {
   static async syncCards(gpu, hostname) {
@@ -16,22 +21,11 @@ class GPUActions {
         error: {}
       };
     } catch (error) {
-      let gpuError = {};
-
-      if (error.code === 'ENOTFOUND') {
-        gpuError.api = 'nvidia gpu api not running';
-      } else if (error.code === 'ECONNREFUSED') {
-        gpuError.api = 'could not connect to nvidia gpu api';
+      if (!(error instanceof GPUApiError)) {
+        throw new GPUSyncCardsError(error.body.error);
       } else {
-        gpuError.cards = `error getting gpu cards: ${error.body.error}`;
+        throw error;
       }
-
-      return {
-        ...gpu,
-        cards: [],
-        totalWattage: 0,
-        error: gpuError
-      };
     }
   }
 
@@ -44,22 +38,11 @@ class GPUActions {
         error: {}
       };
     } catch (error) {
-      let gpuError = {};
-
-      if (error.code === 'ENOTFOUND') {
-        gpuError.api = 'nvidia gpu api not running';
-      } else if (error.code === 'ECONNREFUSED') {
-        gpuError.api = 'could not connect to nvidia gpu api';
+      if (!(error instanceof GPUApiError)) {
+        throw new GPUPowerLimitCardsError(error.body.error);
       } else {
-        gpuError.cards = `error setting power limit for gpus: ${
-          error.body.error
-        }`;
+        throw error;
       }
-
-      return {
-        ...gpu,
-        error: gpuError
-      };
     }
   }
 }
