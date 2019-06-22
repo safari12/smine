@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const methods = require('./methods');
+const actions = require('./methods');
 const GPUCardSchema = require('./card');
 
 const GPUSchema = new Schema(
@@ -28,8 +28,8 @@ const GPUSchema = new Schema(
   }
 );
 
-GPUSchema.statics.syncCards = methods.syncCards;
-GPUSchema.statics.powerLimitCards = methods.powerLimitCards;
+GPUSchema.statics.syncCards = actions.syncCards;
+GPUSchema.statics.powerLimitCards = actions.powerLimitCards;
 
 module.exports = {
   schema: GPUSchema,

@@ -2,7 +2,7 @@ const _ = require('lodash/fp');
 const GPUConfig = require('./config').model;
 const api = require('./api');
 
-class GPUMethods {
+class GPUActions {
   static async syncCards(gpu, hostname) {
     try {
       const { body } = await api.getCards(hostname);
@@ -18,12 +18,12 @@ class GPUMethods {
     } catch (error) {
       let gpuError = {};
 
-      if (error.code === 'ECONNREFUSED') {
+      if (error.code === 'ENOTFOUND') {
+        gpuError.api = 'nvidia gpu api not running';
+      } else if (error.code === 'ECONNREFUSED') {
         gpuError.api = 'could not connect to nvidia gpu api';
       } else {
-        if (error.body) {
-          gpuError.cards = `error getting gpu cards: ${error.body.error}`;
-        }
+        gpuError.cards = `error getting gpu cards: ${error.body.error}`;
       }
 
       return {
@@ -46,14 +46,14 @@ class GPUMethods {
     } catch (error) {
       let gpuError = {};
 
-      if (error.code === 'ECONNREFUSED') {
+      if (error.code === 'ENOTFOUND') {
+        gpuError.api = 'nvidia gpu api not running';
+      } else if (error.code === 'ECONNREFUSED') {
         gpuError.api = 'could not connect to nvidia gpu api';
       } else {
-        if (error.body) {
-          gpuError.cards = `error setting power limit for gpus: ${
-            error.body.error
-          }`;
-        }
+        gpuError.cards = `error setting power limit for gpus: ${
+          error.body.error
+        }`;
       }
 
       return {
@@ -64,4 +64,4 @@ class GPUMethods {
   }
 }
 
-module.exports = GPUMethods;
+module.exports = GPUActions;
