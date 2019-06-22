@@ -18,7 +18,7 @@ class GPUActions {
         ...gpu,
         cards,
         totalWattage,
-        error: {}
+        error: null
       };
     } catch (error) {
       if (!(error instanceof GPUApiError) && error.body) {
@@ -35,7 +35,7 @@ class GPUActions {
       await api.powerLimitCards(hostname, c.power.limit);
       return {
         ...gpu,
-        error: {}
+        error: null
       };
     } catch (error) {
       if (!(error instanceof GPUApiError) && error.body) {

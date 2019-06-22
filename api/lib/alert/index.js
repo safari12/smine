@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 const actions = require('./actions');
 
-const AlertSchema = new mongoose.Schema({
-  message: {
-    type: String
-  }
-});
+const AlertSchema = new mongoose.Schema(
+  {
+    message: {
+      type: String
+    }
+  },
+  { _id: false }
+);
 
 AlertSchema.statics.check = actions.check;
 
