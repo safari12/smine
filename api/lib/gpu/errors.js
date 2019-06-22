@@ -1,26 +1,12 @@
-class TypeError extends Error {
-  constructor(message, type) {
+class GPUApiError extends Error {
+  constructor(message) {
     super(message);
-    this.type = type;
-  }
-
-  toObject() {
-    return {
-      message: this.message,
-      type: this.type
-    };
   }
 }
 
-class GPUApiError extends TypeError {
+class GPUCardsError extends Error {
   constructor(message) {
-    super(message, 'api');
-  }
-}
-
-class GPUCardsError extends TypeError {
-  constructor(message) {
-    super(message, 'cards');
+    super(message);
   }
 }
 

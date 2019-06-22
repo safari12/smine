@@ -35,7 +35,7 @@ class RigActions {
       gpu = await GPU.syncCards(gpu, rig.hostname);
       gpu = await GPU.powerLimitCards(gpu, rig.hostname);
     } catch (error) {
-      gpu.error = error.toObject();
+      gpu.error = error.message;
     }
 
     return {

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const actions = require('./methods');
+const actions = require('./actions');
 const GPUCardSchema = require('./card');
 
 const GPUSchema = new Schema(

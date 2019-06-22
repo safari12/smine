@@ -1,18 +1,9 @@
 const _ = require('lodash/fp');
 
-function checkGPUApiErrors(source, updated) {
+function checkGPUError(source, updated) {
   return {
-    triggered:
-      updated.pingable && !source.gpu.error.api && updated.gpu.error.api,
-    message: `${source.hostname} - ${updated.gpu.error.api}`
-  };
-}
-
-function checkGPUCardErrors(source, updated) {
-  return {
-    triggered:
-      updated.pingable && !source.gpu.error.cards && updated.gpu.error.cards,
-    message: `${source.hostname} - ${updated.gpu.error.cards}`
+    triggered: updated.pingable && !source.gpu.error && updated.gpu.error,
+    message: `${source.hostname} - ${updated.gpu.error}`
   };
 }
 
@@ -24,8 +15,8 @@ function checkGPUCardsWentDown(source, updated) {
   return {
     triggered:
       updated.pingable &&
-      !updated.gpu.error.api &&
-      !updated.gpu.error.cards &&
+      !source.gpu.error &&
+      !updated.gpu.error &&
       sourceGpuCount > updatedGpuCount,
     message: `${source.hostname} - ${diff} gpu cards went down silently`
   };
@@ -55,8 +46,7 @@ function checkMinersWentDown(source, updated) {
 }
 
 module.exports = [
-  checkGPUApiErrors,
-  checkGPUCardErrors,
+  checkGPUError,
   checkGPUCardsWentDown,
   checkRigWentDown,
   checkMinersWentDown

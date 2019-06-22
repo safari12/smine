@@ -21,7 +21,7 @@ class GPUActions {
         error: {}
       };
     } catch (error) {
-      if (!(error instanceof GPUApiError)) {
+      if (!(error instanceof GPUApiError) && error.body) {
         throw new GPUSyncCardsError(error.body.error);
       } else {
         throw error;
@@ -38,7 +38,7 @@ class GPUActions {
         error: {}
       };
     } catch (error) {
-      if (!(error instanceof GPUApiError)) {
+      if (!(error instanceof GPUApiError) && error.body) {
         throw new GPUPowerLimitCardsError(error.body.error);
       } else {
         throw error;
