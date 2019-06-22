@@ -1,41 +1,28 @@
-class GPUApiError extends Error {
-  constructor(message) {
-    super(message);
-  }
-}
-
-class GPUCardsError extends Error {
-  constructor(message) {
-    super(message);
-  }
-}
-
-class GPUApiNotRunningError extends GPUApiError {
+class GPUApiNotRunningError extends Error {
   constructor() {
     super('nvidia gpu api not running');
   }
 }
 
-class GPUApiRefusedError extends GPUApiError {
+class GPUApiRefusedError extends Error {
   constructor() {
     super('could not connect to nvidia gpu api');
   }
 }
 
-class GPUSyncCardsError extends GPUCardsError {
+class GPUSyncCardsError extends Error {
   constructor(reason) {
     super(`error getting gpu card stats: ${reason}`);
   }
 }
 
-class GPUPowerLimitCardsError extends GPUCardsError {
+class GPUPowerLimitCardsError extends Error {
   constructor(reason) {
     super(`error power limiting gpu cards: ${reason}`);
   }
 }
 
 module.exports = {
-  GPUApiError,
   GPUApiNotRunningError,
   GPUApiRefusedError,
   GPUSyncCardsError,

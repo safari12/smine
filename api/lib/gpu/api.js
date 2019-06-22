@@ -34,9 +34,9 @@ class GPUApi {
   }
 
   static throwError(error) {
-    if (error.code === 'ENOTFOUND') {
+    if (error instanceof got.TimeoutError) {
       throw new GPUApiNotRunningError();
-    } else if (error.code === 'ECONNREFUSED') {
+    } else if (error instanceof got.RequestError) {
       throw new GPUApiRefusedError();
     } else {
       throw error;

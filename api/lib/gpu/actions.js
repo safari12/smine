@@ -1,11 +1,8 @@
 const _ = require('lodash/fp');
+const got = require('got');
 const GPUConfig = require('./config').model;
 const api = require('./api');
-const {
-  GPUApiError,
-  GPUSyncCardsError,
-  GPUPowerLimitCardsError
-} = require('./errors');
+const { GPUSyncCardsError, GPUPowerLimitCardsError } = require('./errors');
 
 class GPUActions {
   static async syncCards(gpu, hostname) {
@@ -21,8 +18,8 @@ class GPUActions {
         error: null
       };
     } catch (error) {
-      if (!(error instanceof GPUApiError) && error.body) {
-        throw new GPUSyncCardsError(error.body.error);
+      if (error instanceof got.HTTPError) {
+        throw new GPUSyncCardsError(error.response.body.error);
       } else {
         throw error;
       }
@@ -38,8 +35,8 @@ class GPUActions {
         error: null
       };
     } catch (error) {
-      if (!(error instanceof GPUApiError) && error.body) {
-        throw new GPUPowerLimitCardsError(error.body.error);
+      if (error instanceof got.HTTPError) {
+        throw new GPUPowerLimitCardsError(error.response.body.error);
       } else {
         throw error;
       }
