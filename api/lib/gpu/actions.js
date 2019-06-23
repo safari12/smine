@@ -29,7 +29,11 @@ class GPUActions {
   static async powerLimitCards(gpu, hostname) {
     try {
       const c = await GPUConfig.findById(gpu.config);
-      await api.powerLimitCards(hostname, c.power.limit);
+
+      if (!_.find(card => card.power.cap !== c.power.limit, gpu.cards)) {
+        await api.powerLimitCards(hostname, c.power.limit);
+      }
+
       return {
         ...gpu,
         error: null
