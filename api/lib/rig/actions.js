@@ -71,20 +71,28 @@ class RigActions {
     return _.map(r => r.toObject())(rigs);
   }
 
-  static saveMany(rigs) {
-    const Rig = this;
+  static async saveMany(rigs) {
+    rigs = _.keyBy('_id', rigs);
+
+    const updateRigs = await this.find({});
     const results = _.pipe(
-      _.map(r => new Rig(r)),
       _.map(async r => {
         try {
-          r.isNew = false;
-          r.gpu.config = undefined;
+          const data = rigs[r._id];
+          r.pingable = data.pingable;
+          r.hashrate = data.hashrate;
+          r.gpu.totalWattage = data.gpu.totalWattage;
+          r.gpu.cards = data.gpu.cards;
+          r.gpu.error = data.gpu.error;
+          r.miners = data.miners;
+          r.alerts = data.alerts;
           return await r.save();
         } catch (error) {
+          logger.error(error.message);
           return null;
         }
       })
-    )(rigs);
+    )(updateRigs);
     return Promise.all(results);
   }
 }

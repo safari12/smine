@@ -48,7 +48,7 @@ module.exports = async () => {
 
         if (alerts.length > 0) {
           logger.info('there are alerts for rigs, notifying users');
-          await mailer.sendMail('SMine Alerts', _.map('message', alerts));
+          // await mailer.sendMail('SMine Alerts', _.map('message', alerts));
           jobCompleted = true;
           logger.info('successfully notified users');
         } else {
