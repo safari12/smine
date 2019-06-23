@@ -72,27 +72,20 @@ class RigActions {
   }
 
   static async saveMany(rigs) {
-    rigs = _.keyBy('_id', rigs);
-
-    const updateRigs = await this.find({});
+    const Rig = this;
     const results = _.pipe(
-      _.map(async r => {
-        try {
-          const data = rigs[r._id];
-          r.pingable = data.pingable;
-          r.hashrate = data.hashrate;
-          r.gpu.totalWattage = data.gpu.totalWattage;
-          r.gpu.cards = data.gpu.cards;
-          r.gpu.error = data.gpu.error;
-          r.miners = data.miners;
-          r.alerts = data.alerts;
-          return await r.save();
-        } catch (error) {
-          logger.error(error.message);
-          return null;
-        }
+      _.map(r => {
+        return Rig.findByIdAndUpdate(r._id, {
+          $set: {
+            pingable: r.pingable,
+            hashrate: r.hashrate,
+            'gpu.totalWattage': r.gpu.totalWattage,
+            'gpu.cards': r.gpu.cards,
+            'gpu.error': r.gpu.error
+          }
+        });
       })
-    )(updateRigs);
+    )(rigs);
     return Promise.all(results);
   }
 }
