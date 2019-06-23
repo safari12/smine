@@ -78,6 +78,7 @@ class RigActions {
       _.map(async r => {
         try {
           r.isNew = false;
+          r.gpu.config = undefined;
           return await r.save();
         } catch (error) {
           return null;
