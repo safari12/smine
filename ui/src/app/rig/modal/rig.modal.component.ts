@@ -68,7 +68,9 @@ export class RigModalComponent implements OnInit {
   onSubmit() {
     if (this.form.invalid) return;
     if (this.rig) {
-      this.onUpdate.emit(this.newRig());
+      const rig = this.newRig();
+      rig._id = this.rig._id;
+      this.onUpdate.emit(rig);
     } else {
       this.onCreate.emit(this.newRig());
     }
