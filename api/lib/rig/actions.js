@@ -75,9 +75,13 @@ class RigActions {
     const Rig = this;
     const results = _.pipe(
       _.map(r => new Rig(r)),
-      _.map(r => {
-        r.isNew = false;
-        return r.save();
+      _.map(async r => {
+        try {
+          r.isNew = false;
+          return await r.save();
+        } catch (error) {
+          return null;
+        }
       })
     )(rigs);
     return Promise.all(results);
