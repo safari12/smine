@@ -36,7 +36,7 @@ module.exports = async () => {
         updatedRigs = Rig.checkAlerts(rigs, updatedRigs);
         await Rig.saveMany(updatedRigs);
 
-        socket.emit('rigs-synced', updatedRigs);
+        socket.emit('rigs-synced', await Rig.findAll());
 
         logger.info('successfully synced rigs from datacenter');
         logger.info('checking alerts for rigs');
