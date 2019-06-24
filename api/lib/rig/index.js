@@ -43,7 +43,7 @@ RigSchema.statics.syncMiners = actions.syncMiners;
 RigSchema.statics.syncGPUCards = actions.syncGPUCards;
 RigSchema.statics.checkAlerts = actions.checkAlerts;
 RigSchema.statics.sync = actions.sync;
-RigSchema.statics.saveMany = actions.saveMany;
+RigSchema.statics.updateMany = actions.updateMany;
 RigSchema.statics.findAll = actions.findAll;
 
 module.exports = {

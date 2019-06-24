@@ -71,7 +71,7 @@ class RigActions {
     return _.map(r => r.toObject())(rigs);
   }
 
-  static async saveMany(rigs) {
+  static async updateMany(rigs) {
     const Rig = this;
     const results = _.pipe(
       _.map(r => {

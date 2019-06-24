@@ -34,7 +34,7 @@ module.exports = async () => {
         const rigs = await Rig.findAll();
         let updatedRigs = await Rig.sync(rigs);
         updatedRigs = Rig.checkAlerts(rigs, updatedRigs);
-        await Rig.saveMany(updatedRigs);
+        await Rig.updateMany(updatedRigs);
 
         socket.emit('rigs-synced', await Rig.findAll());
 
