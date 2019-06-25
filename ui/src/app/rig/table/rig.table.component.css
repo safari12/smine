@@ -16,3 +16,22 @@ ul {
   overflow: auto;
   display: block;
 }
+
+@keyframes NAME-YOUR-ANIMATION {
+  0% {
+    font-size: 16px;
+  }
+  50% {
+    font-size: 22px;
+  }
+  100% {
+    font-size: 16px;
+  }
+}
+
+.fa-exclamation-triangle {
+  -webkit-animation: NAME-YOUR-ANIMATION 2s infinite; /* Safari 4+ */
+  -moz-animation: NAME-YOUR-ANIMATION 2s infinite; /* Fx 5+ */
+  -o-animation: NAME-YOUR-ANIMATION 2s infinite; /* Opera 12+ */
+  animation: NAME-YOUR-ANIMATION 2s infinite; /* IE 10+, Fx 29+ */
+}

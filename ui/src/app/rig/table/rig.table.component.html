@@ -20,6 +20,14 @@
         <td>
           {{rig.gpu.cards.length}} Cards
         </td>
+        <td [ngClass]="{'text-success': !rig.gpu.error, 'text-danger': rig.gpu.error}">
+          <i *ngIf="rig.gpu.error"
+             class="fa fa-exclamation-triangle"
+             placement="top"
+             ngbTooltip="{{rig.gpu.error}}"
+             aria-hidden="true"></i>
+          <b *ngIf="!rig.gpu.error">Good</b>
+        </td>
         <td class="text-right">
           <button class="btn btn-primary mr-3"
                   (click)="edit(rig)">

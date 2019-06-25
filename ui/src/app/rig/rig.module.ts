@@ -12,6 +12,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { RigSearchPipe } from './rig.search.pipe';
 import { RigService } from './state/rig.service';
 import { RigQuery } from './state/rig.query';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:3000',
@@ -33,6 +34,7 @@ const config: SocketIoConfig = {
     ReactiveFormsModule,
     NgSelectModule,
     SharedModule,
+    NgbModule,
     SocketIoModule.forRoot(config)
   ],
   entryComponents: [RigModalComponent],
