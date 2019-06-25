@@ -10,6 +10,7 @@ export class RigTableComponent {
   @Input() rigs: Rig[];
   @Output() onEdit = new EventEmitter<Rig>();
   @Output() onDelete = new EventEmitter<Rig>();
+  @Output() onDetails = new EventEmitter<Rig>();
 
   edit(rig: Rig) {
     this.onEdit.emit(rig);
@@ -17,5 +18,9 @@ export class RigTableComponent {
 
   delete(rig: Rig) {
     this.onDelete.emit(rig);
+  }
+
+  details(rig: Rig) {
+    this.onDetails.emit(rig);
   }
 }

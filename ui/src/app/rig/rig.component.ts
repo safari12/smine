@@ -8,6 +8,7 @@ import { GpuConfigQuery } from '../gpu/config/state/gpu.config.query';
 import { MinerConfigQuery } from '../miner/config/state/miner.config.query';
 import { RigService } from './state/rig.service';
 import { RigQuery } from './state/rig.query';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-rigs',
@@ -23,7 +24,8 @@ export class RigComponent implements OnInit {
     private query: RigQuery,
     private minerConfigQuery: MinerConfigQuery,
     private gpuConfigQuery: GpuConfigQuery,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -62,6 +64,10 @@ export class RigComponent implements OnInit {
         modal.close();
       });
     });
+  }
+
+  details(rig: Rig) {
+    this.router.navigate([`rigs/${rig._id}/details`]);
   }
 
   private openModal() {

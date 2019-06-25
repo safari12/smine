@@ -13,6 +13,7 @@ import { RigSearchPipe } from './rig.search.pipe';
 import { RigService } from './state/rig.service';
 import { RigQuery } from './state/rig.query';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RigDetailsComponent } from './details/rig.details.component';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:3000',
@@ -26,6 +27,7 @@ const config: SocketIoConfig = {
     RigTableHeaderComponent,
     RigModalComponent,
     RigSearchBarComponent,
+    RigDetailsComponent,
     RigSearchPipe
   ],
   imports: [
