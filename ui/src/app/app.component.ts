@@ -23,13 +23,22 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.rigService.readAll();
-    this.gpuConfigService.readAll();
-    this.minerConfigService.readAll();
-    this.coinService.getSupported();
+    // if (this.authService.getCurrentUser) {
+    //   this.loadData();
+    // }
+    this.authService.currentUser.subscribe(user => {
+      this.loadData();
+    });
   }
 
   get currentUser(): User {
     return this.authService.getCurrentUser;
+  }
+
+  private loadData() {
+    this.rigService.readAll();
+    this.gpuConfigService.readAll();
+    this.minerConfigService.readAll();
+    this.coinService.getSupported();
   }
 }
