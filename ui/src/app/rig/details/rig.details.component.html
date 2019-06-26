@@ -1,4 +1,5 @@
-<div class="container">
+<div class="container"
+     style="margin-bottom: 25px">
   <div class="row mt-4">
     <div class="col">
       <button type="button"
@@ -7,10 +8,48 @@
     </div>
   </div>
   <div class="row mt-4">
-    <div class="col-4 offset-4 text-center">
-      <img src="assets/motherboard.png"
-           height="200"
-           width="200">
+    <div class="col">
+      <h2>GPUs</h2>
+    </div>
+  </div>
+  <div *ngFor="let gpu of gpuCards"
+       class="row mt-4 text-center">
+    <div class="col">
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item">
+          <img src="assets/gpu.png"
+               height="100"
+               width="100">
+        </li>
+        <li class="list-group-item">
+          <b>Index</b>
+          <div>{{gpu.index}}</div>
+        </li>
+        <li class="list-group-item">
+          <b>Name</b>
+          <div>{{gpu.name}}</div>
+        </li>
+        <li class="list-group-item">
+          <b>Temperature</b>
+          <div>{{gpu.temperature}}C</div>
+        </li>
+        <li class="list-group-item">
+          <b>Fan Speed</b>
+          <div>{{gpu.fanSpeed}}%</div>
+        </li>
+        <li class="list-group-item">
+          <b>Volatile</b>
+          <div>{{gpu.volatile}}%</div>
+        </li>
+        <li class="list-group-item">
+          <b>Power</b>
+          <div>{{gpu.power.usage}}W / {{gpu.power.cap}}W</div>
+        </li>
+        <li class="list-group-item">
+          <b>Memory</b>
+          <div>{{gpu.memory.usage}}Mb / {{gpu.memory.cap}}Mb</div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
